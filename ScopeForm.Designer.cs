@@ -75,9 +75,10 @@
             // skControl
             // 
             this.skControl.BackColor = System.Drawing.Color.Moccasin;
-            this.skControl.Location = new System.Drawing.Point(83, 36);
+            this.skControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skControl.Location = new System.Drawing.Point(0, 0);
             this.skControl.Name = "skControl";
-            this.skControl.Size = new System.Drawing.Size(490, 367);
+            this.skControl.Size = new System.Drawing.Size(633, 458);
             this.skControl.TabIndex = 0;
             this.skControl.Text = "skControl";
             this.skControl.PaintSurface += new System.EventHandler<SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs>(this.SkControl_PaintSurface);
@@ -94,6 +95,7 @@
             this.Name = "ScopeForm";
             this.Text = "NebScope";
             this.Load += new System.EventHandler(this.ScopeForm_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.ScopeForm_Paint);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
