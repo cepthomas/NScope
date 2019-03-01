@@ -8,6 +8,9 @@ namespace NebScope
 {
     public class Common
     {
+        //Color.Firebrick, Color.CornflowerBlue, Color.MediumSeaGreen, Color.MediumOrchid,
+        //Color.DarkOrange, Color.DarkGoldenrod, Color.DarkSlateGray, Color.Khaki, Color.PaleVioletRed
+
         #region Constants
         /// <summary>Fixed for now.</summary>
         public const int NUM_CHANNELS = 2;
@@ -17,6 +20,9 @@ namespace NebScope
 
         /// <summary>Visual Y.</summary>
         public const int NUM_Y_DIVISIONS = 8;
+
+        /// <summary>Listening for data.</summary>
+        public const int UDP_PORT = 9888;
         #endregion
 
         /// <summary>

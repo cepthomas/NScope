@@ -32,7 +32,7 @@ namespace NebScope
     public class Channel
     {
         ///<summary></summary>
-        public string Name { get; set; } = "No Name";
+        public string Name { get; set; } = "????";
 
         ///<summary></summary>
         public Color Color { get; set; } = Color.White;
@@ -43,7 +43,7 @@ namespace NebScope
         /// <summary>Shift along Y axis aka DC offset. +-1.0 is equivalent to the total Y grid.</summary>
         public double YPosition { get; set; } = 0.0;
 
-        /// <summary>Extent of y axis. Traditional "volts" per division</summary>
+        /// <summary>Extent of y axis. Traditional "volts" per division. i-2-5 sequence.</summary>
         public double VoltsPerDivision { get; set; } = 1.0;
 
         /// <summary>
@@ -86,23 +86,19 @@ namespace NebScope
             //| 0   sy   0 | × | 0   1   0 | = | 0   sy   0 |
             //| 0    0   1 |   | tx  ty  1 |   | tx  ty   1 |
 
-
             double xTotalSamples = xSamplesPerDivision * Common.NUM_X_DIVISIONS;
-            double xScale = xTotalSamples / drawRegion.Width;
+            double xScale = drawRegion.Width / xTotalSamples;
             double yTotalVolts = VoltsPerDivision * Common.NUM_Y_DIVISIONS;
-            double yScale = yTotalVolts / drawRegion.Height;
+            double yScale = drawRegion.Height / yTotalVolts;
+            double xOffset = xPosition * drawRegion.Width;
+            double yOffset = YPosition * drawRegion.Height;
 
-            double xOffset = xPosition / 100 * xTotalSamples;
-            double yOffset = YPosition / 100 * yScale;
-
-            SKMatrix matrix = new SKMatrix
-            {
-                ScaleX = (float)xScale,
-                ScaleY = (float)yScale,
-                TransX = drawRegion.Left + (float)xOffset,
-                TransY = drawRegion.Bottom - (float)yOffset,
-                Persp2 = 1
-            };
+            SKMatrix matrix = SKMatrix.MakeIdentity();
+            matrix.ScaleX = (float)xScale;
+            matrix.ScaleY = -(float)yScale;
+            matrix.TransX = drawRegion.Left + (float)xOffset;
+            matrix.TransY = drawRegion.Top +  drawRegion.Height/2 + (float)yOffset;
+            matrix.Persp2 = 1;
 
             // Map the data to UI space.
             for (int i = 0; i < DataPoints.Count(); i++)
