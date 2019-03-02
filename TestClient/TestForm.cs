@@ -13,57 +13,27 @@ using System.Windows.Forms;
 
 namespace TestClient
 {
+    /// <summary>
+    /// A test UDP sender application.
+    /// </summary>
     public partial class TestForm : Form
     {
-        #region Fields
-        /// <summary>OSC output device.</summary>
-        UdpClient _udpClient;
-
-        /// <summary>Access synchronizer.</summary>
-        object _lock = new object();
-
-        /// <summary>Resource clean up.</summary>
-        bool _disposed = false;
-        #endregion
-
+        UdpClient _udp;
+        const int NUM_CHANNELS = 2;
 
         #region Lifecycle
-
         public TestForm()
         {
             InitializeComponent();
         }
 
-        public bool Init(string name)
+        void TestForm_Load(object sender, EventArgs e)
         {
-            bool inited = false;
-
-            try
-            {
-                if (_udpClient != null)
-                {
-                    _udpClient.Close();
-                    _udpClient.Dispose();
-                    _udpClient = null;
-                }
-
-                _udpClient = new UdpClient(0);
-                _udpClient.Connect("127.0.0.1", 9888);
-                inited = true;
-            }
-            catch (Exception ex)
-            {
-                //LogMsg(DeviceLogCategory.Error, $"Init OSC out failed: {ex.Message}");
-                inited = false;
-            }
-
-            return inited;
+            // Set up UDP sender.
+            _udp = new UdpClient(0);
+            _udp.Connect("127.0.0.1", 9888);
         }
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -71,104 +41,58 @@ namespace TestClient
                 components.Dispose();
             }
 
-            _udpClient?.Close();
-            _udpClient?.Dispose();
-            _udpClient = null;
+            _udp?.Close();
+            _udp?.Dispose();
+            _udp = null;
 
             base.Dispose(disposing);
         }
         #endregion
 
-
-        /// <summary>
-        /// Handle endianness.
-        /// </summary>
-        /// <param name="bytes">Data in place.</param>
-        public void FixEndian(List<byte> bytes)
+        void Log(string msg)
         {
-            if (BitConverter.IsLittleEndian)
-            {
-                bytes.Reverse();
-            }
+            txtLog.AppendText(msg + Environment.NewLine);
+            txtLog.ScrollToCaret();
         }
 
-
-        public List<byte> Pack(float value)
+        void Go1()
         {
-            List<byte> bytes = new List<byte>(BitConverter.GetBytes(value));
-            if (BitConverter.IsLittleEndian)
-            {
-                bytes.Reverse();
-            }
-            return bytes;
-        }
-
-
-
-        public void Go1()
-        {
-            // Assume asio-like buffer size of 1024. At 44100 sample rate, 1 buff = 23 msec.
-
+            // interleaved buffer size of 1024. At 44100 sample rate, 1 buff = 23 msec.
 
             // Make some data.
             int buffSize = 1024;
-            float[] ch1Data = new float[buffSize];
-            float[] ch2Data = new float[buffSize];
+            float[] interleaved = new float[buffSize * NUM_CHANNELS];
 
             for (int i = 0; i < buffSize; i++)
             {
-                ch1Data[i] = (float)Math.Sin(i / 100.0);
-                ch2Data[i] = i / 50.0f % 1.0f;
+                interleaved[i * NUM_CHANNELS + 0] = (float)Math.Sin(i / 100.0);
+                interleaved[i * NUM_CHANNELS + 1] = i / 50.0f % 1.0f;
             }
 
             // Package it up and send it.
-            //sf.SetData(ch1Data, ch2Data);
+            int dataSize = sizeof(float);
+            byte[] buff = new byte[interleaved.Count() * dataSize];
 
-            if (_udpClient != null)
+            for (int i = 0; i < interleaved.Count(); i++)
             {
-                // Interleave.
-                float[] interleaved = new float[buffSize * 2];
+                byte[] bytes = BitConverter.GetBytes(interleaved[i]);
+                Array.Copy(bytes, 0, buff, i * dataSize, dataSize);
+            }
 
-                for (int i = 0; i < buffSize; i++)
-                {
-                    interleaved[2 * i] = ch1Data[2 * i];
-                    interleaved[2 * i + 1] = ch2Data[2 * i];
-                }
+            int num = _udp.Send(buff, buff.Count());
+            Log($"_udpClient.Send:{num}");
+        }
 
+        void chkRun_CheckedChanged(object sender, EventArgs e)
+        {
+            if(chkRun.Checked)
+            {
+                Log("Sending UDP");
+                Go1();
+                Log("Finished UDP");
 
-                byte[] buff = new byte[interleaved.Count() * 4];
-
-                for (int i = 0; i < interleaved.Count(); i++)
-                {
-                    byte[] bytes = BitConverter.GetBytes(interleaved[i]);
-
-                    if (BitConverter.IsLittleEndian)
-                    {
-                        //lvals.Reverse();
-                        buff[i * 4 + 0] = bytes[3];
-                        buff[i * 4 + 1] = bytes[2];
-                        buff[i * 4 + 2] = bytes[1];
-                        buff[i * 4 + 3] = bytes[0];
-                    }
-                    else
-                    {
-                        buff[i * 4 + 0] = bytes[0];
-                        buff[i * 4 + 1] = bytes[1];
-                        buff[i * 4 + 2] = bytes[2];
-                        buff[i * 4 + 3] = bytes[3];
-                    }
-                }
-
-                _udpClient.Send(buff, buff.Count());
+                chkRun.Checked = false;
             }
         }
-
-        private void chkRun_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,8 @@ namespace NebScope
 {
     public class Common
     {
-        //Color.Firebrick, Color.CornflowerBlue, Color.MediumSeaGreen, Color.MediumOrchid,
-        //Color.DarkOrange, Color.DarkGoldenrod, Color.DarkSlateGray, Color.Khaki, Color.PaleVioletRed
-
         #region Constants
-        /// <summary>Fixed for now.</summary>
+        /// <summary>Fixed for now. TODON make variable - init message/data?</summary>
         public const int NUM_CHANNELS = 2;
 
         /// <summary>Visual X.</summary>
@@ -21,8 +19,15 @@ namespace NebScope
         /// <summary>Visual Y.</summary>
         public const int NUM_Y_DIVISIONS = 8;
 
-        /// <summary>Listening for data.</summary>
+        /// <summary>Server listening for data on port.</summary>
         public const int UDP_PORT = 9888;
+
+        /// <summary>Harmonious colors.</summary>
+        public static Color[] COLORS =
+        {
+            Color.Firebrick, Color.CornflowerBlue, Color.MediumSeaGreen, Color.MediumOrchid,
+            Color.DarkOrange, Color.DarkGoldenrod, Color.DarkSlateGray, Color.Khaki, Color.PaleVioletRed
+        };
         #endregion
 
         /// <summary>

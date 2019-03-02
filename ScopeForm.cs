@@ -16,6 +16,10 @@ using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
 
+// Doc: UDP assumes all little-endian.
+
+// Assume asio-like buffer size of 1024. At 44100 sample rate, 1 buff = 23 msec.
+
 namespace NebScope
 {
      #region Enums
@@ -113,6 +117,9 @@ namespace NebScope
         #endregion
 
         #region Fields
+        /// <summary>Current user settings.</summary>
+        UserSettings _settings = null;
+
         ///<summary>Data to chart.</summary>
         Channel[] _channels = new Channel[Common.NUM_CHANNELS];
 
@@ -141,112 +148,30 @@ namespace NebScope
         };
 
         /// <summary>Input device.</summary>
-        UdpClient _udpClient = null;
-
-        /// <summary>The local port.</summary>
- //       int _port = -1;
-
+        UdpClient _udp = null;
         #endregion
 
 
-        //////////////////////////////// this /////////////////////////
 
-
-        // 
-        // IPEndPoint localpt = new IPEndPoint(IPAddress.Any, 6000);
-        // 
-        // //This is how you do it (kudos to sipwiz)
-        // UdpClient udpServer = new UdpClient(localpt); //This is what the proprietary(see question) sender would do (nothing special) 
-        // 
-        // //!!! The following 3 lines is what the poster needs...(and the definition of localpt (of course))
-        // UdpClient udpServer2 = new UdpClient();
-        // udpServer2.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        // udpServer2.Client.Bind(localpt);
-        // 
-        // 
-        // ????
-        // recipient = new UdpClient(new IPEndPoint(IPAddress.Parse(IPADDR), 12000));
-        // this.thread = new Thread(new ThreadStart(this.Execute));
-        // this.thread.Name = "Udp";
-        // this.thread.Start();
-        // 
-        // udpClient = new UdpClient(11000);
-        // udpClient.Connect(IPAddress.Parse(IPADDR), 12000);
-
-
-        public void Start()
+        private void btnTest_Click(object sender, EventArgs e)
         {
-            _udpClient.BeginReceive(new AsyncCallback(ServerReceive), this);
-        }
+            // Make some data.
+            int buffSize = 1024;
+            double[][] data = new double[Common.NUM_CHANNELS][];
 
-
-        public void Stop()
-        {
-            //_udpClient.EndReceive()
-            _udpClient.Close(); //TODON or Pause()????
-        }
-
-
-        /// <summary>
-        /// Handle a received packet.
-        /// </summary>
-        /// <param name="ares"></param>
-        void ServerReceive(IAsyncResult ares)
-        {
-            //Server inputDev = ares.AsyncState as Server;
-            IPEndPoint sender = new IPEndPoint(0, 0);
-
-            // Process input.
-            byte[] bytes = _udpClient.EndReceive(ares, ref sender);
-
-            if (bytes != null && bytes.Length > 0) // TODON
+            for (int c = 0; c < Common.NUM_CHANNELS; c++)
             {
-                //should be modulo num_channels
-
-
+                data[c] = new double[buffSize];
             }
 
-            // Listen again.
-            _udpClient.BeginReceive(new AsyncCallback(ServerReceive), this);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="msg"></param>
-        /// <param name="start"></param>
-        /// <param name="val"></param>
-        /// <returns></returns>
-        public bool Unpack(byte[] msg, ref int start, ref float val)
-        {
-            bool ok = false;
-
-            byte[] subset = new byte[4];
-
-            if (BitConverter.IsLittleEndian)
+            for (int i = 0; i < buffSize; i++)
             {
-                //lvals.Reverse();
-                subset[0] = msg[start + 3];
-                subset[1] = msg[start + 2];
-                subset[2] = msg[start + 1];
-                subset[3] = msg[start + 0];
-            }
-            else
-            {
-                subset[0] = msg[start + 0];
-                subset[1] = msg[start + 1];
-                subset[2] = msg[start + 2];
-                subset[3] = msg[start + 3];
+                data[0][i] = Math.Sin(i / 100.0);
+                data[1][i] = i / 50.0 % 1.0;
             }
 
-            val = BitConverter.ToSingle(subset, 0);
-
-            start += 4;
-            ok = true;
-
-            return ok;
+            UpdateData(data);
         }
-
 
 
 
@@ -259,15 +184,9 @@ namespace NebScope
             InitializeComponent();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
             UpdateStyles();
-            // Improve performance and eliminate flicker.
             DoubleBuffered = true;
 
             UserSettings.Load();
-
-            for (int i = 0; i < Common.NUM_CHANNELS; i++)
-            {
-                _channels[i] = new Channel();
-            }
         }
 
         /// <summary>
@@ -277,38 +196,49 @@ namespace NebScope
         /// <param name="e"></param>
         void ScopeForm_Load(object sender, EventArgs e)
         {
-            Location = new Point(UserSettings.TheSettings.X, UserSettings.TheSettings.Y);
-            Size = new Size(UserSettings.TheSettings.Width, UserSettings.TheSettings.Height);
-            WindowState = FormWindowState.Normal;
-            BackColor = UserSettings.TheSettings.BackColor;
+            try
+            {
+                _settings = UserSettings.Load();
 
-            skControl.BackColor = Color.Black;
+                Location = new Point(_settings.X, _settings.Y);
+                Size = new Size(_settings.Width, _settings.Height);
+                WindowState = FormWindowState.Normal;
+                BackColor = _settings.BackColor;
 
-            _udpClient = new UdpClient(Common.UDP_PORT); // may throw!!!
+                skControl.BackColor = Color.Black;
 
+                // Hook up handlers.
+                skControl.Resize += SkControl_Resize;
+                skControl.PaintSurface += SkControl_PaintSurface;
 
-            // Hook up handlers.
-            skControl.Resize += SkControl_Resize;
-            skControl.PaintSurface += SkControl_PaintSurface;
+                // Setup some default channels.
+                int icolor = DateTime.Now.Second;
+                for (int i = 0; i < Common.NUM_CHANNELS; i++)
+                {
+                    _channels[i] = new Channel()
+                    {
+                        Name = $"Channel {i + 1}",
+                        Color = Common.COLORS[icolor++ % Common.COLORS.Count()],
+                        VoltsPerDivision = 0.5,
+                        YPosition = 0
+                    };
+                }
 
-            // Setup some default channels.
-            Channel ch1 = GetChannel(0);
-            ch1.Name = "Channel 1 - Sin";
-            ch1.Color = Color.Firebrick;
-            ch1.VoltsPerDivision = 0.4;
-            ch1.YPosition = 0;
+                // TODON thaw/persist last settings?
+                XTimePerDivision = 0.01;
+                SampleRate = 10000;
 
-            Channel ch2 = GetChannel(1);
-            ch2.Name = "Channel 2 - Tri";
-            ch2.Color = Color.DarkGoldenrod;
-            ch2.VoltsPerDivision = 0.6;
-            ch2.YPosition = 0;
+                CalcDrawRegion();
 
-            // TODON persist last settings.
-            XTimePerDivision = 0.01;
-            SampleRate = 10000;
+                _udp = new UdpClient(Common.UDP_PORT); // TODON may throw!!!
+                _udp.BeginReceive(new AsyncCallback(UdpReceive), this);
 
-            CalcDrawRegion();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(caption:"caption", text:ex.Message);
+
+            }
         }
 
         /// <summary>
@@ -318,12 +248,12 @@ namespace NebScope
         /// <param name="e"></param>
         void ScopeForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            UserSettings.TheSettings.X = Location.X;
-            UserSettings.TheSettings.Y = Location.Y;
-            UserSettings.TheSettings.Width = Size.Width;
-            UserSettings.TheSettings.Height = Size.Height;
+            _settings.X = Location.X;
+            _settings.Y = Location.Y;
+            _settings.Width = Size.Width;
+            _settings.Height = Size.Height;
 
-            UserSettings.TheSettings.Save();
+            _settings.Save();
         }
 
         /// <summary>
@@ -337,33 +267,30 @@ namespace NebScope
                 components.Dispose();
             }
 
-            _udpClient?.Close();
-            _udpClient?.Dispose();
-            _udpClient = null;
+            _udp?.Close();
+            _udp?.Dispose();
+            _udp = null;
 
             base.Dispose(disposing);
         }
-
-
         #endregion
 
         #region Public functions
         /// <summary>
-        /// Update the data for a channel.
+        /// Update the data for all channels.
         /// </summary>
-        /// <param name="data1">Channel 1 data</param>
-        /// <param name="data2">Channel 2 data</param>
-        public void SetData(double[] data1, double[] data2)
+        /// <param name="data">Channel data</param>
+        public void UpdateData(double[][] data)
         {
             CalcDrawRegion();
 
-            _channels[0].SetData(data1);
-            _channels[1].SetData(data2);
+            int buffSize = data.Length / Common.NUM_CHANNELS;
 
-            double xIncSize = 1 / SampleRate;
-
-            _channels[0].MapData(_dataRegion, XPosition, SampleRate * XTimePerDivision);
-            _channels[1].MapData(_dataRegion, XPosition, SampleRate * XTimePerDivision);
+            for (int i = 0; i < Common.NUM_CHANNELS; i++)
+            {
+                _channels[i].UpdateData(data[i]);
+                _channels[i].MapData(_dataRegion, XPosition, SampleRate * XTimePerDivision);
+            }
 
             // Ask for a redraw.
             skControl.Invalidate();
@@ -520,7 +447,56 @@ namespace NebScope
 
         #region Private functions
         /// <summary>
-        /// 
+        /// Handle a received packet.
+        /// </summary>
+        /// <param name="ares"></param>
+        void UdpReceive(IAsyncResult ares)
+        {
+            bool ok = true;
+
+            // Process input.
+            IPEndPoint senderIp = new IPEndPoint(0, 0);
+            byte[] bytes = _udp.EndReceive(ares, ref senderIp);
+            int dataSize = sizeof(float);
+
+            ok = bytes != null && bytes.Length > 0;
+
+            if (ok)
+            {
+                // Check size of data.
+                ok = bytes.Length % (Common.NUM_CHANNELS * dataSize) == 0;
+            }
+
+            if (ok)
+            {
+                // Unpack data.
+                // 1-1 2-1 3-1 4-1 1-2 2-2 3-2 4-2 1-3 ... CH-IND
+                int numValsPerChannel = bytes.Length / (Common.NUM_CHANNELS * dataSize);
+                double[][] data = new double[Common.NUM_CHANNELS][]; // col, row
+                for (int ch = 0; ch < Common.NUM_CHANNELS; ch++)
+                {
+                    data[ch] = new double[numValsPerChannel];
+                    for (int vi = 0; vi < numValsPerChannel; vi++)
+                    {
+                        int ind = (vi * Common.NUM_CHANNELS + ch) * dataSize;
+                        data[ch][vi] = BitConverter.ToSingle(bytes, ind);
+                    }
+                }
+
+                UpdateData(data);
+            }
+
+            if (!ok)
+            {
+                // Do something? TODON
+            }
+
+            // Listen again.
+            _udp.BeginReceive(new AsyncCallback(UdpReceive), this);
+        }
+
+        /// <summary>
+        /// Where to put the lines.
         /// </summary>
         void CalcDrawRegion()
         {

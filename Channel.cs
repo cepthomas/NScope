@@ -57,7 +57,7 @@ namespace NebScope
         /// 
         /// </summary>
         /// <param name="data"></param>
-        public void SetData(double[] data)
+        public void UpdateData(double[] data)
         {
             DataPoints = new DataPoint[data.Count()];
 

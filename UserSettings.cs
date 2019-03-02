@@ -42,9 +42,6 @@ namespace NebScope
         public int Height { get; set; } = 700;
         #endregion
 
-        /// <summary>Current global user settings.</summary>
-        public static UserSettings TheSettings { get; set; } = new UserSettings();
-
         /// <summary>Default constructor.</summary>
         public UserSettings()
         {
@@ -59,20 +56,22 @@ namespace NebScope
         }
 
         /// <summary>Create object from file.</summary>
-        public static void Load()
+        public static UserSettings Load()
         {
-            TheSettings = null;
+            UserSettings settings = null;
 
             if(File.Exists(FILENAME))
             {
                 string json = File.ReadAllText(FILENAME);
-                TheSettings = JsonConvert.DeserializeObject<UserSettings>(json);
+                settings = JsonConvert.DeserializeObject<UserSettings>(json);
             }
             else
             {
                 // Doesn't exist, create a new one.
-                TheSettings = new UserSettings();
+                settings = new UserSettings();
             }
+
+            return settings;
         }
         #endregion
     }

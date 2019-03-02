@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Common.cs">
+      <Link>Common.cs</Link>
+    </Compile>
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
     </Compile>
