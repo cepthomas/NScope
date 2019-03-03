@@ -11,14 +11,12 @@ using System.Windows.Forms;
 namespace NebScope
 {
     /// <summary>
-    /// Control potentiometer. TODON support log taper.
+    /// Control potentiometer.
     /// </summary>
-    public partial class Pot : UserControl
+    public partial class RotarySel : UserControl
     {
         #region Fields
-        double _minimum = 0.0;
-        double _maximum = 1.0;
-        double _value = 0.5;
+        string _value = "";
         int _beginDragY = 0;
         double _beginDragValue = 0.0;
         bool _dragging = false;
@@ -36,36 +34,18 @@ namespace NebScope
         public string Label { get; set; } = "???";
 
         /// <summary>
-        /// Minimum Value of the Pot.
-        /// </summary>
-        public double Minimum
-        {
-            get { return _minimum; }
-            set { _minimum = Math.Min(value, _maximum); }
-        }
-
-        /// <summary>
-        /// Maximum Value of the Pot.
-        /// </summary>
-        public double Maximum
-        {
-            get { return _maximum; }
-            set { _maximum = Math.Max(value, _minimum); }
-        }
-
-        /// <summary>
         /// The current value of the pot.
         /// </summary>
-        public double Value
+        public string Value
         {
             get { return _value; }
             set { SetValue(value, false); }
         }
 
         /// <summary>
-        /// Number of decimal places to display.
+        /// The possible click values.
         /// </summary>
-        public int DecPlaces { get; set; } = 1;
+        public List<string> DiscreteOptions { get; set; } = new List<string>();
         #endregion
 
         #region Events
@@ -77,9 +57,9 @@ namespace NebScope
 
         #region Functions
         /// <summary>
-        /// Creates a new pot control.
+        /// Creates a new control.
         /// </summary>
-        public Pot()
+        public RotarySel()
         {
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             InitializeComponent();
@@ -90,7 +70,7 @@ namespace NebScope
         /// </summary>
         /// <param name="newValue"></param>
         /// <param name="raiseEvents"></param>
-        void SetValue(double newValue, bool raiseEvents)
+        void SetValue(string newValue, bool raiseEvents)
         {
             _value = Common.Constrain(newValue, _minimum, _maximum);
 

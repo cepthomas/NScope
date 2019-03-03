@@ -1,4 +1,6 @@
 # NebScope
+- UDP assumes all little-endian.
+
 
 # Graphics Processing
 - The app is all WinForms so I started with the builtin GDI+. Some weirdness/slowness started happening so I moved to

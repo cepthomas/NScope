@@ -18,15 +18,45 @@ namespace NebScope
         const string FILENAME = "settings.json";
 
         #region Persisted editable properties
-        [DisplayName("Control Font"), Description("The font to use for controls."), Browsable(true)]
-        public Font ControlFont { get; set; } = new Font("Microsoft Sans Serif", 9, FontStyle.Bold);
-
         [DisplayName("Control Color"), Description("The color used for styling control surfaces."), Browsable(true)]
         public Color ControlColor { get; set; } = Color.Yellow;
 
         [DisplayName("Background Color"), Description("The color used for overall background."), Browsable(true)]
         public Color BackColor { get; set; } = Color.AliceBlue;
         #endregion
+
+        #region Properties - cosmetics
+        ///<summary>Trace thickness.</summary>
+        public double StrokeSize { get; set; } = 2;
+        #endregion
+
+        #region Properties - X axis
+        /// <summary>Shift along X axis aka time offset. +-1.0 is equivalent to the total X grid.</summary>
+        public double XPosition { get; set; } = 0.0;
+
+        /// <summary>Seconds per horizontal division.</summary>
+        public double XTimePerDivision { get; set; } = 0.001;
+
+        ///<summary>Sample rate for data.</summary>
+        public double SampleRate { get; set; } = 48000;
+        #endregion
+
+        #region Properties - triggering
+        /// <summary></summary>
+        public int TriggerChannel { get; set; } = 0;
+
+        /// <summary></summary>
+        public TriggerMode TriggerMode { get; set; } = TriggerMode.Normal;
+
+        /// <summary></summary>
+        public TriggerSlope TriggerSlope { get; set; } = TriggerSlope.Both;
+
+        /// <summary>Value to start displaying.</summary>
+        public double TriggerLevel { get; set; } = 0.0;
+        #endregion
+
+
+        public List<Channel> Channels { get; set; } = new List<Channel>();
 
         #region Persisted non-editable properties
         [Browsable(false)]
@@ -40,6 +70,8 @@ namespace NebScope
 
         [Browsable(false)]
         public int Height { get; set; } = 700;
+
+
         #endregion
 
         /// <summary>Default constructor.</summary>
@@ -69,6 +101,19 @@ namespace NebScope
             {
                 // Doesn't exist, create a new one.
                 settings = new UserSettings();
+
+                // Setup some default channels.
+                int icolor = DateTime.Now.Second;
+                for (int i = 0; i < Common.NUM_CHANNELS; i++)
+                {
+                    settings.Channels.Add(new Channel()
+                    {
+                        Name = $"Channel {i + 1}",
+                        Color = Common.COLORS[icolor++ % Common.COLORS.Length],
+                        VoltsPerDivision = 0.5,
+                        YPosition = 0
+                    });
+                }
             }
 
             return settings;

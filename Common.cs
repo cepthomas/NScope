@@ -7,10 +7,33 @@ using System.Threading.Tasks;
 
 namespace NebScope
 {
+    #region Enums
+    /// <summary></summary>
+    public enum TriggerMode
+    {
+        Auto,     //> Automatic trigger can be implemented to finish acquisition at the mode when no valid trigger exists.
+        Normal,   //> Only valid triggered waveform is checked at the mode. The waveform is acquired only when satisfying the trigger condition.
+        Single    //> Acquire a waveform when detecting a single trigger, and then stop.
+    };
+
+    /// <summary></summary>
+    public enum TriggerSlope
+    {
+        Rising,   //>
+        Falling,  //>
+        Both      //>
+    }
+
+    public enum xxx
+    {
+
+    }
+    #endregion
+
     public class Common
     {
         #region Constants
-        /// <summary>Fixed for now. TODON make variable - init message/data?</summary>
+        /// <summary>Fixed for now.</summary>
         public const int NUM_CHANNELS = 2;
 
         /// <summary>Visual X.</summary>

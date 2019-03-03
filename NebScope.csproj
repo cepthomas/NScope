@@ -77,6 +77,12 @@
     <Compile Include="Pot.Designer.cs">
       <DependentUpon>Pot.cs</DependentUpon>
     </Compile>
+    <Compile Include="RotarySel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RotarySel.Designer.cs">
+      <DependentUpon>RotarySel.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScopeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +94,9 @@
     <Compile Include="UserSettings.cs" />
     <EmbeddedResource Include="Pot.resx">
       <DependentUpon>Pot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RotarySel.resx">
+      <DependentUpon>RotarySel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScopeForm.resx">
       <DependentUpon>ScopeForm.cs</DependentUpon>

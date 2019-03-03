@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using Newtonsoft.Json;
 
 
 namespace NebScope
@@ -27,8 +28,8 @@ namespace NebScope
         //}
     }
 
-
     ///<summary></summary>
+    [Serializable]
     public class Channel
     {
         ///<summary></summary>
@@ -38,13 +39,15 @@ namespace NebScope
         public Color Color { get; set; } = Color.White;
 
         ///<summary>Data points y values in "units" "volts".</summary>
+        [Browsable(false)]
+        [JsonIgnore]
         public DataPoint[] DataPoints { get; set; } = null;
 
         /// <summary>Shift along Y axis aka DC offset. +-1.0 is equivalent to the total Y grid.</summary>
         public double YPosition { get; set; } = 0.0;
 
-        /// <summary>Extent of y axis. Traditional "volts" per division. i-2-5 sequence.</summary>
-        public double VoltsPerDivision { get; set; } = 1.0;
+        /// <summary>Extent of y axis. Traditional "volts" per division.</summary>
+        public double VoltsPerDivision { get; set; } = 0.5;
 
         /// <summary>
         /// 
