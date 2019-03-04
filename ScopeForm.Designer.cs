@@ -27,7 +27,7 @@
             this.potCh1Position = new NebScope.Pot();
             this.potCh2VoltsPerDiv = new NebScope.Pot();
             this.potCh1VoltsPerDiv = new NebScope.Pot();
-            this.potXTimebase = new NebScope.Pot();
+            this.rotTimebase = new NebScope.RotarySel();
             this.potXPosition = new NebScope.Pot();
             this.btnTest = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -65,7 +65,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.potCh1Position);
             this.splitContainer1.Panel1.Controls.Add(this.potCh2VoltsPerDiv);
             this.splitContainer1.Panel1.Controls.Add(this.potCh1VoltsPerDiv);
-            this.splitContainer1.Panel1.Controls.Add(this.potXTimebase);
+            this.splitContainer1.Panel1.Controls.Add(this.rotTimebase);
             this.splitContainer1.Panel1.Controls.Add(this.potXPosition);
             this.splitContainer1.Panel1.Controls.Add(this.btnTest);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
@@ -162,7 +162,6 @@
             this.potCh2Position.Maximum = 1D;
             this.potCh2Position.Minimum = 0D;
             this.potCh2Position.Name = "potCh2Position";
-            this.potCh2Position.PotMode = NebScope.PotMode.Linear;
             this.potCh2Position.Size = new System.Drawing.Size(50, 50);
             this.potCh2Position.TabIndex = 6;
             // 
@@ -176,7 +175,6 @@
             this.potCh1Position.Maximum = 1D;
             this.potCh1Position.Minimum = 0D;
             this.potCh1Position.Name = "potCh1Position";
-            this.potCh1Position.PotMode = NebScope.PotMode.Linear;
             this.potCh1Position.Size = new System.Drawing.Size(50, 50);
             this.potCh1Position.TabIndex = 5;
             // 
@@ -190,7 +188,6 @@
             this.potCh2VoltsPerDiv.Maximum = 1D;
             this.potCh2VoltsPerDiv.Minimum = 0D;
             this.potCh2VoltsPerDiv.Name = "potCh2VoltsPerDiv";
-            this.potCh2VoltsPerDiv.PotMode = NebScope.PotMode.Linear;
             this.potCh2VoltsPerDiv.Size = new System.Drawing.Size(50, 50);
             this.potCh2VoltsPerDiv.TabIndex = 4;
             // 
@@ -204,23 +201,18 @@
             this.potCh1VoltsPerDiv.Maximum = 1D;
             this.potCh1VoltsPerDiv.Minimum = 0D;
             this.potCh1VoltsPerDiv.Name = "potCh1VoltsPerDiv";
-            this.potCh1VoltsPerDiv.PotMode = NebScope.PotMode.Linear;
             this.potCh1VoltsPerDiv.Size = new System.Drawing.Size(50, 50);
             this.potCh1VoltsPerDiv.TabIndex = 3;
             // 
-            // potXTimebase
+            // rotTimebase
             // 
-            this.potXTimebase.Value = 0.5D;
-            this.potXTimebase.ControlColor = System.Drawing.Color.Black;
-            this.potXTimebase.DecPlaces = 1;
-            this.potXTimebase.Label = "Time/div";
-            this.potXTimebase.Location = new System.Drawing.Point(22, 22);
-            this.potXTimebase.Maximum = 1D;
-            this.potXTimebase.Minimum = 0D;
-            this.potXTimebase.Name = "potXTimebase";
-            this.potXTimebase.PotMode = NebScope.PotMode.Linear;
-            this.potXTimebase.Size = new System.Drawing.Size(50, 50);
-            this.potXTimebase.TabIndex = 2;
+            this.rotTimebase.Value = "";
+            this.rotTimebase.ControlColor = System.Drawing.Color.Black;
+            this.rotTimebase.Label = "Time/div";
+            this.rotTimebase.Location = new System.Drawing.Point(22, 22);
+            this.rotTimebase.Name = "rotTimebase";
+            this.rotTimebase.Size = new System.Drawing.Size(50, 50);
+            this.rotTimebase.TabIndex = 2;
             // 
             // potXPosition
             // 
@@ -232,7 +224,6 @@
             this.potXPosition.Maximum = 1D;
             this.potXPosition.Minimum = 0D;
             this.potXPosition.Name = "potXPosition";
-            this.potXPosition.PotMode = NebScope.PotMode.Linear;
             this.potXPosition.Size = new System.Drawing.Size(50, 50);
             this.potXPosition.TabIndex = 1;
             // 
@@ -313,7 +304,6 @@
             this.potTrigLevel.Maximum = 1D;
             this.potTrigLevel.Minimum = 0D;
             this.potTrigLevel.Name = "potTrigLevel";
-            this.potTrigLevel.PotMode = NebScope.PotMode.Linear;
             this.potTrigLevel.Size = new System.Drawing.Size(50, 50);
             this.potTrigLevel.TabIndex = 18;
             // 
@@ -355,7 +345,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private SkiaSharp.Views.Desktop.SKControl skControl;
         private System.Windows.Forms.Button btnTest;
-        private Pot potXTimebase;
+        private RotarySel rotTimebase;
         private Pot potXPosition;
         private Pot potCh2Position;
         private Pot potCh1Position;

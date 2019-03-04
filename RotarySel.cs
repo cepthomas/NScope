@@ -72,7 +72,7 @@ namespace NebScope
         /// <param name="raiseEvents"></param>
         void SetValue(string newValue, bool raiseEvents)
         {
-            _value = Common.Constrain(newValue, _minimum, _maximum);
+//>>>>            _value = Common.Constrain(newValue, _minimum, _maximum);
 
             if (raiseEvents)
             {
@@ -101,7 +101,7 @@ namespace NebScope
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.DrawArc(potPen, new Rectangle(diameter / -2, diameter / -2, diameter, diameter), 135, 270);
 
-            double percent = (_value - _minimum) / (_maximum - _minimum);
+            double percent = 0.5;  //>>>> (_value - _minimum) / (_maximum - _minimum);
             double degrees = 135 + (percent * 270);
             double x = (diameter / 2.0) * Math.Cos(Math.PI * degrees / 180);
             double y = (diameter / 2.0) * Math.Sin(Math.PI * degrees / 180);
@@ -114,7 +114,7 @@ namespace NebScope
             };
 
             Rectangle srect = new Rectangle(0, 7, 0, 0);
-            string sValue = _value.ToString("#." + new string('0', DecPlaces));
+            string sValue = _value;//.ToString("#." + new string('0', DecPlaces));
             e.Graphics.DrawString(sValue, Font, Brushes.Black, srect, format);
 
             srect = new Rectangle(0, 20, 0, 0);
@@ -131,7 +131,7 @@ namespace NebScope
         {
             _dragging = true;
             _beginDragY = e.Y;
-            _beginDragValue = _value;
+//>>>>            _beginDragValue = _value;
             base.OnMouseDown(e);
         }
 
@@ -152,9 +152,9 @@ namespace NebScope
             if (_dragging)
             {
                 int yDifference = _beginDragY - e.Y;
-                double delta = (_maximum - _minimum) * (yDifference / 100.0);
-                double newValue = Common.Constrain(_beginDragValue + delta, _minimum, _maximum);
-                SetValue(newValue, true);
+//>>>>                double delta = (_maximum - _minimum) * (yDifference / 100.0);
+//>>>>                double newValue = Common.Constrain(_beginDragValue + delta, _minimum, _maximum);
+ //>>>>               SetValue(newValue, true);
             }
             base.OnMouseMove(e);
         }

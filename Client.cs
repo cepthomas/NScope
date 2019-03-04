@@ -4,6 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+
+[assembly: AssemblyTitle("NebScopeClient")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Tyrell Corp")]
+[assembly: AssemblyProduct("NebScopeClient")]
+[assembly: AssemblyCopyright("MIT License")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+[assembly: ComVisible(false)]
+[assembly: Guid("dd14fce7-1cd5-4412-8912-9b75df0e3c7b")]
+[assembly: AssemblyVersion("0.9.*")]
+//[assembly: AssemblyFileVersion("1.0.0.0")]
 
 
 namespace Client

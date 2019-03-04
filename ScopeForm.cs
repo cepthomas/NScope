@@ -175,45 +175,54 @@ namespace NebScope
             {
                 _settings = UserSettings.Load();
 
+                ///// Init the form /////
                 Location = new Point(_settings.X, _settings.Y);
                 Size = new Size(_settings.Width, _settings.Height);
                 WindowState = FormWindowState.Normal;
                 BackColor = _settings.BackColor;
 
+                ///// Control visuals /////
                 skControl.BackColor = Color.Black;
+
                 btnTrig0.BackColor = _settings.ControlColor;
                 btnTrig50Pct.BackColor = _settings.ControlColor;
-                potXTimebase.ControlColor = _settings.ControlColor;
+
+                rotTimebase.ControlColor = _settings.ControlColor;
+
                 potXPosition.ControlColor = _settings.ControlColor;
                 potCh1Position.ControlColor = _settings.ControlColor;
                 potCh2Position.ControlColor = _settings.ControlColor;
                 potCh1VoltsPerDiv.ControlColor = _settings.ControlColor;
                 potCh2VoltsPerDiv.ControlColor = _settings.ControlColor;
                 potTrigLevel.ControlColor = _settings.ControlColor;
+
                 selTrigChannel.BackColor = _settings.ControlColor;
                 selTrigMode.BackColor = _settings.ControlColor;
                 selTrigSlope.BackColor = _settings.ControlColor;
 
-                // Hook up UI handlers.
+                ///// Control handlers /////
                 skControl.Resize += SkControl_Resize;
                 skControl.PaintSurface += SkControl_PaintSurface;
 
                 btnTrig0.Click += BtnTrig_Click;
                 btnTrig50Pct.Click += BtnTrig_Click;
-                potXTimebase.ValueChanged += Pot_ValueChanged;
+
+                rotTimebase.ValueChanged += Pot_ValueChanged;
+
                 potXPosition.ValueChanged += Pot_ValueChanged;
                 potCh1Position.ValueChanged += Pot_ValueChanged;
                 potCh2Position.ValueChanged += Pot_ValueChanged;
                 potCh1VoltsPerDiv.ValueChanged += Pot_ValueChanged;
                 potCh2VoltsPerDiv.ValueChanged += Pot_ValueChanged;
                 potTrigLevel.ValueChanged += Pot_ValueChanged;
+
                 selTrigChannel.SelectedValueChanged += Sel_SelectedValueChanged;
                 selTrigMode.SelectedValueChanged += Sel_SelectedValueChanged;
                 selTrigSlope.SelectedValueChanged += Sel_SelectedValueChanged;
 
                 CalcDrawRegion();
 
-                // Start UDP server.
+                ///// Start UDP server /////
                 _udp = new UdpClient(Common.UDP_PORT);
                 _udp.BeginReceive(new AsyncCallback(UdpReceive), this);
             }
