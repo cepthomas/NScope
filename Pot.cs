@@ -110,7 +110,7 @@ namespace NebScope
         {
             int diameter = Math.Min(Width - 4, Height - 4);
 
-            Pen potPen = new Pen(ControlColor, 3.0f)
+            Pen pen = new Pen(ControlColor, 3.0f)
             {
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
@@ -119,13 +119,13 @@ namespace NebScope
 
             e.Graphics.TranslateTransform(Width / 2, Height / 2);
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            e.Graphics.DrawArc(potPen, new Rectangle(diameter / -2, diameter / -2, diameter, diameter), 135, 270);
+            e.Graphics.DrawArc(pen, new Rectangle(diameter / -2, diameter / -2, diameter, diameter), 135, 270);
 
             double percent = (_value - _minimum) / (_maximum - _minimum);
             double degrees = 135 + (percent * 270);
             double x = (diameter / 2.0) * Math.Cos(Math.PI * degrees / 180);
             double y = (diameter / 2.0) * Math.Sin(Math.PI * degrees / 180);
-            e.Graphics.DrawLine(potPen, 0, 0, (float)x, (float)y);
+            e.Graphics.DrawLine(pen, 0, 0, (float)x, (float)y);
 
             StringFormat format = new StringFormat()
             {

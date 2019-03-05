@@ -60,6 +60,20 @@ namespace NebScope
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
+        public static int Constrain(int val, int min, int max)
+        {
+            val = Math.Max(val, min);
+            val = Math.Min(val, max);
+            return val;
+        }
+
+        /// <summary>
+        /// Bounds limit a value.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
         public static double Constrain(double val, double min, double max)
         {
             val = Math.Max(val, min);

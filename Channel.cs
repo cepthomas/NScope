@@ -14,19 +14,19 @@ using Newtonsoft.Json;
 
 namespace NebScope
 {
-    public class DataPoint
-    {
-        /// <summary>Let's call the Y value volts for sentimentality.</summary>
-        public double Volts { get; set; } = 0;
+    //public class DataPoint
+    //{
+    //    /// <summary>Let's call the Y value volts for sentimentality.</summary>
+    //    public double Volts { get; set; } = 0;
 
-        /// <summary>Where currently in the UI.</summary>
-        public SKPoint ClientPoint { get; set; }
+    //    /// <summary>Where currently in the UI.</summary>
+    //    public SKPoint ClientPoint { get; set; }
     
-        //public override string ToString()
-        //{
-        //    return $"X:{X:0.00}  Y:{Y:0.00}{Environment.NewLine}Series:{Owner.Name}";
-        //}
-    }
+    //    //public override string ToString()
+    //    //{
+    //    //    return $"X:{X:0.00}  Y:{Y:0.00}{Environment.NewLine}Series:{Owner.Name}";
+    //    //}
+    //}
 
     ///<summary></summary>
     [Serializable]
@@ -41,7 +41,7 @@ namespace NebScope
         ///<summary>Data points y values in "units" "volts".</summary>
         [Browsable(false)]
         [JsonIgnore]
-        public DataPoint[] DataPoints { get; set; } = null;
+        public List<double> DataPoints { get; set; } = new List<double>();
 
         /// <summary>Shift along Y axis aka DC offset. +-1.0 is equivalent to the total Y grid.</summary>
         public double YPosition { get; set; } = 0.0;
@@ -62,16 +62,17 @@ namespace NebScope
         /// <param name="data"></param>
         public void UpdateData(double[] data)
         {
-            DataPoints = new DataPoint[data.Count()];
-
-            for (int i = 0; i < data.Count(); i++)
-            {
-                DataPoints[i] = new DataPoint
-                {
-                    Volts = data[i]
-                };
-            }
+            DataPoints.AddRange(data);
         }
+
+
+        public void Flush()
+        {
+            DataPoints.Clear();
+        }
+
+        //    public SKPoint ClientPoint { get; set; }
+
 
         /// <summary>
         /// Map from volts/time to client draw points.
@@ -79,8 +80,10 @@ namespace NebScope
         /// <param name="drawRegion">Target render area.</param>
         /// <param name="xPosition">Offset for X axis.</param>
         /// <param name="xSamplesPerDivision">Number of data points in X grid.</param>
-        public void MapData(RectangleF drawRegion, double xPosition, double xSamplesPerDivision)
+        public List<SKPoint> MapDataX(RectangleF drawRegion, double xPosition, double xSamplesPerDivision)
         {
+            List<SKPoint> mapped = new List<SKPoint>();
+
             //https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/transforms/matrix
             //canvas.Translate(tx, ty);
             //canvas.Scale(sx, sy);
@@ -106,9 +109,10 @@ namespace NebScope
             // Map the data to UI space.
             for (int i = 0; i < DataPoints.Count(); i++)
             {
-                DataPoint dp = DataPoints[i];
-                dp.ClientPoint = matrix.MapPoint(new SKPoint(i, (float)dp.Volts));
+                mapped.Add(matrix.MapPoint(new SKPoint(i, (float)DataPoints[i])));
             }
+
+            return mapped;
         }
     }
 }

@@ -27,7 +27,7 @@
             this.potCh1Position = new NebScope.Pot();
             this.potCh2VoltsPerDiv = new NebScope.Pot();
             this.potCh1VoltsPerDiv = new NebScope.Pot();
-            this.rotTimebase = new NebScope.RotarySel();
+            this.selTimebase = new System.Windows.Forms.ComboBox();
             this.potXPosition = new NebScope.Pot();
             this.btnTest = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -65,7 +65,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.potCh1Position);
             this.splitContainer1.Panel1.Controls.Add(this.potCh2VoltsPerDiv);
             this.splitContainer1.Panel1.Controls.Add(this.potCh1VoltsPerDiv);
-            this.splitContainer1.Panel1.Controls.Add(this.rotTimebase);
+            this.splitContainer1.Panel1.Controls.Add(this.selTimebase);
             this.splitContainer1.Panel1.Controls.Add(this.potXPosition);
             this.splitContainer1.Panel1.Controls.Add(this.btnTest);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
@@ -94,15 +94,11 @@
             this.selTrigSlope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selTrigSlope.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.selTrigSlope.FormattingEnabled = true;
-            this.selTrigSlope.Items.AddRange(new object[] {
-            "yyy",
-            "uuuu",
-            "nnnn",
-            "rrrr"});
             this.selTrigSlope.Location = new System.Drawing.Point(82, 333);
             this.selTrigSlope.Name = "selTrigSlope";
             this.selTrigSlope.Size = new System.Drawing.Size(85, 21);
             this.selTrigSlope.TabIndex = 16;
+            this.selTrigSlope.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
             // label2
             // 
@@ -127,6 +123,7 @@
             this.selTrigMode.Name = "selTrigMode";
             this.selTrigMode.Size = new System.Drawing.Size(85, 21);
             this.selTrigMode.TabIndex = 14;
+            this.selTrigMode.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
             // label1
             // 
@@ -151,10 +148,10 @@
             this.selTrigChannel.Name = "selTrigChannel";
             this.selTrigChannel.Size = new System.Drawing.Size(85, 21);
             this.selTrigChannel.TabIndex = 9;
+            this.selTrigChannel.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
             // potCh2Position
             // 
-            this.potCh2Position.Value = 0.5D;
             this.potCh2Position.ControlColor = System.Drawing.Color.Black;
             this.potCh2Position.DecPlaces = 1;
             this.potCh2Position.Label = "Pos";
@@ -164,10 +161,11 @@
             this.potCh2Position.Name = "potCh2Position";
             this.potCh2Position.Size = new System.Drawing.Size(50, 50);
             this.potCh2Position.TabIndex = 6;
+            this.potCh2Position.Value = 0.5D;
+            this.potCh2Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             // 
             // potCh1Position
             // 
-            this.potCh1Position.Value = 0.5D;
             this.potCh1Position.ControlColor = System.Drawing.Color.Black;
             this.potCh1Position.DecPlaces = 1;
             this.potCh1Position.Label = "Pos";
@@ -177,10 +175,11 @@
             this.potCh1Position.Name = "potCh1Position";
             this.potCh1Position.Size = new System.Drawing.Size(50, 50);
             this.potCh1Position.TabIndex = 5;
+            this.potCh1Position.Value = 0.5D;
+            this.potCh1Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             // 
             // potCh2VoltsPerDiv
             // 
-            this.potCh2VoltsPerDiv.Value = 0.5D;
             this.potCh2VoltsPerDiv.ControlColor = System.Drawing.Color.Black;
             this.potCh2VoltsPerDiv.DecPlaces = 1;
             this.potCh2VoltsPerDiv.Label = "Volts/div";
@@ -190,10 +189,11 @@
             this.potCh2VoltsPerDiv.Name = "potCh2VoltsPerDiv";
             this.potCh2VoltsPerDiv.Size = new System.Drawing.Size(50, 50);
             this.potCh2VoltsPerDiv.TabIndex = 4;
+            this.potCh2VoltsPerDiv.Value = 0.5D;
+            this.potCh2VoltsPerDiv.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             // 
             // potCh1VoltsPerDiv
             // 
-            this.potCh1VoltsPerDiv.Value = 0.5D;
             this.potCh1VoltsPerDiv.ControlColor = System.Drawing.Color.Black;
             this.potCh1VoltsPerDiv.DecPlaces = 1;
             this.potCh1VoltsPerDiv.Label = "Volts/div";
@@ -203,20 +203,22 @@
             this.potCh1VoltsPerDiv.Name = "potCh1VoltsPerDiv";
             this.potCh1VoltsPerDiv.Size = new System.Drawing.Size(50, 50);
             this.potCh1VoltsPerDiv.TabIndex = 3;
+            this.potCh1VoltsPerDiv.Value = 0.5D;
+            this.potCh1VoltsPerDiv.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             // 
-            // rotTimebase
+            // selTimebase
             // 
-            this.rotTimebase.Value = "";
-            this.rotTimebase.ControlColor = System.Drawing.Color.Black;
-            this.rotTimebase.Label = "Time/div";
-            this.rotTimebase.Location = new System.Drawing.Point(22, 22);
-            this.rotTimebase.Name = "rotTimebase";
-            this.rotTimebase.Size = new System.Drawing.Size(50, 50);
-            this.rotTimebase.TabIndex = 2;
+            this.selTimebase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.selTimebase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.selTimebase.FormattingEnabled = true;
+            this.selTimebase.Location = new System.Drawing.Point(22, 22);
+            this.selTimebase.Name = "selTimebase";
+            this.selTimebase.Size = new System.Drawing.Size(85, 21);
+            this.selTimebase.TabIndex = 2;
+            this.selTimebase.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
             // potXPosition
             // 
-            this.potXPosition.Value = 0.5D;
             this.potXPosition.ControlColor = System.Drawing.Color.Black;
             this.potXPosition.DecPlaces = 1;
             this.potXPosition.Label = "Pos";
@@ -226,6 +228,8 @@
             this.potXPosition.Name = "potXPosition";
             this.potXPosition.Size = new System.Drawing.Size(50, 50);
             this.potXPosition.TabIndex = 1;
+            this.potXPosition.Value = 0.5D;
+            this.potXPosition.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             // 
             // btnTest
             // 
@@ -284,6 +288,7 @@
             this.btnTrig50Pct.TabIndex = 20;
             this.btnTrig50Pct.Text = "50%";
             this.btnTrig50Pct.UseVisualStyleBackColor = true;
+            this.btnTrig50Pct.Click += new System.EventHandler(this.BtnTrig_Click);
             // 
             // btnTrig0
             // 
@@ -293,10 +298,10 @@
             this.btnTrig0.TabIndex = 19;
             this.btnTrig0.Text = "0";
             this.btnTrig0.UseVisualStyleBackColor = true;
+            this.btnTrig0.Click += new System.EventHandler(this.BtnTrig_Click);
             // 
             // potTrigLevel
             // 
-            this.potTrigLevel.Value = 0.5D;
             this.potTrigLevel.ControlColor = System.Drawing.Color.Black;
             this.potTrigLevel.DecPlaces = 1;
             this.potTrigLevel.Label = "Volts";
@@ -306,6 +311,8 @@
             this.potTrigLevel.Name = "potTrigLevel";
             this.potTrigLevel.Size = new System.Drawing.Size(50, 50);
             this.potTrigLevel.TabIndex = 18;
+            this.potTrigLevel.Value = 0.5D;
+            this.potTrigLevel.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             // 
             // skControl
             // 
@@ -345,12 +352,12 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private SkiaSharp.Views.Desktop.SKControl skControl;
         private System.Windows.Forms.Button btnTest;
-        private RotarySel rotTimebase;
         private Pot potXPosition;
         private Pot potCh2Position;
         private Pot potCh1Position;
         private Pot potCh2VoltsPerDiv;
         private Pot potCh1VoltsPerDiv;
+        private Pot potTrigLevel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox selTrigChannel;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -363,7 +370,7 @@
         private System.Windows.Forms.ComboBox selTrigMode;
         private System.Windows.Forms.Button btnTrig50Pct;
         private System.Windows.Forms.Button btnTrig0;
-        private Pot potTrigLevel;
+        private System.Windows.Forms.ComboBox selTimebase;
     }
 }
 
