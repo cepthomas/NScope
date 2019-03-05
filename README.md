@@ -1,5 +1,6 @@
 # NebScope
 - UDP assumes all little-endian.
+- using Newtonsoft.Json; // version="9.0.1"
 
 
 # Graphics Processing

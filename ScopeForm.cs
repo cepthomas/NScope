@@ -36,19 +36,8 @@ namespace NebScope
         /// <summary>Current user settings.</summary>
         UserSettings _settings = null;
 
-        /////<summary>Data to chart.</summary>
-        //Channel[] _channels = new Channel[Common.NUM_CHANNELS];
-
         /// <summary>UI region to draw the data.</summary>
         RectangleF _dataRegion = new RectangleF();
-
-        /// <summary>
-        /// When the time base is set to be 100ms/div or more slowly and the trigger mode is set to Auto,
-        /// the oscilloscope enters the scan mode. At this mode, waveform display is renewed from left to right.
-        /// At the mode, no waveform trigger or horizontal position control exist. The channel coupling should be
-        /// set as direct current when a low-frequency signal is observed at the scan mode.
-        /// </summary>
-        bool _scanMode = false;
 
         /// <summary>Current pen to draw with.</summary>
         SKPaint _pen = new SKPaint()
@@ -75,76 +64,6 @@ namespace NebScope
         UdpClient _udp = null;
         #endregion
 
-
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            // Make some data.
-            int buffSize = 10000;
-            double[][] data = new double[Common.NUM_CHANNELS][];
-
-            for (int c = 0; c < Common.NUM_CHANNELS; c++)
-            {
-                data[c] = new double[buffSize];
-            }
-
-            for (int i = 0; i < buffSize; i++)
-            {
-                data[0][i] = Math.Sin(i / 50.0);
-                data[1][i] = i / 50.0 % 1.0;
-            }
-
-            UpdateData(data);
-        }
-
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnTrig_Click(object sender, EventArgs e)
-        {
-            //btnTrig0.Click += BtnTrig_Click;
-            //btnTrig50Pct.Click += BtnTrig_Click;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Sel_SelectedValueChanged(object sender, EventArgs e)
-        {
-            //selTimebase.ValueChanged += Sel_SelectedValueChanged;
-            //selTrigChannel.SelectedValueChanged += Sel_SelectedValueChanged;
-            //selTrigMode.SelectedValueChanged += Sel_SelectedValueChanged;
-            //selTrigSlope.SelectedValueChanged += Sel_SelectedValueChanged;
-            selTrigChannel.SelectedValueChanged += (object _, EventArgs __) => _settings.TriggerChannel = selTrigChannel.SelectedIndex;
-            selTrigMode.SelectedValueChanged += (object _, EventArgs __) => _settings.TriggerMode = (TriggerMode)selTrigChannel.SelectedIndex;
-            selTrigSlope.SelectedValueChanged += (object _, EventArgs __) => _settings.TriggerSlope = (TriggerSlope)selTrigChannel.SelectedIndex;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Pot_ValueChanged(object sender, EventArgs e)
-        {
-            //potXTimebase.ValueChanged += Pot_ValueChanged;
-            //potXPosition.ValueChanged += Pot_ValueChanged;
-            //potCh1Position.ValueChanged += Pot_ValueChanged;
-            //potCh2Position.ValueChanged += Pot_ValueChanged;
-            //potCh1VoltsPerDiv.ValueChanged += Pot_ValueChanged;
-            //potCh2VoltsPerDiv.ValueChanged += Pot_ValueChanged;
-            //potTrigLevel.ValueChanged += Pot_ValueChanged;
-        }
-
-
-
         #region Lifecycle
         /// <summary>
         /// Default constructor.
@@ -170,32 +89,31 @@ namespace NebScope
                 _settings = UserSettings.Load();
 
                 ///// Init the form /////
-                Location = new Point(_settings.X, _settings.Y);
-                Size = new Size(_settings.Width, _settings.Height);
+                Location = new Point(_settings.FormX, _settings.FormY);
+                Size = new Size(_settings.FormWidth, _settings.FormHeight);
                 WindowState = FormWindowState.Normal;
                 BackColor = _settings.BackColor;
 
                 ///// Control visuals /////
                 skControl.BackColor = Color.Black;
-
-                btnTrig0.ForeColor = _settings.ControlColor;
-                btnTrig50Pct.ForeColor = _settings.ControlColor;
-
                 potXPosition.ControlColor = _settings.ControlColor;
                 potCh1Position.ControlColor = _settings.ControlColor;
                 potCh2Position.ControlColor = _settings.ControlColor;
-                potCh1VoltsPerDiv.ControlColor = _settings.ControlColor;
-                potCh2VoltsPerDiv.ControlColor = _settings.ControlColor;
-                potTrigLevel.ControlColor = _settings.ControlColor;
-
+                selCh1VoltsPerDiv.ForeColor = _settings.ControlColor;
+                selCh2VoltsPerDiv.ForeColor = _settings.ControlColor;
                 selTimebase.ForeColor = _settings.ControlColor;
-                selTrigChannel.ForeColor = _settings.ControlColor;
-                selTrigMode.ForeColor = _settings.ControlColor;
-                selTrigSlope.ForeColor = _settings.ControlColor;
 
                 ///// Control handlers /////
                 skControl.Resize += SkControl_Resize;
                 skControl.PaintSurface += SkControl_PaintSurface;
+
+                ///// Selectors /////
+                selCh1VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
+                selCh1VoltsPerDiv.SelectedItem = "0.5";
+                selCh2VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
+                selCh2VoltsPerDiv.SelectedItem = "0.5";
+                selTimebase.Items.AddRange(Common.TIMEBASE_OPTIONS);
+                selTimebase.SelectedItem = "0.1";
 
                 CalcDrawRegion();
 
@@ -216,10 +134,10 @@ namespace NebScope
         /// <param name="e"></param>
         void ScopeForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _settings.X = Location.X;
-            _settings.Y = Location.Y;
-            _settings.Width = Size.Width;
-            _settings.Height = Size.Height;
+            _settings.FormX = Location.X;
+            _settings.FormY = Location.Y;
+            _settings.FormWidth = Size.Width;
+            _settings.FormHeight = Size.Height;
 
             _settings.Save();
         }
@@ -257,17 +175,7 @@ namespace NebScope
             for (int i = 0; i < Common.NUM_CHANNELS; i++)
             {
                 _settings.Channels[i].UpdateData(data[i]);
-                //_settings.Channels[i].MapData(_dataRegion, _settings.XPosition, _settings.SampleRate * _settings.XTimePerDivision);
             }
-
-
-            // TODON this:
-            // Collect at least one screen full.
-            // Look for trigger condition.
-            // If found, call MapData for both channels, redraw.
-
-            // var mapped = ser.MapDataX(_dataRegion, _settings.XPosition, _settings.SampleRate * _settings.XTimePerDivision);
-
 
             // Ask for a redraw.
             skControl.Invalidate();
@@ -290,6 +198,87 @@ namespace NebScope
         #endregion
 
         #region Window Event Handlers
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void Sel_SelectedValueChanged(object sender, EventArgs e)
+        {
+            bool redraw = false;
+
+            switch (sender)
+            {
+                case ComboBox cb when cb == selCh1VoltsPerDiv:
+                    _settings.Channels[0].VoltsPerDivision = double.Parse(cb.SelectedItem.ToString());
+                    redraw = true;
+                    break;
+
+                case ComboBox cb when cb == selCh2VoltsPerDiv:
+                    _settings.Channels[1].VoltsPerDivision = double.Parse(cb.SelectedItem.ToString());
+                    redraw = true;
+                    break;
+
+                case ComboBox cb when cb == selTimebase:
+                    _settings.TimePerDivision = double.Parse(cb.SelectedItem.ToString());
+                    redraw = true;
+                    break;
+            }
+
+            if (redraw)
+            {
+                // Ask for a redraw.
+                skControl.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void Pot_ValueChanged(object sender, EventArgs e)
+        {
+            bool redraw = false;
+
+            switch (sender)
+            {
+                case Pot pot when pot == potXPosition:
+                    _settings.XPosition = pot.Value;
+                    redraw = true;
+                    break;
+
+                case Pot pot when pot == potCh1Position:
+                    _settings.Channels[0].Position = -pot.Value;
+                    redraw = true;
+                    break;
+
+                case Pot pot when pot == potCh2Position:
+                    _settings.Channels[1].Position = -pot.Value;
+                    redraw = true;
+                    break;
+            }
+
+            if (redraw)
+            {
+                // Ask for a redraw.
+                skControl.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Reset values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void Pot_DoubleClick(object sender, EventArgs e)
+        {
+            if(sender is Pot)
+            {
+                (sender as Pot).Value = 0;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -326,8 +315,6 @@ namespace NebScope
             SKCanvas canvas = e.Surface.Canvas;
             canvas.Clear();
 
-            //TODON handle _scanMode
-
             // Draw axes first before clipping.
             DrawAxes(canvas);
 
@@ -355,7 +342,7 @@ namespace NebScope
                     SKPath path = new SKPath();
                     SKPoint[] points = new SKPoint[ser.DataPoints.Count()];
 
-                    var mapped = ser.MapDataX(_dataRegion, _settings.XPosition, _settings.SampleRate * _settings.XTimePerDivision);
+                    var mapped = ser.MapData(_dataRegion, _settings.XPosition, _settings.SampleRate * _settings.TimePerDivision);
 
                     for (int i = 0; i < mapped.Count(); i++)
                     {
@@ -372,25 +359,44 @@ namespace NebScope
         /// Draw axis labels.
         /// </summary>
         /// <param name="canvas"></param>
-        void DrawLabels(SKCanvas canvas) // TODON
+        void DrawLabels(SKCanvas canvas)
         {
-            double xMin = 10;
-            double xMax = 100;
-            double yMin = -50;
-            double yMax = +50;
-            double yMid = 0;
-
-            float left = _dataRegion.Left - 50;
+            float left1 = _dataRegion.Left - 90;
+            float left2 = _dataRegion.Left - 45;
             float bottom = _dataRegion.Bottom + 30;
 
-            // Y axis
-            canvas.DrawText($"{yMin:0.00}", left, _dataRegion.Bottom - _text.FontMetrics.XHeight / 2, _text);
-            canvas.DrawText($"{yMax:0.00}", left, _dataRegion.Top + _text.FontMetrics.XHeight / 2, _text);
-            canvas.DrawText($"{yMid:0.00}", left, _dataRegion.Top + _dataRegion.Height / 2, _text);
+            ///// X axis /////
+            double xTotal = _settings.TimePerDivision * Common.NUM_X_DIVISIONS;
+            double xOffset = _settings.XPosition * xTotal;
+            double xMin = 0 + xOffset;
+            double xMax = xTotal + xOffset;
 
-            // X axis
             canvas.DrawText($"{xMin:0.00}", _dataRegion.Left - 10, bottom, _text);
             canvas.DrawText($"{xMax:0.00}", _dataRegion.Right - 10, bottom, _text);
+
+            ///// Y axis ch1 /////
+            double y1Total = _settings.Channels[0].VoltsPerDivision * Common.NUM_Y_DIVISIONS;
+            double y1Offset = _settings.Channels[0].Position * y1Total;
+            double y1Min = -y1Total / 2 + y1Offset;
+            double y1Max = y1Total / 2 + y1Offset;
+            double y1Mid = y1Max - y1Total / 2;
+
+            _text.Color = _settings.Channels[0].Color.ToSKColor();
+            canvas.DrawText($"{y1Min:0.00}", left1, _dataRegion.Bottom - _text.FontMetrics.XHeight / 2, _text);
+            canvas.DrawText($"{y1Max:0.00}", left1, _dataRegion.Top + _text.FontMetrics.XHeight / 2, _text);
+            canvas.DrawText($"{y1Mid:0.00}", left1, _dataRegion.Top + _dataRegion.Height / 2, _text);
+
+            ///// Y axis ch2 /////
+            double y2Total = _settings.Channels[1].VoltsPerDivision * Common.NUM_Y_DIVISIONS;
+            double y2Offset = _settings.Channels[1].Position * y2Total;
+            double y2Min = -y2Total / 2 + y2Offset;
+            double y2Max = y2Total / 2 + y2Offset;
+            double y2Mid = y2Max - y2Total / 2;
+
+            _text.Color = _settings.Channels[1].Color.ToSKColor();
+            canvas.DrawText($"{y2Min:0.00}", left2, _dataRegion.Bottom - _text.FontMetrics.XHeight / 2, _text);
+            canvas.DrawText($"{y2Max:0.00}", left2, _dataRegion.Top + _text.FontMetrics.XHeight / 2, _text);
+            canvas.DrawText($"{y2Mid:0.00}", left2, _dataRegion.Top + _dataRegion.Height / 2, _text);
         }
 
         /// <summary>
@@ -472,5 +478,25 @@ namespace NebScope
                 skControl.Height - BORDER_PAD - BORDER_PAD - X_AXIS_SPACE);
         }
         #endregion
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            // Make some data.
+            int buffSize = 10000;
+            double[][] data = new double[Common.NUM_CHANNELS][];
+
+            for (int c = 0; c < Common.NUM_CHANNELS; c++)
+            {
+                data[c] = new double[buffSize];
+            }
+
+            for (int i = 0; i < buffSize; i++)
+            {
+                data[0][i] = Math.Sin(i / 50.0);
+                data[1][i] = i / 50.0 % 1.0;
+            }
+
+            UpdateData(data);
+        }
     }
 }

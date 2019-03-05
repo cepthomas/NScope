@@ -14,20 +14,6 @@ using Newtonsoft.Json;
 
 namespace NebScope
 {
-    //public class DataPoint
-    //{
-    //    /// <summary>Let's call the Y value volts for sentimentality.</summary>
-    //    public double Volts { get; set; } = 0;
-
-    //    /// <summary>Where currently in the UI.</summary>
-    //    public SKPoint ClientPoint { get; set; }
-    
-    //    //public override string ToString()
-    //    //{
-    //    //    return $"X:{X:0.00}  Y:{Y:0.00}{Environment.NewLine}Series:{Owner.Name}";
-    //    //}
-    //}
-
     ///<summary></summary>
     [Serializable]
     public class Channel
@@ -43,8 +29,8 @@ namespace NebScope
         [JsonIgnore]
         public List<double> DataPoints { get; set; } = new List<double>();
 
-        /// <summary>Shift along Y axis aka DC offset. +-1.0 is equivalent to the total Y grid.</summary>
-        public double YPosition { get; set; } = 0.0;
+        /// <summary>Shift along Y axis aka DC offset.</summary>
+        public double Position { get; set; } = 0.0;
 
         /// <summary>Extent of y axis. Traditional "volts" per division.</summary>
         public double VoltsPerDivision { get; set; } = 0.5;
@@ -65,22 +51,13 @@ namespace NebScope
             DataPoints.AddRange(data);
         }
 
-
-        public void Flush()
-        {
-            DataPoints.Clear();
-        }
-
-        //    public SKPoint ClientPoint { get; set; }
-
-
         /// <summary>
         /// Map from volts/time to client draw points.
         /// </summary>
         /// <param name="drawRegion">Target render area.</param>
         /// <param name="xPosition">Offset for X axis.</param>
         /// <param name="xSamplesPerDivision">Number of data points in X grid.</param>
-        public List<SKPoint> MapDataX(RectangleF drawRegion, double xPosition, double xSamplesPerDivision)
+        public List<SKPoint> MapData(RectangleF drawRegion, double xPosition, double xSamplesPerDivision)
         {
             List<SKPoint> mapped = new List<SKPoint>();
 
@@ -97,7 +74,7 @@ namespace NebScope
             double yTotalVolts = VoltsPerDivision * Common.NUM_Y_DIVISIONS;
             double yScale = drawRegion.Height / yTotalVolts;
             double xOffset = xPosition * drawRegion.Width;
-            double yOffset = YPosition * drawRegion.Height;
+            double yOffset = Position * drawRegion.Height;
 
             SKMatrix matrix = SKMatrix.MakeIdentity();
             matrix.ScaleX = (float)xScale;

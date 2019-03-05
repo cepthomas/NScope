@@ -7,29 +7,6 @@ using System.Threading.Tasks;
 
 namespace NebScope
 {
-    #region Enums
-    /// <summary></summary>
-    public enum TriggerMode
-    {
-        Auto,     //> Automatic trigger can be implemented to finish acquisition at the mode when no valid trigger exists.
-        Normal,   //> Only valid triggered waveform is checked at the mode. The waveform is acquired only when satisfying the trigger condition.
-        Single    //> Acquire a waveform when detecting a single trigger, and then stop.
-    };
-
-    /// <summary></summary>
-    public enum TriggerSlope
-    {
-        Rising,   //>
-        Falling,  //>
-        Both      //>
-    }
-
-    public enum xxx
-    {
-
-    }
-    #endregion
-
     public class Common
     {
         #region Constants
@@ -51,6 +28,12 @@ namespace NebScope
             Color.Firebrick, Color.CornflowerBlue, Color.MediumSeaGreen, Color.MediumOrchid,
             Color.DarkOrange, Color.DarkGoldenrod, Color.DarkSlateGray, Color.Khaki, Color.PaleVioletRed
         };
+
+        /// <summary>Volts per div options.</summary>
+        public static string[] VOLT_OPTIONS = { "0.01", "0.02", "0.05", "0.1", "0.2", "0.5", "1", "2", "5" };
+
+        /// <summary>Time per div options.</summary>
+        public static string[] TIMEBASE_OPTIONS = { "0.001", "0.002", "0.005", "0.01", "0.02", "0.05", "0.1", "0.2", "0.5", "1", "2", "5" };
         #endregion
 
         /// <summary>

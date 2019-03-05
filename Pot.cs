@@ -10,8 +10,11 @@ using System.Windows.Forms;
 
 namespace NebScope
 {
+    /// <summary></summary>
+    public enum Taper { Linear, Log } // TODON Log sort of works but needs more debug.
+
     /// <summary>
-    /// Control potentiometer. TODON support log taper.
+    /// Control potentiometer.
     /// </summary>
     public partial class Pot : UserControl
     {
@@ -19,8 +22,8 @@ namespace NebScope
         double _minimum = 0.0;
         double _maximum = 1.0;
         double _value = 0.5;
-        int _beginDragY = 0;
         double _beginDragValue = 0.0;
+        int _beginDragY = 0;
         bool _dragging = false;
         #endregion
 
@@ -36,12 +39,22 @@ namespace NebScope
         public string Label { get; set; } = "???";
 
         /// <summary>
+        /// Taper.
+        /// </summary>
+        public Taper Taper { get; set; } = Taper.Linear;
+
+        /// <summary>
+        /// Number of decimal places to display.
+        /// </summary>
+        public int DecPlaces { get; set; } = 1;
+
+        /// <summary>
         /// Minimum Value of the Pot.
         /// </summary>
         public double Minimum
         {
             get { return _minimum; }
-            set { _minimum = Math.Min(value, _maximum); }
+            set { _minimum = Math.Min(value, _maximum); Invalidate(); }
         }
 
         /// <summary>
@@ -50,7 +63,7 @@ namespace NebScope
         public double Maximum
         {
             get { return _maximum; }
-            set { _maximum = Math.Max(value, _minimum); }
+            set { _maximum = Math.Max(value, _minimum); Invalidate(); }
         }
 
         /// <summary>
@@ -59,13 +72,13 @@ namespace NebScope
         public double Value
         {
             get { return _value; }
-            set { SetValue(value, false); }
+            set
+            {
+                _value = Common.Constrain(value, _minimum, _maximum);
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+                Invalidate();
+            }
         }
-
-        /// <summary>
-        /// Number of decimal places to display.
-        /// </summary>
-        public int DecPlaces { get; set; } = 1;
         #endregion
 
         #region Events
@@ -83,22 +96,6 @@ namespace NebScope
         {
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Set the new value.
-        /// </summary>
-        /// <param name="newValue"></param>
-        /// <param name="raiseEvents"></param>
-        void SetValue(double newValue, bool raiseEvents)
-        {
-            _value = Common.Constrain(newValue, _minimum, _maximum);
-
-            if (raiseEvents)
-            {
-                ValueChanged?.Invoke(this, EventArgs.Empty);
-            }
-            Invalidate();
         }
         #endregion
 
@@ -121,7 +118,11 @@ namespace NebScope
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.DrawArc(pen, new Rectangle(diameter / -2, diameter / -2, diameter, diameter), 135, 270);
 
-            double percent = (_value - _minimum) / (_maximum - _minimum);
+            double val = Taper == Taper.Log ? Math.Log10(_value) : _value;
+            double min = Taper == Taper.Log ? Math.Log10(_minimum) : _minimum;
+            double max = Taper == Taper.Log ? Math.Log10(_maximum) : _maximum;
+            double percent = (val - min) / (max - min);
+
             double degrees = 135 + (percent * 270);
             double x = (diameter / 2.0) * Math.Cos(Math.PI * degrees / 180);
             double y = (diameter / 2.0) * Math.Sin(Math.PI * degrees / 180);
@@ -171,10 +172,14 @@ namespace NebScope
         {
             if (_dragging)
             {
-                int yDifference = _beginDragY - e.Y;
-                double delta = (_maximum - _minimum) * (yDifference / 100.0);
-                double newValue = Common.Constrain(_beginDragValue + delta, _minimum, _maximum);
-                SetValue(newValue, true);
+                int ydiff = _beginDragY - e.Y; // pixels
+
+                double val = Taper == Taper.Log ? Math.Log10(_value) : _value;
+                double min = Taper == Taper.Log ? Math.Log10(_minimum) : _minimum;
+                double max = Taper == Taper.Log ? Math.Log10(_maximum) : _maximum;
+                double delta = (max - min) * (ydiff / 100.0);
+                double newValue = Common.Constrain(_beginDragValue + delta, min, max);
+                Value = Taper == Taper.Log ? Math.Pow(newValue, 10) : newValue;
             }
             base.OnMouseMove(e);
         }
