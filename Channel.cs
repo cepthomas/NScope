@@ -45,10 +45,18 @@ namespace NebScope
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="cmds"></param>
         /// <param name="data"></param>
-        public void UpdateData(double[] data)
+        public void UpdateData(int[] cmds, double[] data)
         {
-            DataPoints.AddRange(data);
+            if (cmds[1] == 1) // reset
+            {
+                DataPoints = data.ToList();
+            }
+            else // append
+            {
+                DataPoints.AddRange(data);
+            }
         }
 
         /// <summary>

@@ -28,8 +28,11 @@ namespace Client
     class Program
     {
         static UdpClient _udp;
-        const int NUM_CHANNELS = 2;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             // Set up UDP sender.
@@ -43,33 +46,38 @@ namespace Client
             _udp?.Dispose();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         static void Go1()
         {
-            // Make some data. Max of 65k bytes. 5000 floats == 40000 bytes.
+            // Make some data. Max of 65k bytes. 5000 floats == 20000 bytes.
             int buffSize = 5000;
-            float[] interleaved = new float[buffSize * NUM_CHANNELS];
+            float[] ch1 = new float[buffSize];
+            float[] ch2 = new float[buffSize];
+
+            float[] cmds1 = { 0, 1, 0, 0 }; // channelnum, reset, ...
+            float[] cmds2 = { 1, 1, 0, 0 }; // channelnum, reset, ...
 
             for (int i = 0; i < buffSize; i++)
             {
-                interleaved[i * NUM_CHANNELS + 0] = (float)Math.Sin(i / 50.0);
-                interleaved[i * NUM_CHANNELS + 1] = i / 50.0f % 1.0f;
+                ch1[i] = (float)Math.Sin(i / 50.0);
+                ch2[i] = i / 50.0f % 1.0f;
             }
 
-            // Package it up and send it.
-            int dataSize = sizeof(float);
-            byte[] buff = new byte[interleaved.Count() * dataSize];
-            Log($"buff:{buff.Length}");
-
-            for (int i = 0; i < interleaved.Count(); i++)
-            {
-                byte[] bytes = BitConverter.GetBytes(interleaved[i]);
-                Array.Copy(bytes, 0, buff, i * dataSize, dataSize);
-            }
-
+            byte[] buff = Pack(cmds1, ch1);
             int num = _udp.Send(buff, buff.Count());
-            Log($"_udpClient.Send:{num}");
+            Log($"ch1 buff:{buff.Length} sent:{num}");
+
+            buff = Pack(cmds2, ch2);
+            num = _udp.Send(buff, buff.Count());
+            Log($"ch2 buff:{buff.Length} sent:{num}");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
         static void Log(string msg)
         {
             Console.WriteLine(msg + Environment.NewLine);

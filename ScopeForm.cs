@@ -18,7 +18,6 @@ using SkiaSharp.Views.Desktop;
 
 namespace NebScope
 {
-
     public partial class ScopeForm : Form
     {
         #region Constants
@@ -163,18 +162,23 @@ namespace NebScope
 
         #region Public functions
         /// <summary>
-        /// Update the data for all channels.
+        /// Update the data for the channel.
         /// </summary>
         /// <param name="data">Channel data</param>
-        public void UpdateData(double[][] data)
+        public void UpdateData(int[] cmds, double[] data)
         {
             CalcDrawRegion();
 
-            int buffSize = data.Length / Common.NUM_CHANNELS;
+            int buffSize = data.Length;
 
-            for (int i = 0; i < Common.NUM_CHANNELS; i++)
+            // Which channel?
+            if(cmds[0] == 0)
             {
-                _settings.Channels[i].UpdateData(data[i]);
+                _settings.Channels[0].UpdateData(cmds, data);
+            }
+            else
+            {
+                _settings.Channels[1].UpdateData(cmds, data);
             }
 
             // Ask for a redraw.
@@ -440,21 +444,22 @@ namespace NebScope
             IPEndPoint senderIp = new IPEndPoint(0, 0);
             bytes = _udp?.EndReceive(ares, ref senderIp);
 
-            // Check validity and size of data.
-            if (bytes != null && bytes.Length > 0 && bytes.Length % (Common.NUM_CHANNELS * dataSize) == 0)
+            // Check validity and size of data. First four values are required params.
+            if (bytes != null && bytes.Length > 4 && bytes.Length % dataSize == 0)
             {
                 // Unpack data.
-                // 1-1 2-1 1-2 2-2 1-3 ... CH-IND
-                int numValsPerChannel = bytes.Length / (Common.NUM_CHANNELS * dataSize);
-                double[][] data = new double[Common.NUM_CHANNELS][];
-                for (int ch = 0; ch < Common.NUM_CHANNELS; ch++)
+
+                // Strip out command info.
+                int[] cmds = new int[] { (int)data[0], (int)data[1], (int)data[2], (int)data[3] };
+
+
+
+                int numValsPerChannel = bytes.Length / dataSize;
+                double[] data = new double[numValsPerChannel];
+                for (int vi = 0; vi < numValsPerChannel; vi++)
                 {
-                    data[ch] = new double[numValsPerChannel];
-                    for (int vi = 0; vi < numValsPerChannel; vi++)
-                    {
-                        int ind = (vi * Common.NUM_CHANNELS + ch) * dataSize;
-                        data[ch][vi] = BitConverter.ToSingle(bytes, ind);
-                    }
+                    int ind = vi * dataSize;
+                    data[vi] = BitConverter.ToSingle(bytes, ind);
                 }
 
                 UpdateData(data);
@@ -481,22 +486,24 @@ namespace NebScope
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            // Make some data.
-            int buffSize = 10000;
-            double[][] data = new double[Common.NUM_CHANNELS][];
+            //// Make some data.
+            //int buffSize = 10000;
+            //double[] ch1 = new double[buffSize + 4];
+            //double[] ch2 = new double[buffSize + 4];
 
-            for (int c = 0; c < Common.NUM_CHANNELS; c++)
-            {
-                data[c] = new double[buffSize];
-            }
+            //ch1[0] = 0; // channel num
+            //ch1[1] = 1; // reset
+            //ch2[0] = 1; // channel num
+            //ch2[1] = 1; // reset
 
-            for (int i = 0; i < buffSize; i++)
-            {
-                data[0][i] = Math.Sin(i / 50.0);
-                data[1][i] = i / 50.0 % 1.0;
-            }
+            //for (int i = 0; i < buffSize; i++)
+            //{
+            //    ch1[i + 4] = (float)Math.Sin(i / 50.0);
+            //    ch2[i + 4] = i / 50.0f % 1.0f;
+            //}
 
-            UpdateData(data);
+            //UpdateData(ch1);
+            //UpdateData(ch2);
         }
     }
 }

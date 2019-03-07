@@ -69,14 +69,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="Holding.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Holding.Designer.cs">
-      <DependentUpon>Holding.cs</DependentUpon>
-    </Compile>
     <Compile Include="Pot.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,9 +87,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserSettings.cs" />
-    <EmbeddedResource Include="Holding.resx">
-      <DependentUpon>Holding.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Pot.resx">
       <DependentUpon>Pot.cs</DependentUpon>
     </EmbeddedResource>
