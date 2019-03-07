@@ -25,59 +25,66 @@ using System.Runtime.InteropServices;
 
 namespace Client
 {
+    // Example of a scope client/sender.
     class Program
     {
         static UdpClient _udp;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
         static void Main(string[] args)
         {
             // Set up UDP sender.
             _udp = new UdpClient(0);
             _udp.Connect("127.0.0.1", 9888);
 
-            Go1();
+            Test1();
 
             // Shut down.
             _udp?.Close();
             _udp?.Dispose();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        static void Go1()
+        static int SendMsg(int channel, int cmd, float[] vals)
+        {
+            int dataSize = 4; // I know this.
+            byte[] buff = new byte[(2 + vals.Count()) * dataSize];
+
+            byte[] bytes = BitConverter.GetBytes(channel);
+            Array.Copy(bytes, 0, buff, 0 * dataSize, dataSize);
+
+            bytes = BitConverter.GetBytes(cmd);
+            Array.Copy(bytes, 0, buff, 1 * dataSize, dataSize);
+
+            for (int i = 0; i < vals.Count(); i++)
+            {
+                bytes = BitConverter.GetBytes(vals[i]);
+                Array.Copy(bytes, 0, buff, (i + 2) * dataSize, dataSize);
+            }
+
+            int num = _udp.Send(buff, buff.Count());
+
+            return num;
+        }
+
+        static void Test1()
         {
             // Make some data. Max of 65k bytes. 5000 floats == 20000 bytes.
-            int buffSize = 5000;
+            int buffSize = 9000;
             float[] ch1 = new float[buffSize];
             float[] ch2 = new float[buffSize];
 
-            float[] cmds1 = { 0, 1, 0, 0 }; // channelnum, reset, ...
-            float[] cmds2 = { 1, 1, 0, 0 }; // channelnum, reset, ...
-
             for (int i = 0; i < buffSize; i++)
             {
-                ch1[i] = (float)Math.Sin(i / 50.0);
-                ch2[i] = i / 50.0f % 1.0f;
+                ch1[i] = (float)Math.Sin(i / 500.0);
+                ch2[i] = i / 1500.0f % 1.0f;
             }
 
-            byte[] buff = Pack(cmds1, ch1);
-            int num = _udp.Send(buff, buff.Count());
-            Log($"ch1 buff:{buff.Length} sent:{num}");
+            int num = SendMsg(0, 1, ch1);
+            Log($"ch1 buff:{ch1.Length} sent:{num}");
 
-            buff = Pack(cmds2, ch2);
-            num = _udp.Send(buff, buff.Count());
-            Log($"ch2 buff:{buff.Length} sent:{num}");
+            num = SendMsg(1, 1, ch2);
+            Log($"ch2 buff:{ch2.Length} sent:{num}");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="msg"></param>
         static void Log(string msg)
         {
             Console.WriteLine(msg + Environment.NewLine);

@@ -162,27 +162,26 @@ namespace NebScope
 
         #region Public functions
         /// <summary>
-        /// Update the data for the channel.
+        /// Directly update the data for the channel.
         /// </summary>
-        /// <param name="data">Channel data</param>
-        public void UpdateData(int[] cmds, double[] data)
+        /// <param name="channel"></param>
+        /// <param name="cmd"></param>
+        /// <param name="data"></param>
+        public void UpdateData(int channel, int cmd, double[] data)
         {
-            CalcDrawRegion();
-
-            int buffSize = data.Length;
-
-            // Which channel?
-            if(cmds[0] == 0)
+            // Check validity and size of data.
+            if(channel < 0 || channel > 1 || cmd < 0 || cmd > 1 || data == null)
             {
-                _settings.Channels[0].UpdateData(cmds, data);
+                // fail
             }
             else
             {
-                _settings.Channels[1].UpdateData(cmds, data);
-            }
+                CalcDrawRegion();
+                _settings.Channels[channel].UpdateData(cmd, data);
 
-            // Ask for a redraw.
-            skControl.Invalidate();
+                // Ask for a redraw.
+                skControl.Invalidate();
+            }
         }
 
         /// <summary>
@@ -438,33 +437,14 @@ namespace NebScope
         void UdpReceive(IAsyncResult ares)
         {
             byte[] bytes = null;
-            int dataSize = sizeof(float);
 
             // Process input.
             IPEndPoint senderIp = new IPEndPoint(0, 0);
             bytes = _udp?.EndReceive(ares, ref senderIp);
 
-            // Check validity and size of data. First four values are required params.
-            if (bytes != null && bytes.Length > 4 && bytes.Length % dataSize == 0)
-            {
-                // Unpack data.
+            var (channel, cmd, data) = UnpackMsg(bytes);
 
-                // Strip out command info.
-                int[] cmds = new int[] { (int)data[0], (int)data[1], (int)data[2], (int)data[3] };
-
-
-
-                int numValsPerChannel = bytes.Length / dataSize;
-                double[] data = new double[numValsPerChannel];
-                for (int vi = 0; vi < numValsPerChannel; vi++)
-                {
-                    int ind = vi * dataSize;
-                    data[vi] = BitConverter.ToSingle(bytes, ind);
-                }
-
-                UpdateData(data);
-            }
-            //else?
+            UpdateData(channel, cmd, data);
 
             // Listen again.
             _udp?.BeginReceive(new AsyncCallback(UdpReceive), this);
@@ -484,26 +464,58 @@ namespace NebScope
         }
         #endregion
 
+        /// <summary>
+        /// Unpack a standard message from UDP bytes.
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns>tuple of channel, cmd, data. Will be -1/null if invalid.</returns>
+        (int channel, int cmd, double[] data) UnpackMsg(byte[] bytes)
+        {
+            int channel = -1;
+            int cmd = -1;
+            double[] data = null;
+            int dataSize = 4; // each element is this
+
+            // Check validity and size of data. First two values are required params.
+            if (bytes != null && bytes.Length >= 8 && bytes.Length % dataSize == 0)
+            {
+                // Unpack data.
+
+                // Strip out command info.
+                channel = BitConverter.ToInt32(bytes, 0 * dataSize);
+                cmd = BitConverter.ToInt32(bytes, 1 * dataSize);
+
+                int numVals = bytes.Length / dataSize - 2;
+                data = new double[numVals];
+                for (int i = 0; i < numVals; i++)
+                {
+                    int ind = (i + 2) * dataSize;
+                    data[i] = BitConverter.ToSingle(bytes, ind);
+                }
+            }
+            else
+            {
+                //TODON? logger? or textbox?                
+            }
+
+            return (channel:channel, cmd:cmd, data:data);
+        }
+
         private void btnTest_Click(object sender, EventArgs e)
         {
-            //// Make some data.
-            //int buffSize = 10000;
-            //double[] ch1 = new double[buffSize + 4];
-            //double[] ch2 = new double[buffSize + 4];
+            // Make some data.
+            int buffSize = 9000;
+            double[] ch1 = new double[buffSize];
+            double[] ch2 = new double[buffSize];
 
-            //ch1[0] = 0; // channel num
-            //ch1[1] = 1; // reset
-            //ch2[0] = 1; // channel num
-            //ch2[1] = 1; // reset
+            for (int i = 0; i < buffSize; i++)
+            {
+               ch1[i] = (float)Math.Sin(i / 500.0);
+               ch2[i] = i / 1500.0f % 1.0f;
+            }
 
-            //for (int i = 0; i < buffSize; i++)
-            //{
-            //    ch1[i + 4] = (float)Math.Sin(i / 50.0);
-            //    ch2[i + 4] = i / 50.0f % 1.0f;
-            //}
-
-            //UpdateData(ch1);
-            //UpdateData(ch2);
+            UpdateData(0, 1, ch1);
+            UpdateData(1, 1, ch2);
         }
     }
 }

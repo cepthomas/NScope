@@ -69,7 +69,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Pot.cs">
