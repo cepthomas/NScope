@@ -17,10 +17,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScopeForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.txtMsgs = new System.Windows.Forms.RichTextBox();
             this.potCh2Position = new NebScope.Pot();
             this.potCh1Position = new NebScope.Pot();
             this.potXPosition = new NebScope.Pot();
-            this.btnTest = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.selTimebase = new System.Windows.Forms.ComboBox();
@@ -50,10 +50,10 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.txtMsgs);
             this.splitContainer1.Panel1.Controls.Add(this.potCh2Position);
             this.splitContainer1.Panel1.Controls.Add(this.potCh1Position);
             this.splitContainer1.Panel1.Controls.Add(this.potXPosition);
-            this.splitContainer1.Panel1.Controls.Add(this.btnTest);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
@@ -64,6 +64,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(832, 483);
             this.splitContainer1.SplitterDistance = 195;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // txtMsgs
+            // 
+            this.txtMsgs.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtMsgs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtMsgs.Location = new System.Drawing.Point(13, 259);
+            this.txtMsgs.Name = "txtMsgs";
+            this.txtMsgs.Size = new System.Drawing.Size(168, 196);
+            this.txtMsgs.TabIndex = 13;
+            this.txtMsgs.Text = "";
+            this.txtMsgs.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.txtMsgs_MouseDoubleClick);
             // 
             // potCh2Position
             // 
@@ -112,16 +123,6 @@
             this.potXPosition.Value = 0D;
             this.potXPosition.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             this.potXPosition.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
-            // 
-            // btnTest
-            // 
-            this.btnTest.Location = new System.Drawing.Point(25, 448);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(75, 23);
-            this.btnTest.TabIndex = 0;
-            this.btnTest.Text = "Test";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // groupBox1
             // 
@@ -251,7 +252,6 @@
         #endregion
         private System.Windows.Forms.SplitContainer splitContainer1;
         private SkiaSharp.Views.Desktop.SKControl skControl;
-        private System.Windows.Forms.Button btnTest;
         private Pot potXPosition;
         private Pot potCh2Position;
         private Pot potCh1Position;
@@ -264,6 +264,7 @@
         private System.Windows.Forms.ComboBox selCh1VoltsPerDiv;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox selCh2VoltsPerDiv;
+        private System.Windows.Forms.RichTextBox txtMsgs;
     }
 }
 

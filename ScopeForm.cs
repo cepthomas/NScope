@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
+//TODON About?
 
 namespace NebScope
 {
@@ -84,8 +85,12 @@ namespace NebScope
         {
             try
             {
+                ///// Settings /////
                 UserSettings.Load();
                 _settings = UserSettings.Load();
+                potXPosition.Value = _settings.XPosition;
+                potCh1Position.Value = _settings.Channels[0].Position;
+                potCh2Position.Value = _settings.Channels[1].Position;
 
                 ///// Init the form /////
                 Location = new Point(_settings.FormX, _settings.FormY);
@@ -108,10 +113,11 @@ namespace NebScope
 
                 ///// Selectors /////
                 selCh1VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
-                selCh1VoltsPerDiv.SelectedItem = "0.5";
                 selCh2VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
-                selCh2VoltsPerDiv.SelectedItem = "0.5";
                 selTimebase.Items.AddRange(Common.TIMEBASE_OPTIONS);
+                // TODON these should come from settings:
+                selCh1VoltsPerDiv.SelectedItem = "0.5";
+                selCh2VoltsPerDiv.SelectedItem = "0.5";
                 selTimebase.SelectedItem = "0.1";
 
                 CalcDrawRegion();
@@ -119,10 +125,12 @@ namespace NebScope
                 ///// Start UDP server /////
                 _udp = new UdpClient(Common.UDP_PORT);
                 _udp.BeginReceive(new AsyncCallback(UdpReceive), this);
+
+                AddText("NebScope started");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(caption:"caption", text:ex.Message);
+                AddText(ex.Message);
             }
         }
 
@@ -462,7 +470,6 @@ namespace NebScope
                 skControl.Width - BORDER_PAD - BORDER_PAD - Y_AXIS_SPACE,
                 skControl.Height - BORDER_PAD - BORDER_PAD - X_AXIS_SPACE);
         }
-        #endregion
 
         /// <summary>
         /// Unpack a standard message from UDP bytes.
@@ -495,13 +502,40 @@ namespace NebScope
             }
             else
             {
-                //TODON? logger? or textbox?                
+                AddText("Bad message rcvd.");
             }
 
             return (channel:channel, cmd:cmd, data:data);
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
+        /// <summary>
+        /// A message to display to the user.
+        /// </summary>
+        /// <param name="text">The message.</param>
+        void AddText(string text)
+        {
+            BeginInvoke((MethodInvoker)delegate ()
+            {
+                if (txtMsgs != null && !txtMsgs.IsDisposed)
+                {
+                    if (txtMsgs.TextLength > 1000)
+                    {
+                        txtMsgs.Select(0, 500);
+                        txtMsgs.SelectedText = "";
+                    }
+
+                    txtMsgs.AppendText($"-> {text}{Environment.NewLine}");
+                    txtMsgs.ScrollToCaret();
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test code.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void txtMsgs_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             // Make some data.
             int buffSize = 9000;
@@ -510,12 +544,14 @@ namespace NebScope
 
             for (int i = 0; i < buffSize; i++)
             {
-               ch1[i] = (float)Math.Sin(i / 500.0);
-               ch2[i] = i / 1500.0f % 1.0f;
+                ch1[i] = (float)Math.Sin(i / 500.0);
+                ch2[i] = i / 1500.0f % 1.0f;
             }
 
             UpdateData(0, 1, ch1);
             UpdateData(1, 1, ch2);
+
         }
+        #endregion
     }
 }
