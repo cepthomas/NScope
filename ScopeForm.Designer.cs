@@ -15,8 +15,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScopeForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.chkCapture = new System.Windows.Forms.CheckBox();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.txtMsgs = new System.Windows.Forms.RichTextBox();
             this.potCh2Position = new NebScope.Pot();
             this.potCh1Position = new NebScope.Pot();
@@ -31,6 +34,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.selCh2VoltsPerDiv = new System.Windows.Forms.ComboBox();
             this.skControl = new SkiaSharp.Views.Desktop.SKControl();
+            this.timerHousekeeping = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -50,6 +54,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.chkCapture);
+            this.splitContainer1.Panel1.Controls.Add(this.btnHelp);
             this.splitContainer1.Panel1.Controls.Add(this.txtMsgs);
             this.splitContainer1.Panel1.Controls.Add(this.potCh2Position);
             this.splitContainer1.Panel1.Controls.Add(this.potCh1Position);
@@ -65,13 +71,37 @@
             this.splitContainer1.SplitterDistance = 195;
             this.splitContainer1.TabIndex = 1;
             // 
+            // chkCapture
+            // 
+            this.chkCapture.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkCapture.AutoSize = true;
+            this.chkCapture.Image = global::NebScope.Properties.Resources.glyphicons_82_refresh;
+            this.chkCapture.Location = new System.Drawing.Point(13, 12);
+            this.chkCapture.Name = "chkCapture";
+            this.chkCapture.Size = new System.Drawing.Size(31, 32);
+            this.chkCapture.TabIndex = 17;
+            this.chkCapture.UseVisualStyleBackColor = true;
+            this.chkCapture.CheckedChanged += new System.EventHandler(this.chkCapture_CheckedChanged);
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.Image = global::NebScope.Properties.Resources.glyphicons_195_question_sign;
+            this.btnHelp.Location = new System.Drawing.Point(149, 12);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(32, 32);
+            this.btnHelp.TabIndex = 15;
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
             // txtMsgs
             // 
-            this.txtMsgs.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtMsgs.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtMsgs.Location = new System.Drawing.Point(13, 259);
+            this.txtMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtMsgs.BackColor = System.Drawing.SystemColors.Control;
+            this.txtMsgs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMsgs.Location = new System.Drawing.Point(13, 322);
             this.txtMsgs.Name = "txtMsgs";
-            this.txtMsgs.Size = new System.Drawing.Size(168, 196);
+            this.txtMsgs.Size = new System.Drawing.Size(168, 152);
             this.txtMsgs.TabIndex = 13;
             this.txtMsgs.Text = "";
             this.txtMsgs.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.txtMsgs_MouseDoubleClick);
@@ -81,7 +111,7 @@
             this.potCh2Position.ControlColor = System.Drawing.Color.Black;
             this.potCh2Position.DecPlaces = 1;
             this.potCh2Position.Label = "Pos";
-            this.potCh2Position.Location = new System.Drawing.Point(116, 190);
+            this.potCh2Position.Location = new System.Drawing.Point(116, 253);
             this.potCh2Position.Maximum = 1D;
             this.potCh2Position.Minimum = -1D;
             this.potCh2Position.Name = "potCh2Position";
@@ -97,7 +127,7 @@
             this.potCh1Position.ControlColor = System.Drawing.Color.Black;
             this.potCh1Position.DecPlaces = 1;
             this.potCh1Position.Label = "Pos";
-            this.potCh1Position.Location = new System.Drawing.Point(116, 106);
+            this.potCh1Position.Location = new System.Drawing.Point(116, 169);
             this.potCh1Position.Maximum = 1D;
             this.potCh1Position.Minimum = -1D;
             this.potCh1Position.Name = "potCh1Position";
@@ -113,7 +143,7 @@
             this.potXPosition.ControlColor = System.Drawing.Color.Black;
             this.potXPosition.DecPlaces = 1;
             this.potXPosition.Label = "Pos";
-            this.potXPosition.Location = new System.Drawing.Point(116, 22);
+            this.potXPosition.Location = new System.Drawing.Point(116, 85);
             this.potXPosition.Maximum = 1D;
             this.potXPosition.Minimum = -1D;
             this.potXPosition.Name = "potXPosition";
@@ -128,7 +158,7 @@
             // 
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.selTimebase);
-            this.groupBox1.Location = new System.Drawing.Point(12, 10);
+            this.groupBox1.Location = new System.Drawing.Point(12, 73);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(169, 76);
             this.groupBox1.TabIndex = 11;
@@ -157,7 +187,7 @@
             // 
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.selCh1VoltsPerDiv);
-            this.groupBox3.Location = new System.Drawing.Point(12, 92);
+            this.groupBox3.Location = new System.Drawing.Point(12, 155);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(169, 76);
             this.groupBox3.TabIndex = 12;
@@ -186,7 +216,7 @@
             // 
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.selCh2VoltsPerDiv);
-            this.groupBox2.Location = new System.Drawing.Point(12, 176);
+            this.groupBox2.Location = new System.Drawing.Point(12, 239);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(169, 76);
             this.groupBox2.TabIndex = 12;
@@ -223,6 +253,10 @@
             this.skControl.PaintSurface += new System.EventHandler<SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs>(this.SkControl_PaintSurface);
             this.skControl.Resize += new System.EventHandler(this.SkControl_Resize);
             // 
+            // timerHousekeeping
+            // 
+            this.timerHousekeeping.Tick += new System.EventHandler(this.timerHousekeeping_Tick);
+            // 
             // ScopeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,6 +270,7 @@
             this.Load += new System.EventHandler(this.ScopeForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.ScopeForm_Paint);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -265,6 +300,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox selCh2VoltsPerDiv;
         private System.Windows.Forms.RichTextBox txtMsgs;
+        private System.Windows.Forms.Timer timerHousekeeping;
+        private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.CheckBox chkCapture;
     }
 }
 

@@ -62,6 +62,9 @@ namespace NebScope
 
         /// <summary>Input device.</summary>
         UdpClient _udp = null;
+
+        /// <summary>Activity indicator.</summary>
+        int _captureIndDelay = 0;
         #endregion
 
         #region Lifecycle
@@ -106,6 +109,7 @@ namespace NebScope
                 selCh1VoltsPerDiv.ForeColor = _settings.ControlColor;
                 selCh2VoltsPerDiv.ForeColor = _settings.ControlColor;
                 selTimebase.ForeColor = _settings.ControlColor;
+                chkCapture.Checked = true;
 
                 ///// Control handlers /////
                 skControl.Resize += SkControl_Resize;
@@ -125,6 +129,8 @@ namespace NebScope
                 ///// Start UDP server /////
                 _udp = new UdpClient(Common.UDP_PORT);
                 _udp.BeginReceive(new AsyncCallback(UdpReceive), this);
+
+                timerHousekeeping.Start();
 
                 AddText("NebScope started");
             }
@@ -302,6 +308,74 @@ namespace NebScope
             // Ask for a redraw.
             skControl.Invalidate();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void chkCapture_CheckedChanged(object sender, EventArgs e)
+        {
+            if(!chkCapture.Checked)
+            {
+                _captureIndDelay = 0;
+                chkCapture.BackColor = SystemColors.Control;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void timerHousekeeping_Tick(object sender, EventArgs e)
+        {
+            if (_captureIndDelay > 0)
+            {
+                _captureIndDelay--;
+                if (_captureIndDelay <= 0)
+                {
+                    chkCapture.BackColor = SystemColors.Control;
+                    _captureIndDelay = 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            // Make some markdown.
+            List<string> mdText = new List<string>();
+
+            // Main help file.
+            mdText.Add(File.ReadAllText(@"README.md"));
+
+            // Put it together.
+            List<string> htmlText = new List<string>();
+
+            // Boilerplate
+            htmlText.Add($"<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            // CSS
+            htmlText.Add($"<style>body {{ background-color: {_settings.BackColor.Name}; font-family: \"Arial\", Helvetica, sans-serif; }}");
+            htmlText.Add($"</style></head><body>");
+
+            // Meat.
+            string mdHtml = string.Join(Environment.NewLine, mdText);
+            htmlText.Add(mdHtml);
+
+            // Bottom.
+            string ss = "<!-- Markdeep: --><style class=\"fallback\">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src=\"markdeep.min.js\" charset=\"utf-8\"></script><script src=\"https://casual-effects.com/markdeep/latest/markdeep.min.js\" charset=\"utf-8\"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility=\"visible\")</script>";
+            htmlText.Add(ss);
+            htmlText.Add($"</body></html>");
+
+            string fn = Path.Combine(Path.GetTempPath(), "nebulator.html");
+            File.WriteAllText(fn, string.Join(Environment.NewLine, htmlText));
+            Process.Start(fn);
+        }
         #endregion
 
         #region Render functions
@@ -444,15 +518,22 @@ namespace NebScope
         /// <param name="ares"></param>
         void UdpReceive(IAsyncResult ares)
         {
-            byte[] bytes = null;
+            if(chkCapture.Checked)
+            {
+                byte[] bytes = null;
 
-            // Process input.
-            IPEndPoint senderIp = new IPEndPoint(0, 0);
-            bytes = _udp?.EndReceive(ares, ref senderIp);
+                // Process input.
+                IPEndPoint senderIp = new IPEndPoint(0, 0);
+                bytes = _udp?.EndReceive(ares, ref senderIp);
 
-            var (channel, cmd, data) = UnpackMsg(bytes);
+                var (channel, cmd, data) = UnpackMsg(bytes);
 
-            UpdateData(channel, cmd, data);
+                UpdateData(channel, cmd, data);
+
+                // Lights.
+                _captureIndDelay = 5;
+                chkCapture.BackColor = _settings.ControlColor;
+            }
 
             // Listen again.
             _udp?.BeginReceive(new AsyncCallback(UdpReceive), this);
