@@ -15,8 +15,6 @@ namespace NebScope
     [Serializable]
     public class UserSettings
     {
-        // const string FILENAME = "settings.json";
-
         #region Persisted editable properties
         [DisplayName("Control Color"), Description("The color used for styling control surfaces."), Browsable(true)]
         public Color ControlColor { get; set; } = Color.Blue;
@@ -29,6 +27,9 @@ namespace NebScope
 
         [DisplayName("Stroke Size"), Description("Trace thickness."), Browsable(true)]
         public double StrokeSize { get; set; } = 2;
+
+        [DisplayName("UDP Port"), Description("Port to listen on."), Browsable(true)]
+        public int Port { get; set; } = 9888;
         #endregion
 
         #region Properties - X axis

@@ -20,9 +20,6 @@ namespace NebScope
         /// <summary>Visual Y.</summary>
         public const int NUM_Y_DIVISIONS = 8;
 
-        /// <summary>Server listening for data on port.</summary>
-        public const int UDP_PORT = 9888;
-
         /// <summary>Harmonious colors.</summary>
         public static Color[] COLORS =
         {

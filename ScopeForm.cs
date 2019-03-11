@@ -129,7 +129,7 @@ namespace NebScope
                 CalcDrawRegion();
 
                 ///// Start UDP server /////
-                _udp = new UdpClient(Common.UDP_PORT);
+                _udp = new UdpClient(_settings.Port);
                 _udp.BeginReceive(new AsyncCallback(UdpReceive), this);
 
                 timerHousekeeping.Start();
