@@ -15,7 +15,6 @@ using System.Windows.Forms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
-//TODON About?
 
 namespace NebScope
 {
@@ -89,8 +88,11 @@ namespace NebScope
             try
             {
                 ///// Settings /////
-                UserSettings.Load();
-                _settings = UserSettings.Load();
+                string appDir = Common.GetAppDataDir();
+                DirectoryInfo di = new DirectoryInfo(appDir);
+                di.Create();
+                _settings = UserSettings.Load(appDir);
+
                 potXPosition.Value = _settings.XPosition;
                 potCh1Position.Value = _settings.Channels[0].Position;
                 potCh2Position.Value = _settings.Channels[1].Position;
@@ -375,6 +377,36 @@ namespace NebScope
             string fn = Path.Combine(Path.GetTempPath(), "nebulator.html");
             File.WriteAllText(fn, string.Join(Environment.NewLine, htmlText));
             Process.Start(fn);
+        }
+
+        /// <summary>
+        /// Edit the common options in a property grid.
+        /// </summary>
+        void UserSettings_Click(object sender, EventArgs e)
+        {
+            using (Form f = new Form()
+            {
+                Text = "User Settings",
+                Size = new Size(350, 400),
+                StartPosition = FormStartPosition.Manual,
+                Location = new Point(200, 200),
+                FormBorderStyle = FormBorderStyle.FixedToolWindow,
+                ShowIcon = false,
+                ShowInTaskbar = false
+            })
+            {
+                PropertyGrid pg = new PropertyGrid()
+                {
+                    Dock = DockStyle.Fill,
+                    PropertySort = PropertySort.NoSort,
+                    SelectedObject = _settings
+                };
+
+                f.Controls.Add(pg);
+                f.ShowDialog();
+
+                _settings.Save();
+            }
         }
         #endregion
 

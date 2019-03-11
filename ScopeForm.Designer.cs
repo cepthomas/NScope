@@ -35,6 +35,7 @@
             this.selCh2VoltsPerDiv = new System.Windows.Forms.ComboBox();
             this.skControl = new SkiaSharp.Views.Desktop.SKControl();
             this.timerHousekeeping = new System.Windows.Forms.Timer(this.components);
+            this.btnSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -54,6 +55,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnSettings);
             this.splitContainer1.Panel1.Controls.Add(this.chkCapture);
             this.splitContainer1.Panel1.Controls.Add(this.btnHelp);
             this.splitContainer1.Panel1.Controls.Add(this.txtMsgs);
@@ -179,7 +181,7 @@
             this.selTimebase.FormattingEnabled = true;
             this.selTimebase.Location = new System.Drawing.Point(22, 23);
             this.selTimebase.Name = "selTimebase";
-            this.selTimebase.Size = new System.Drawing.Size(47, 21);
+            this.selTimebase.Size = new System.Drawing.Size(60, 21);
             this.selTimebase.TabIndex = 13;
             this.selTimebase.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
@@ -208,7 +210,7 @@
             this.selCh1VoltsPerDiv.FormattingEnabled = true;
             this.selCh1VoltsPerDiv.Location = new System.Drawing.Point(22, 21);
             this.selCh1VoltsPerDiv.Name = "selCh1VoltsPerDiv";
-            this.selCh1VoltsPerDiv.Size = new System.Drawing.Size(47, 21);
+            this.selCh1VoltsPerDiv.Size = new System.Drawing.Size(60, 21);
             this.selCh1VoltsPerDiv.TabIndex = 14;
             this.selCh1VoltsPerDiv.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
@@ -237,7 +239,7 @@
             this.selCh2VoltsPerDiv.FormattingEnabled = true;
             this.selCh2VoltsPerDiv.Location = new System.Drawing.Point(22, 14);
             this.selCh2VoltsPerDiv.Name = "selCh2VoltsPerDiv";
-            this.selCh2VoltsPerDiv.Size = new System.Drawing.Size(47, 21);
+            this.selCh2VoltsPerDiv.Size = new System.Drawing.Size(60, 21);
             this.selCh2VoltsPerDiv.TabIndex = 15;
             this.selCh2VoltsPerDiv.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
@@ -256,6 +258,16 @@
             // timerHousekeeping
             // 
             this.timerHousekeeping.Tick += new System.EventHandler(this.timerHousekeeping_Tick);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = global::NebScope.Properties.Resources.glyphicons_137_cogwheel;
+            this.btnSettings.Location = new System.Drawing.Point(111, 12);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(32, 32);
+            this.btnSettings.TabIndex = 18;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.UserSettings_Click);
             // 
             // ScopeForm
             // 
@@ -303,6 +315,7 @@
         private System.Windows.Forms.Timer timerHousekeeping;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.CheckBox chkCapture;
+        private System.Windows.Forms.Button btnSettings;
     }
 }
 

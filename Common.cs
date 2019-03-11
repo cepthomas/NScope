@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,6 +63,16 @@ namespace NebScope
             val = Math.Max(val, min);
             val = Math.Min(val, max);
             return val;
+        }
+
+        /// <summary>
+        /// Get the user app dir.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAppDataDir()
+        {
+            string localdir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            return Path.Combine(localdir, "NebScope");
         }
     }
 }

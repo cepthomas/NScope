@@ -15,7 +15,7 @@ namespace NebScope
     [Serializable]
     public class UserSettings
     {
-        const string FILENAME = "settings.json";
+        // const string FILENAME = "settings.json";
 
         #region Persisted editable properties
         [DisplayName("Control Color"), Description("The color used for styling control surfaces."), Browsable(true)]
@@ -26,10 +26,8 @@ namespace NebScope
 
         [DisplayName("Channels"), Description("The channels."), Browsable(true)]
         public List<Channel> Channels { get; set; } = new List<Channel>();
-        #endregion
 
-        #region Properties - cosmetics
-        ///<summary>Trace thickness.</summary>
+        [DisplayName("Stroke Size"), Description("Trace thickness."), Browsable(true)]
         public double StrokeSize { get; set; } = 2;
         #endregion
 
@@ -66,6 +64,11 @@ namespace NebScope
         public int FormHeight { get; set; } = 700;
         #endregion
 
+        #region Fields
+        /// <summary>The file name.</summary>
+        string _fn = "???";
+        #endregion
+
         /// <summary>Default constructor.</summary>
         public UserSettings()
         {
@@ -76,17 +79,18 @@ namespace NebScope
         public void Save()
         {
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(FILENAME, json);
+            File.WriteAllText(_fn, json);
         }
 
         /// <summary>Create object from file.</summary>
-        public static UserSettings Load()
+        public static UserSettings Load(string appDir)
         {
+            string fn = Path.Combine(appDir, "settings.json");
             UserSettings settings = null;
 
-            if(File.Exists(FILENAME))
+            if(File.Exists(fn))
             {
-                string json = File.ReadAllText(FILENAME);
+                string json = File.ReadAllText(fn);
                 settings = JsonConvert.DeserializeObject<UserSettings>(json);
             }
             else
@@ -107,6 +111,8 @@ namespace NebScope
                     });
                 }
             }
+
+            settings._fn = fn;
 
             return settings;
         }
