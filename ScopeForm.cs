@@ -121,10 +121,10 @@ namespace NebScope
                 selCh1VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
                 selCh2VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
                 selTimebase.Items.AddRange(Common.TIMEBASE_OPTIONS);
-                // TODON these should come from settings:
+                // TODO these should come from settings:
                 selCh1VoltsPerDiv.SelectedItem = "0.5";
                 selCh2VoltsPerDiv.SelectedItem = "0.5";
-                selTimebase.SelectedItem = "0.1";
+                selTimebase.SelectedItem = "0.01";
 
                 CalcDrawRegion();
 
@@ -180,9 +180,9 @@ namespace NebScope
         /// <summary>
         /// Directly update the data for the channel.
         /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="cmd"></param>
-        /// <param name="data"></param>
+        /// <param name="channel">Chan 1 or 2 (0 or 1)</param>
+        /// <param name="cmd">0 = append, 1 = overwrite.</param>
+        /// <param name="data">The data to display.</param>
         public void UpdateData(int channel, int cmd, double[] data)
         {
             // Check validity and size of data.

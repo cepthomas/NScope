@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 // Leftove stuff to hang on to for a bit.
 
+these...
 
 namespace NebScope
 {

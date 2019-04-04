@@ -43,10 +43,10 @@ namespace NebScope
         }
 
         /// <summary>
-        /// 
+        /// Redraw using new data.
         /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="data"></param>
+        /// <param name="cmd">0 = append, 1 = overwrite.</param>
+        /// <param name="data">The data to display.</param>
         public void UpdateData(int cmd, double[] data)
         {
             if (cmd == 1) // reset
