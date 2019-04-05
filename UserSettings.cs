@@ -106,7 +106,7 @@ namespace NebScope
                     settings.Channels.Add(new Channel()
                     {
                         Name = $"Channel {i + 1}",
-                        Color = Common.COLORS[icolor++ % Common.COLORS.Length],
+                        Color = NBagOfTricks.MiscUtils.GetSequenceColor(i),
                         VoltsPerDivision = 0.5,
                         Position = 0
                     });

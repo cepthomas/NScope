@@ -14,6 +14,8 @@ using System.Threading;
 using System.Windows.Forms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using NBagOfTricks;
+using NBagOfTricks.UI;
 
 
 namespace NebScope
@@ -88,7 +90,7 @@ namespace NebScope
             try
             {
                 ///// Settings /////
-                string appDir = Common.GetAppDataDir();
+                string appDir = MiscUtils.GetAppDataDir("NebScope");
                 DirectoryInfo di = new DirectoryInfo(appDir);
                 di.Create();
                 _settings = UserSettings.Load(appDir);
@@ -106,8 +108,11 @@ namespace NebScope
                 ///// Control visuals /////
                 skControl.BackColor = Color.Black;
                 potXPosition.ControlColor = _settings.ControlColor;
+                potXPosition.BackColor = _settings.BackColor;
                 potCh1Position.ControlColor = _settings.ControlColor;
+                potCh1Position.BackColor = _settings.BackColor;
                 potCh2Position.ControlColor = _settings.ControlColor;
+                potCh2Position.BackColor = _settings.BackColor;
                 selCh1VoltsPerDiv.ForeColor = _settings.ControlColor;
                 selCh2VoltsPerDiv.ForeColor = _settings.ControlColor;
                 selTimebase.ForeColor = _settings.ControlColor;
