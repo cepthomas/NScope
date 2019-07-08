@@ -18,6 +18,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScopeForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnSettings = new System.Windows.Forms.Button();
             this.chkCapture = new System.Windows.Forms.CheckBox();
             this.btnHelp = new System.Windows.Forms.Button();
             this.txtMsgs = new System.Windows.Forms.RichTextBox();
@@ -35,7 +36,6 @@
             this.selCh2VoltsPerDiv = new System.Windows.Forms.ComboBox();
             this.skControl = new SkiaSharp.Views.Desktop.SKControl();
             this.timerHousekeeping = new System.Windows.Forms.Timer(this.components);
-            this.btnSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -72,6 +72,16 @@
             this.splitContainer1.Size = new System.Drawing.Size(832, 483);
             this.splitContainer1.SplitterDistance = 195;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = global::NebScope.Properties.Resources.glyphicons_137_cogwheel;
+            this.btnSettings.Location = new System.Drawing.Point(111, 12);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(32, 32);
+            this.btnSettings.TabIndex = 18;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.UserSettings_Click);
             // 
             // chkCapture
             // 
@@ -111,7 +121,7 @@
             // potCh2Position
             // 
             this.potCh2Position.ControlColor = System.Drawing.Color.Black;
-            this.potCh2Position.DecPlaces = 1;
+            this.potCh2Position.DecPlaces = 2;
             this.potCh2Position.Label = "Pos";
             this.potCh2Position.Location = new System.Drawing.Point(116, 253);
             this.potCh2Position.Maximum = 1D;
@@ -127,7 +137,7 @@
             // potCh1Position
             // 
             this.potCh1Position.ControlColor = System.Drawing.Color.Black;
-            this.potCh1Position.DecPlaces = 1;
+            this.potCh1Position.DecPlaces = 2;
             this.potCh1Position.Label = "Pos";
             this.potCh1Position.Location = new System.Drawing.Point(116, 169);
             this.potCh1Position.Maximum = 1D;
@@ -143,7 +153,7 @@
             // potXPosition
             // 
             this.potXPosition.ControlColor = System.Drawing.Color.Black;
-            this.potXPosition.DecPlaces = 1;
+            this.potXPosition.DecPlaces = 2;
             this.potXPosition.Label = "Pos";
             this.potXPosition.Location = new System.Drawing.Point(116, 85);
             this.potXPosition.Maximum = 1D;
@@ -258,16 +268,6 @@
             // timerHousekeeping
             // 
             this.timerHousekeeping.Tick += new System.EventHandler(this.timerHousekeeping_Tick);
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.Image = global::NebScope.Properties.Resources.glyphicons_137_cogwheel;
-            this.btnSettings.Location = new System.Drawing.Point(111, 12);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(32, 32);
-            this.btnSettings.TabIndex = 18;
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.UserSettings_Click);
             // 
             // ScopeForm
             // 

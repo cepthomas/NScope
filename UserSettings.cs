@@ -22,8 +22,13 @@ namespace NebScope
         [DisplayName("Background Color"), Description("The color used for overall background."), Browsable(true)]
         public Color BackColor { get; set; } = Color.AliceBlue;
 
-        [DisplayName("Channels"), Description("The channels."), Browsable(true)]
-        public List<Channel> Channels { get; set; } = new List<Channel>();
+        [DisplayName("Channel 1"), Description("The channel settings."), Browsable(true)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public Channel Channel1 { get; set; } = new Channel();
+
+        [DisplayName("Channel 2"), Description("The channel settings."), Browsable(true)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public Channel Channel2 { get; set; } = new Channel();
 
         [DisplayName("Stroke Size"), Description("Trace thickness."), Browsable(true)]
         public double StrokeSize { get; set; } = 2;
@@ -32,26 +37,27 @@ namespace NebScope
         public int Port { get; set; } = 9888;
         #endregion
 
-        #region Properties - X axis
+        #region Persisted non-editable properties
         /// <summary>Shift along X axis aka time offset. +-1.0 is equivalent to the total X grid.</summary>
+        [Browsable(false)]
         public double XPosition { get; set; } = 0.0;
 
         /// <summary>Seconds per horizontal division.</summary>
-        public double TimePerDivision { get; set; } = 0.1;
+        [Browsable(false)]
+        public string TimePerDivision { get; set; } = "0.1";
 
         ///<summary>Sample rate for data.</summary>
+        /// The Audio Engineering Society recommends 48 kHz sampling rate for most applications but gives recognition
+        /// to 44.1 kHz for Compact Disc (CD) and other consumer uses, 32 kHz for transmission-related applications,
+        /// and 96 kHz for higher bandwidth or relaxed anti-aliasing filtering.[9] Both Lavry Engineering and
+        /// J. Robert Stuart state that the ideal sampling rate would be about 60 kHz, but since this is not
+        /// a standard frequency, recommend 88.2 or 96 kHz for recording purposes.
+        /// interleaved buffer size of 1024. At 44100 sample/sec rate, 1 buff = 23 msec.
+        /// 44100 sample rate == 22.675 usec/sample.
+        /// A 1000 Hz waveform == 1000 usec/cycle == 44.1 samples.
+        [Browsable(false)]
         public double SampleRate { get; set; } = 48000;
-        // The Audio Engineering Society recommends 48 kHz sampling rate for most applications but gives recognition
-        // to 44.1 kHz for Compact Disc (CD) and other consumer uses, 32 kHz for transmission-related applications,
-        // and 96 kHz for higher bandwidth or relaxed anti-aliasing filtering.[9] Both Lavry Engineering and
-        // J. Robert Stuart state that the ideal sampling rate would be about 60 kHz, but since this is not
-        // a standard frequency, recommend 88.2 or 96 kHz for recording purposes.
-        // interleaved buffer size of 1024. At 44100 sample/sec rate, 1 buff = 23 msec.
-        // 44100 sample rate == 22.675 usec/sample.
-        // A 1000 Hz waveform == 1000 usec/cycle == 44.1 samples.
-        #endregion
 
-        #region Persisted non-editable properties
         [Browsable(false)]
         public int FormX { get; set; } = 50;
 
@@ -69,11 +75,6 @@ namespace NebScope
         /// <summary>The file name.</summary>
         string _fn = "???";
         #endregion
-
-        /// <summary>Default constructor.</summary>
-        public UserSettings()
-        {
-        }
 
         #region Persistence
         /// <summary>Save object to file.</summary>
@@ -101,16 +102,22 @@ namespace NebScope
 
                 // Setup some default channels.
                 int icolor = DateTime.Now.Second;
-                for (int i = 0; i < Common.NUM_CHANNELS; i++)
+
+                settings.Channel1 = new Channel()
                 {
-                    settings.Channels.Add(new Channel()
-                    {
-                        Name = $"Channel {i + 1}",
-                        Color = NBagOfTricks.MiscUtils.GetSequenceColor(i),
-                        VoltsPerDivision = 0.5,
-                        Position = 0
-                    });
-                }
+                    Name = $"Channel 1",
+                    Color = NBagOfTricks.MiscUtils.GetSequenceColor(0),
+                    VoltsPerDivision = "0.5",
+                    Position = 0
+                };
+
+                settings.Channel2 = new Channel()
+                {
+                    Name = $"Channel 2",
+                    Color = NBagOfTricks.MiscUtils.GetSequenceColor(1),
+                    VoltsPerDivision = "0.5",
+                    Position = 0
+                };
             }
 
             settings._fn = fn;

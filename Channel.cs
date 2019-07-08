@@ -18,36 +18,29 @@ namespace NebScope
     [Serializable]
     public class Channel
     {
-        ///<summary></summary>
+        [DisplayName("Name"), Description("The name for this channel."), Browsable(true)]
         public string Name { get; set; } = "????";
 
-        ///<summary></summary>
+        [DisplayName("Color"), Description("The color to display this channel."), Browsable(true)]
         public Color Color { get; set; } = Color.White;
+
+        [DisplayName("Position"), Description("Shift along Y axis aka DC offset."), Browsable(true)]
+        public double Position { get; set; } = 0.0;
+
+        [DisplayName("Volts Per Div"), Description("Extent of y axis. Volts is a nod to tradition."), Browsable(true)]
+        public string VoltsPerDivision { get; set; } = "0.5";
 
         ///<summary>Data points y values in "units" "volts".</summary>
         [Browsable(false)]
         [JsonIgnore]
         public List<double> DataPoints { get; set; } = new List<double>();
 
-        /// <summary>Shift along Y axis aka DC offset.</summary>
-        public double Position { get; set; } = 0.0;
-
-        /// <summary>Extent of y axis. Traditional "volts" per division.</summary>
-        public double VoltsPerDivision { get; set; } = 0.5;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Channel()
-        {
-        }
-
         /// <summary>
         /// Redraw using new data.
         /// </summary>
         /// <param name="cmd">0 = append, 1 = overwrite.</param>
         /// <param name="data">The data to display.</param>
-        public void UpdateData(int cmd, double[] data)
+        public void UpdateData(int cmd, double[] data) // TODO expensive copies and conversions.
         {
             if (cmd == 1) // reset
             {
@@ -79,7 +72,7 @@ namespace NebScope
 
             double xTotalSamples = xSamplesPerDivision * Common.NUM_X_DIVISIONS;
             double xScale = drawRegion.Width / xTotalSamples;
-            double yTotalVolts = VoltsPerDivision * Common.NUM_Y_DIVISIONS;
+            double yTotalVolts = Common.VoltOptions[VoltsPerDivision] * Common.NUM_Y_DIVISIONS;
             double yScale = drawRegion.Height / yTotalVolts;
             double xOffset = xPosition * drawRegion.Width;
             double yOffset = Position * drawRegion.Height;

@@ -96,8 +96,8 @@ namespace NebScope
                 _settings = UserSettings.Load(appDir);
 
                 potXPosition.Value = _settings.XPosition;
-                potCh1Position.Value = _settings.Channels[0].Position;
-                potCh2Position.Value = _settings.Channels[1].Position;
+                potCh1Position.Value = _settings.Channel1.Position;
+                potCh2Position.Value = _settings.Channel2.Position;
 
                 ///// Init the form /////
                 Location = new Point(_settings.FormX, _settings.FormY);
@@ -123,13 +123,12 @@ namespace NebScope
                 skControl.PaintSurface += SkControl_PaintSurface;
 
                 ///// Selectors /////
-                selCh1VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
-                selCh2VoltsPerDiv.Items.AddRange(Common.VOLT_OPTIONS);
-                selTimebase.Items.AddRange(Common.TIMEBASE_OPTIONS);
-                // TODO these should come from settings:
-                selCh1VoltsPerDiv.SelectedItem = "0.5";
-                selCh2VoltsPerDiv.SelectedItem = "0.5";
-                selTimebase.SelectedItem = "0.01";
+                selCh1VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
+                selCh2VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
+                selTimebase.Items.AddRange(Common.TimeOptions.Keys.ToArray());
+                selCh1VoltsPerDiv.SelectedItem = _settings.Channel1.VoltsPerDivision;
+                selCh2VoltsPerDiv.SelectedItem = _settings.Channel2.VoltsPerDivision;
+                selTimebase.SelectedItem = _settings.TimePerDivision;
 
                 CalcDrawRegion();
 
@@ -198,7 +197,9 @@ namespace NebScope
             else
             {
                 CalcDrawRegion();
-                _settings.Channels[channel].UpdateData(cmd, data);
+
+                Channel ch = channel == 0 ? _settings.Channel1 : _settings.Channel2;
+                ch.UpdateData(cmd, data);
 
                 // Ask for a redraw.
                 skControl.Invalidate();
@@ -212,12 +213,7 @@ namespace NebScope
         /// <returns></returns>
         public Channel GetChannel(int channelNum)
         {
-            if (channelNum >= Common.NUM_CHANNELS || channelNum < 0)
-            {
-                throw new Exception("Invalid channel number");
-            }
-
-            return _settings.Channels[channelNum];
+            return channelNum == 0 ? _settings.Channel1 : _settings.Channel2;
         }
         #endregion
 
@@ -234,17 +230,17 @@ namespace NebScope
             switch (sender)
             {
                 case ComboBox cb when cb == selCh1VoltsPerDiv:
-                    _settings.Channels[0].VoltsPerDivision = double.Parse(cb.SelectedItem.ToString());
+                    _settings.Channel1.VoltsPerDivision = cb.SelectedItem.ToString();
                     redraw = true;
                     break;
 
                 case ComboBox cb when cb == selCh2VoltsPerDiv:
-                    _settings.Channels[1].VoltsPerDivision = double.Parse(cb.SelectedItem.ToString());
+                    _settings.Channel2.VoltsPerDivision = cb.SelectedItem.ToString();
                     redraw = true;
                     break;
 
                 case ComboBox cb when cb == selTimebase:
-                    _settings.TimePerDivision = double.Parse(cb.SelectedItem.ToString());
+                    _settings.TimePerDivision = cb.SelectedItem.ToString();
                     redraw = true;
                     break;
             }
@@ -273,12 +269,12 @@ namespace NebScope
                     break;
 
                 case Pot pot when pot == potCh1Position:
-                    _settings.Channels[0].Position = -pot.Value;
+                    _settings.Channel1.Position = -pot.Value;
                     redraw = true;
                     break;
 
                 case Pot pot when pot == potCh2Position:
-                    _settings.Channels[1].Position = -pot.Value;
+                    _settings.Channel2.Position = -pot.Value;
                     redraw = true;
                     break;
             }
@@ -445,35 +441,36 @@ namespace NebScope
             // Now clip to drawing region.
             canvas.ClipRect(_dataRegion.ToSKRect());
 
-            DrawData(canvas);
+            DrawData(canvas, _settings.Channel1);
+            DrawData(canvas, _settings.Channel2);
         }
 
         /// <summary>
         /// Draw lines.
         /// </summary>
         /// <param name="canvas"></param>
-        void DrawData(SKCanvas canvas)
+        /// <param name="ch"></param>
+        void DrawData(SKCanvas canvas, Channel ch)
         {
-            foreach (Channel ser in _settings.Channels)
+            if (ch.DataPoints != null && ch.DataPoints.Count() >= 2)
             {
-                if(ser.DataPoints != null && ser.DataPoints.Count() >= 2)
+                _pen.Color = ch.Color.ToSKColor();
+                _pen.StrokeWidth = (float)_settings.StrokeSize;
+
+                SKPath path = new SKPath();
+                SKPoint[] points = new SKPoint[ch.DataPoints.Count()];
+
+                var mapped = ch.MapData(_dataRegion,
+                    _settings.XPosition,
+                    _settings.SampleRate * Common.TimeOptions[_settings.TimePerDivision]);
+
+                for (int i = 0; i < mapped.Count(); i++)
                 {
-                    _pen.Color = ser.Color.ToSKColor();
-                    _pen.StrokeWidth = (float)_settings.StrokeSize;
-
-                    SKPath path = new SKPath();
-                    SKPoint[] points = new SKPoint[ser.DataPoints.Count()];
-
-                    var mapped = ser.MapData(_dataRegion, _settings.XPosition, _settings.SampleRate * _settings.TimePerDivision);
-
-                    for (int i = 0; i < mapped.Count(); i++)
-                    {
-                        points[i] = mapped[i];
-                    }
-
-                    path.AddPoly(points, false);
-                    canvas.DrawPath(path, _pen);
+                    points[i] = mapped[i];
                 }
+
+                path.AddPoly(points, false);
+                canvas.DrawPath(path, _pen);
             }
         }
 
@@ -488,7 +485,7 @@ namespace NebScope
             float bottom = _dataRegion.Bottom + 30;
 
             ///// X axis /////
-            double xTotal = _settings.TimePerDivision * Common.NUM_X_DIVISIONS;
+            double xTotal = Common.TimeOptions[_settings.TimePerDivision] * Common.NUM_X_DIVISIONS;
             double xOffset = _settings.XPosition * xTotal;
             double xMin = 0 + xOffset;
             double xMax = xTotal + xOffset;
@@ -497,25 +494,25 @@ namespace NebScope
             canvas.DrawText($"{xMax:0.00}", _dataRegion.Right - 10, bottom, _text);
 
             ///// Y axis ch1 /////
-            double y1Total = _settings.Channels[0].VoltsPerDivision * Common.NUM_Y_DIVISIONS;
-            double y1Offset = _settings.Channels[0].Position * y1Total;
+            double y1Total = Common.VoltOptions[_settings.Channel1.VoltsPerDivision] * Common.NUM_Y_DIVISIONS;
+            double y1Offset = _settings.Channel2.Position * y1Total;
             double y1Min = -y1Total / 2 + y1Offset;
             double y1Max = y1Total / 2 + y1Offset;
             double y1Mid = y1Max - y1Total / 2;
 
-            _text.Color = _settings.Channels[0].Color.ToSKColor();
+            _text.Color = _settings.Channel1.Color.ToSKColor();
             canvas.DrawText($"{y1Min:0.00}", left1, _dataRegion.Bottom - _text.FontMetrics.XHeight / 2, _text);
             canvas.DrawText($"{y1Max:0.00}", left1, _dataRegion.Top + _text.FontMetrics.XHeight / 2, _text);
             canvas.DrawText($"{y1Mid:0.00}", left1, _dataRegion.Top + _dataRegion.Height / 2, _text);
 
             ///// Y axis ch2 /////
-            double y2Total = _settings.Channels[1].VoltsPerDivision * Common.NUM_Y_DIVISIONS;
-            double y2Offset = _settings.Channels[1].Position * y2Total;
+            double y2Total = Common.VoltOptions[_settings.Channel2.VoltsPerDivision] * Common.NUM_Y_DIVISIONS;
+            double y2Offset = _settings.Channel2.Position * y2Total;
             double y2Min = -y2Total / 2 + y2Offset;
             double y2Max = y2Total / 2 + y2Offset;
             double y2Mid = y2Max - y2Total / 2;
 
-            _text.Color = _settings.Channels[1].Color.ToSKColor();
+            _text.Color = _settings.Channel2.Color.ToSKColor();
             canvas.DrawText($"{y2Min:0.00}", left2, _dataRegion.Bottom - _text.FontMetrics.XHeight / 2, _text);
             canvas.DrawText($"{y2Max:0.00}", left2, _dataRegion.Top + _text.FontMetrics.XHeight / 2, _text);
             canvas.DrawText($"{y2Mid:0.00}", left2, _dataRegion.Top + _dataRegion.Height / 2, _text);
