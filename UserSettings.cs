@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Drawing.Design;
 using Newtonsoft.Json;
+using NBagOfTricks.Utils;
 
 
 namespace NebScope
@@ -106,7 +107,7 @@ namespace NebScope
                 settings.Channel1 = new Channel()
                 {
                     Name = $"Channel 1",
-                    Color = NBagOfTricks.MiscUtils.GetSequenceColor(0),
+                    Color = MiscUtils.GetSequenceColor(0),
                     VoltsPerDivision = "0.5",
                     Position = 0
                 };
@@ -114,7 +115,7 @@ namespace NebScope
                 settings.Channel2 = new Channel()
                 {
                     Name = $"Channel 2",
-                    Color = NBagOfTricks.MiscUtils.GetSequenceColor(1),
+                    Color = MiscUtils.GetSequenceColor(1),
                     VoltsPerDivision = "0.5",
                     Position = 0
                 };

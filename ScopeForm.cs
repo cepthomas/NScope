@@ -14,7 +14,7 @@ using System.Threading;
 using System.Windows.Forms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
-using NBagOfTricks;
+using NBagOfTricks.Utils;
 using NBagOfTricks.UI;
 
 
