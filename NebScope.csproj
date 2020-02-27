@@ -115,7 +115,7 @@
     <None Include="README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Goupil .ico" />
+    <None Include="Resources\Juan.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\glyphicons-82-refresh.png" />
