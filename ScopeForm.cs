@@ -107,11 +107,11 @@ namespace NebScope
 
                 ///// Control visuals /////
                 skControl.BackColor = Color.Black;
-                potXPosition.ControlColor = _settings.ControlColor;
+                potXPosition.DrawColor = _settings.ControlColor;
                 potXPosition.BackColor = _settings.BackColor;
-                potCh1Position.ControlColor = _settings.ControlColor;
+                potCh1Position.DrawColor = _settings.ControlColor;
                 potCh1Position.BackColor = _settings.BackColor;
-                potCh2Position.ControlColor = _settings.ControlColor;
+                potCh2Position.DrawColor = _settings.ControlColor;
                 potCh2Position.BackColor = _settings.BackColor;
                 selCh1VoltsPerDiv.ForeColor = _settings.ControlColor;
                 selCh2VoltsPerDiv.ForeColor = _settings.ControlColor;
