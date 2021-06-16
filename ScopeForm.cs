@@ -317,7 +317,7 @@ namespace NebScope
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void chkCapture_CheckedChanged(object sender, EventArgs e)
+        void ChkCapture_CheckedChanged(object sender, EventArgs e)
         {
             if(!chkCapture.Checked)
             {
@@ -331,7 +331,7 @@ namespace NebScope
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void timerHousekeeping_Tick(object sender, EventArgs e)
+        void TimerHousekeeping_Tick(object sender, EventArgs e)
         {
             if (_captureIndDelay > 0)
             {
@@ -349,35 +349,10 @@ namespace NebScope
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnHelp_Click(object sender, EventArgs e)
+        private void BtnHelp_Click(object sender, EventArgs e)
         {
             // Make some markdown.
-            List<string> mdText = new List<string>();
-
-            // Main help file.
-            mdText.Add(File.ReadAllText(@"README.md"));
-
-            // Put it together.
-            List<string> htmlText = new List<string>();
-
-            // Boilerplate
-            htmlText.Add($"<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-            // CSS
-            htmlText.Add($"<style>body {{ background-color: {_settings.BackColor.Name}; font-family: \"Arial\", Helvetica, sans-serif; }}");
-            htmlText.Add($"</style></head><body>");
-
-            // Meat.
-            string mdHtml = string.Join(Environment.NewLine, mdText);
-            htmlText.Add(mdHtml);
-
-            // Bottom.
-            string ss = "<!-- Markdeep: --><style class=\"fallback\">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src=\"markdeep.min.js\" charset=\"utf-8\"></script><script src=\"https://casual-effects.com/markdeep/latest/markdeep.min.js\" charset=\"utf-8\"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility=\"visible\")</script>";
-            htmlText.Add(ss);
-            htmlText.Add($"</body></html>");
-
-            string fn = Path.Combine(Path.GetTempPath(), "nebulator.html");
-            File.WriteAllText(fn, string.Join(Environment.NewLine, htmlText));
-            Process.Start(fn);
+            Tools.MarkdownToHtml(File.ReadAllLines(@".\README.md").ToList(), _settings.BackColor.Name, "helvetica", true);
         }
 
         /// <summary>

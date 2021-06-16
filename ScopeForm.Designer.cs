@@ -96,7 +96,7 @@
             this.chkCapture.Size = new System.Drawing.Size(31, 32);
             this.chkCapture.TabIndex = 17;
             this.chkCapture.UseVisualStyleBackColor = true;
-            this.chkCapture.CheckedChanged += new System.EventHandler(this.chkCapture_CheckedChanged);
+            this.chkCapture.CheckedChanged += new System.EventHandler(this.ChkCapture_CheckedChanged);
             // 
             // btnHelp
             // 
@@ -107,7 +107,7 @@
             this.btnHelp.Size = new System.Drawing.Size(43, 39);
             this.btnHelp.TabIndex = 15;
             this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            this.btnHelp.Click += new System.EventHandler(this.BtnHelp_Click);
             // 
             // txtMsgs
             // 
@@ -288,7 +288,7 @@
             // 
             // timerHousekeeping
             // 
-            this.timerHousekeeping.Tick += new System.EventHandler(this.timerHousekeeping_Tick);
+            this.timerHousekeeping.Tick += new System.EventHandler(this.TimerHousekeeping_Tick);
             // 
             // ScopeForm
             // 
