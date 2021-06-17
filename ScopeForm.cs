@@ -90,7 +90,7 @@ namespace NebScope
             try
             {
                 ///// Settings /////
-                string appDir = MiscUtils.GetAppDataDir("NebScope");
+                string appDir = MiscUtils.GetAppDataDir("NebScope", "Ephemera");
                 DirectoryInfo di = new DirectoryInfo(appDir);
                 di.Create();
                 _settings = UserSettings.Load(appDir);

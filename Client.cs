@@ -9,11 +9,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 
-[assembly: AssemblyTitle("NebScopeClient")]
+[assembly: AssemblyTitle("NebScope.Client")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Tyrell Corp")]
-[assembly: AssemblyProduct("NebScopeClient")]
+[assembly: AssemblyCompany("Ephemera")]
+[assembly: AssemblyProduct("NebScope")]
 [assembly: AssemblyCopyright("MIT License")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

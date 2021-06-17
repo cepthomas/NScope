@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NebScope")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Tyrell Corp")]
+[assembly: AssemblyCompany("Ephemera")]
 [assembly: AssemblyProduct("NebScope")]
 [assembly: AssemblyCopyright("MIT License")]
 [assembly: AssemblyTrademark("")]
