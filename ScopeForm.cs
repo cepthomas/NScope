@@ -190,7 +190,7 @@ namespace NebScope
         public void UpdateData(int channel, int cmd, double[] data)
         {
             // Check validity and size of data.
-            if(channel < 0 || channel > 1 || cmd < 0 || cmd > 1 || data == null)
+            if(channel < 0 || channel > 1 || cmd < 0 || cmd > 1 || data is null)
             {
                 // fail
             }
