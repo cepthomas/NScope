@@ -15,7 +15,7 @@ using System.Windows.Forms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using NBagOfTricks;
-using NBagOfTricks.UI;
+using NBagOfUis;
 
 
 namespace NebScope
@@ -41,7 +41,7 @@ namespace NebScope
         RectangleF _dataRegion = new RectangleF();
 
         /// <summary>Current pen to draw with.</summary>
-        SKPaint _pen = new SKPaint()
+        readonly SKPaint _pen = new SKPaint()
         {
             Color = SKColors.Black,
             Style = SKPaintStyle.Stroke,
@@ -52,7 +52,7 @@ namespace NebScope
         };
 
         /// <summary>Current font to draw with.</summary>
-        SKPaint _text = new SKPaint()
+        readonly SKPaint _text = new SKPaint()
         {
             TextSize = 14,
             Color = SKColors.White,
@@ -595,7 +595,7 @@ namespace NebScope
                 AddText("Bad message rcvd.");
             }
 
-            return (channel:channel, cmd:cmd, data:data);
+            return (channel, cmd, data);
         }
 
         /// <summary>

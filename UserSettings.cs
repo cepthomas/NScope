@@ -9,7 +9,7 @@ using System.Windows.Forms.Design;
 using System.Drawing.Design;
 using Newtonsoft.Json;
 using NBagOfTricks;
-using NBagOfTricks.UI;
+using NBagOfUis;
 
 
 namespace NebScope
@@ -90,9 +90,9 @@ namespace NebScope
         public static UserSettings Load(string appDir)
         {
             string fn = Path.Combine(appDir, "settings.json");
-            UserSettings settings = null;
+            UserSettings settings;
 
-            if(File.Exists(fn))
+            if (File.Exists(fn))
             {
                 string json = File.ReadAllText(fn);
                 settings = JsonConvert.DeserializeObject<UserSettings>(json);
@@ -103,8 +103,6 @@ namespace NebScope
                 settings = new UserSettings();
 
                 // Setup some default channels.
-                int icolor = DateTime.Now.Second;
-
                 settings.Channel1 = new Channel()
                 {
                     Name = $"Channel 1",

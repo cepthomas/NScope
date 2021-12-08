@@ -22,9 +22,9 @@
             this.chkCapture = new System.Windows.Forms.CheckBox();
             this.btnHelp = new System.Windows.Forms.Button();
             this.txtMsgs = new System.Windows.Forms.RichTextBox();
-            this.potCh2Position = new NBagOfTricks.UI.Pot();
-            this.potCh1Position = new NBagOfTricks.UI.Pot();
-            this.potXPosition = new NBagOfTricks.UI.Pot();
+            this.potCh2Position = new NBagOfUis.Pot();
+            this.potCh1Position = new NBagOfUis.Pot();
+            this.potXPosition = new NBagOfUis.Pot();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.selTimebase = new System.Windows.Forms.ComboBox();
@@ -135,7 +135,7 @@
             this.potCh2Position.Name = "potCh2Position";
             this.potCh2Position.Size = new System.Drawing.Size(67, 62);
             this.potCh2Position.TabIndex = 6;
-            this.potCh2Position.Taper = NBagOfTricks.UI.Taper.Linear;
+            this.potCh2Position.Taper = NBagOfUis.Taper.Linear;
             this.potCh2Position.Value = 0D;
             this.potCh2Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             this.potCh2Position.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
@@ -152,7 +152,7 @@
             this.potCh1Position.Name = "potCh1Position";
             this.potCh1Position.Size = new System.Drawing.Size(67, 62);
             this.potCh1Position.TabIndex = 5;
-            this.potCh1Position.Taper = NBagOfTricks.UI.Taper.Linear;
+            this.potCh1Position.Taper = NBagOfUis.Taper.Linear;
             this.potCh1Position.Value = 0D;
             this.potCh1Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             this.potCh1Position.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
@@ -169,7 +169,7 @@
             this.potXPosition.Name = "potXPosition";
             this.potXPosition.Size = new System.Drawing.Size(67, 62);
             this.potXPosition.TabIndex = 1;
-            this.potXPosition.Taper = NBagOfTricks.UI.Taper.Linear;
+            this.potXPosition.Taper = NBagOfUis.Taper.Linear;
             this.potXPosition.Value = 0D;
             this.potXPosition.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
             this.potXPosition.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
@@ -321,9 +321,9 @@
         #endregion
         private System.Windows.Forms.SplitContainer splitContainer1;
         private SkiaSharp.Views.Desktop.SKControl skControl;
-        private NBagOfTricks.UI.Pot potXPosition;
-        private NBagOfTricks.UI.Pot potCh2Position;
-        private NBagOfTricks.UI.Pot potCh1Position;
+        private NBagOfUis.Pot potXPosition;
+        private NBagOfUis.Pot potCh2Position;
+        private NBagOfUis.Pot potCh1Position;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox2;
