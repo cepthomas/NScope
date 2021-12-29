@@ -18,9 +18,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScopeForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.chkCapture = new System.Windows.Forms.CheckBox();
-            this.btnHelp = new System.Windows.Forms.Button();
             this.txtMsgs = new System.Windows.Forms.RichTextBox();
             this.potCh2Position = new NBagOfUis.Pot();
             this.potCh1Position = new NBagOfUis.Pot();
@@ -36,6 +33,9 @@
             this.selCh2VoltsPerDiv = new System.Windows.Forms.ComboBox();
             this.skControl = new SkiaSharp.Views.Desktop.SKControl();
             this.timerHousekeeping = new System.Windows.Forms.Timer(this.components);
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.chkCapture = new System.Windows.Forms.CheckBox();
+            this.btnHelp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -73,41 +73,6 @@
             this.splitContainer1.SplitterDistance = 257;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.Image = global::NebScope.Properties.Resources.glyphicons_137_cogwheel;
-            this.btnSettings.Location = new System.Drawing.Point(148, 15);
-            this.btnSettings.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(43, 39);
-            this.btnSettings.TabIndex = 18;
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.UserSettings_Click);
-            // 
-            // chkCapture
-            // 
-            this.chkCapture.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkCapture.AutoSize = true;
-            this.chkCapture.Image = global::NebScope.Properties.Resources.glyphicons_82_refresh;
-            this.chkCapture.Location = new System.Drawing.Point(17, 15);
-            this.chkCapture.Margin = new System.Windows.Forms.Padding(4);
-            this.chkCapture.Name = "chkCapture";
-            this.chkCapture.Size = new System.Drawing.Size(31, 32);
-            this.chkCapture.TabIndex = 17;
-            this.chkCapture.UseVisualStyleBackColor = true;
-            this.chkCapture.CheckedChanged += new System.EventHandler(this.ChkCapture_CheckedChanged);
-            // 
-            // btnHelp
-            // 
-            this.btnHelp.Image = global::NebScope.Properties.Resources.glyphicons_195_question_sign;
-            this.btnHelp.Location = new System.Drawing.Point(199, 15);
-            this.btnHelp.Margin = new System.Windows.Forms.Padding(4);
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(43, 39);
-            this.btnHelp.TabIndex = 15;
-            this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.Click += new System.EventHandler(this.BtnHelp_Click);
             // 
             // txtMsgs
             // 
@@ -289,6 +254,41 @@
             // timerHousekeeping
             // 
             this.timerHousekeeping.Tick += new System.EventHandler(this.TimerHousekeeping_Tick);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = global::NebScope.Properties.Resources.glyphicons_137_cogwheel;
+            this.btnSettings.Location = new System.Drawing.Point(148, 15);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(43, 39);
+            this.btnSettings.TabIndex = 18;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.UserSettings_Click);
+            // 
+            // chkCapture
+            // 
+            this.chkCapture.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkCapture.AutoSize = true;
+            this.chkCapture.Image = global::NebScope.Properties.Resources.glyphicons_366_restart;
+            this.chkCapture.Location = new System.Drawing.Point(17, 15);
+            this.chkCapture.Margin = new System.Windows.Forms.Padding(4);
+            this.chkCapture.Name = "chkCapture";
+            this.chkCapture.Size = new System.Drawing.Size(31, 31);
+            this.chkCapture.TabIndex = 17;
+            this.chkCapture.UseVisualStyleBackColor = true;
+            this.chkCapture.CheckedChanged += new System.EventHandler(this.ChkCapture_CheckedChanged);
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.Image = global::NebScope.Properties.Resources.glyphicons_195_question_sign;
+            this.btnHelp.Location = new System.Drawing.Point(199, 15);
+            this.btnHelp.Margin = new System.Windows.Forms.Padding(4);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(43, 39);
+            this.btnHelp.TabIndex = 15;
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.BtnHelp_Click);
             // 
             // ScopeForm
             // 
