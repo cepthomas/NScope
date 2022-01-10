@@ -36,7 +36,7 @@ namespace NebScope
         public const int NUM_Y_DIVISIONS = 8;
 
         /// <summary>Volts per div options.</summary>
-        public static readonly Dictionary<string, double> VoltOptions = new Dictionary<string, double>()
+        public static readonly Dictionary<string, double> VoltOptions = new()
         {
             {"0.01", 0.01 },
             {"0.02", 0.02 },
@@ -50,7 +50,7 @@ namespace NebScope
         };
 
         /// <summary>Time per div options.</summary>
-        public static readonly Dictionary<string, double> TimeOptions = new Dictionary<string, double>()
+        public static readonly Dictionary<string, double> TimeOptions = new()
         {
             {"0.001", 0.001 },
             {"0.002", 0.002 },
@@ -66,5 +66,9 @@ namespace NebScope
             {"5",         5 },
         };
         #endregion
+
+        /// <summary>Current user settings.</summary>
+        public static UserSettings Settings { get; set; } = new();
+
     }
 }

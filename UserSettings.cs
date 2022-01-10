@@ -7,7 +7,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Drawing.Design;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using NBagOfTricks;
 using NBagOfUis;
 
@@ -18,24 +19,38 @@ namespace NebScope
     public class UserSettings
     {
         #region Persisted editable properties
-        [DisplayName("Control Color"), Description("The color used for styling control surfaces."), Browsable(true)]
+        [DisplayName("Control Color")]
+        [Description("The color used for styling control surfaces.")]
+        [Browsable(true)]
+        [JsonConverter(typeof(JsonColorConverter))]
         public Color ControlColor { get; set; } = Color.Blue;
 
-        [DisplayName("Background Color"), Description("The color used for overall background."), Browsable(true)]
+        [DisplayName("Background Color")]
+        [Description("The color used for overall background.")]
+        [Browsable(true)]
+        [JsonConverter(typeof(JsonColorConverter))]
         public Color BackColor { get; set; } = Color.AliceBlue;
 
-        [DisplayName("Channel 1"), Description("The channel settings."), Browsable(true)]
+        [DisplayName("Channel 1")]
+        [Description("The channel settings.")]
+        [Browsable(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public Channel Channel1 { get; set; } = new Channel();
 
-        [DisplayName("Channel 2"), Description("The channel settings."), Browsable(true)]
+        [DisplayName("Channel 2")]
+        [Description("The channel settings.")]
+        [Browsable(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public Channel Channel2 { get; set; } = new Channel();
 
-        [DisplayName("Stroke Size"), Description("Trace thickness."), Browsable(true)]
+        [DisplayName("Stroke Size")]
+        [Description("Trace thickness.")]
+        [Browsable(true)]
         public double StrokeSize { get; set; } = 2;
 
-        [DisplayName("UDP Port"), Description("Port to listen on."), Browsable(true)]
+        [DisplayName("UDP Port")]
+        [Description("Port to listen on.")]
+        [Browsable(true)]
         public int Port { get; set; } = 9888;
         #endregion
 
@@ -75,35 +90,40 @@ namespace NebScope
 
         #region Fields
         /// <summary>The file name.</summary>
-        string _fn = "???";
+        string _fn = "";
         #endregion
 
         #region Persistence
         /// <summary>Save object to file.</summary>
         public void Save()
         {
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(_fn, json);
+            if(_fn != "")
+            {
+                JsonSerializerOptions opts = new() { WriteIndented = true };
+                string json = JsonSerializer.Serialize(this, opts);
+                File.WriteAllText(_fn, json);
+            }
         }
 
         /// <summary>Create object from file.</summary>
         public static UserSettings Load(string appDir)
         {
             string fn = Path.Combine(appDir, "settings.json");
-            UserSettings settings;
+            UserSettings? settings = null;
 
             if (File.Exists(fn))
             {
                 string json = File.ReadAllText(fn);
-                settings = JsonConvert.DeserializeObject<UserSettings>(json);
+                settings = JsonSerializer.Deserialize<UserSettings>(json);
             }
-            else
+
+            if (settings is null)
             {
                 // Doesn't exist, create a new one.
-                settings = new UserSettings();
+                settings = new();
 
                 // Setup some default channels.
-                settings.Channel1 = new Channel()
+                settings.Channel1 = new()
                 {
                     Name = $"Channel 1",
                     Color = GraphicsUtils.GetSequenceColor(0),
@@ -111,7 +131,7 @@ namespace NebScope
                     Position = 0
                 };
 
-                settings.Channel2 = new Channel()
+                settings.Channel2 = new()
                 {
                     Name = $"Channel 2",
                     Color = GraphicsUtils.GetSequenceColor(1),

@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SkiaSharp;
-using SkiaSharp.Views.Desktop;
-using Newtonsoft.Json;
+//using SkiaSharp.Views.Desktop;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace NebScope
@@ -60,7 +61,7 @@ namespace NebScope
         /// <param name="xSamplesPerDivision">Number of data points in X grid.</param>
         public List<SKPoint> MapData(RectangleF drawRegion, double xPosition, double xSamplesPerDivision)
         {
-            List<SKPoint> mapped = new List<SKPoint>();
+            List<SKPoint> mapped = new();
 
             //https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/transforms/matrix
             //canvas.Translate(tx, ty);
@@ -77,7 +78,7 @@ namespace NebScope
             double xOffset = xPosition * drawRegion.Width;
             double yOffset = Position * drawRegion.Height;
 
-            SKMatrix matrix = SKMatrix.MakeIdentity();
+            SKMatrix matrix = SKMatrix.MakeIdentity(); // TODO CreateIdentity()
             matrix.ScaleX = (float)xScale;
             matrix.ScaleY = -(float)yScale;
             matrix.TransX = drawRegion.Left + (float)xOffset;
@@ -85,7 +86,7 @@ namespace NebScope
             matrix.Persp2 = 1;
 
             // Map the data to UI space.
-            for (int i = 0; i < DataPoints.Count(); i++)
+            for (int i = 0; i < DataPoints.Count; i++)
             {
                 mapped.Add(matrix.MapPoint(new SKPoint(i, (float)DataPoints[i])));
             }

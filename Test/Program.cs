@@ -1,29 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using NBagOfTricks;
+using NBagOfTricks.PNUT;
+//using NebOsc;
 
 
-[assembly: AssemblyTitle("NebScope.Client")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ephemera")]
-[assembly: AssemblyProduct("NebScope")]
-[assembly: AssemblyCopyright("MIT License")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-[assembly: ComVisible(false)]
-[assembly: Guid("dd14fce7-1cd5-4412-8912-9b75df0e3c7b")]
-[assembly: AssemblyVersion("0.9.*")]
-//[assembly: AssemblyFileVersion("1.0.0.0")]
-
-
-namespace Client
+namespace NebScope.Test
 {
     // Example of a scope client/sender.
     class Program
