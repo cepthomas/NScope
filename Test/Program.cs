@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using NBagOfTricks;
 using NBagOfTricks.PNUT;
-//using NebOsc;
 
 
 namespace NebScope.Test
@@ -17,7 +16,7 @@ namespace NebScope.Test
     {
         static UdpClient _udp;
 
-        static void Main(string[] args)
+        static void Main()
         {
             // Set up UDP sender.
             _udp = new UdpClient(0);
@@ -33,7 +32,7 @@ namespace NebScope.Test
         static int SendMsg(int channel, int cmd, float[] vals)
         {
             int dataSize = 4; // I know this.
-            byte[] buff = new byte[(2 + vals.Count()) * dataSize];
+            byte[] buff = new byte[(2 + vals.Length) * dataSize];
 
             byte[] bytes = BitConverter.GetBytes(channel);
             Array.Copy(bytes, 0, buff, 0 * dataSize, dataSize);
@@ -41,13 +40,13 @@ namespace NebScope.Test
             bytes = BitConverter.GetBytes(cmd);
             Array.Copy(bytes, 0, buff, 1 * dataSize, dataSize);
 
-            for (int i = 0; i < vals.Count(); i++)
+            for (int i = 0; i < vals.Length; i++)
             {
                 bytes = BitConverter.GetBytes(vals[i]);
                 Array.Copy(bytes, 0, buff, (i + 2) * dataSize, dataSize);
             }
 
-            int num = _udp.Send(buff, buff.Count());
+            int num = _udp.Send(buff, buff.Length);
 
             return num;
         }

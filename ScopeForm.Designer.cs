@@ -34,8 +34,9 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.selCh2VoltsPerDiv = new System.Windows.Forms.ComboBox();
-            this.timerHousekeeping = new System.Windows.Forms.Timer(this.components);
             this.display = new NebScope.Display();
+            this.timerHousekeeping = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -47,8 +48,8 @@
             // 
             // splitContainer1
             // 
+            this.splitContainer1.Cursor = System.Windows.Forms.Cursors.VSplit;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer1.Name = "splitContainer1";
@@ -76,37 +77,48 @@
             // 
             // btnSettings
             // 
+            this.btnSettings.BackColor = System.Drawing.SystemColors.Control;
+            this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettings.Image = global::NebScope.Properties.Resources.glyphicons_137_cogwheel;
-            this.btnSettings.Location = new System.Drawing.Point(148, 19);
+            this.btnSettings.Location = new System.Drawing.Point(137, 7);
             this.btnSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(43, 49);
+            this.btnSettings.Size = new System.Drawing.Size(48, 48);
             this.btnSettings.TabIndex = 18;
-            this.btnSettings.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.btnSettings, "User settings");
+            this.btnSettings.UseVisualStyleBackColor = false;
             this.btnSettings.Click += new System.EventHandler(this.UserSettings_Click);
             // 
             // chkCapture
             // 
             this.chkCapture.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkCapture.AutoSize = true;
+            this.chkCapture.BackColor = System.Drawing.SystemColors.Control;
+            this.chkCapture.FlatAppearance.BorderSize = 0;
+            this.chkCapture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chkCapture.Image = global::NebScope.Properties.Resources.glyphicons_366_restart;
-            this.chkCapture.Location = new System.Drawing.Point(17, 19);
+            this.chkCapture.Location = new System.Drawing.Point(17, 7);
             this.chkCapture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkCapture.Name = "chkCapture";
-            this.chkCapture.Size = new System.Drawing.Size(31, 31);
+            this.chkCapture.Size = new System.Drawing.Size(48, 48);
             this.chkCapture.TabIndex = 17;
-            this.chkCapture.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkCapture, "Capture enable");
+            this.chkCapture.UseVisualStyleBackColor = false;
             this.chkCapture.CheckedChanged += new System.EventHandler(this.ChkCapture_CheckedChanged);
             // 
             // btnHelp
             // 
+            this.btnHelp.BackColor = System.Drawing.SystemColors.Control;
+            this.btnHelp.FlatAppearance.BorderSize = 0;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Image = global::NebScope.Properties.Resources.glyphicons_195_question_sign;
-            this.btnHelp.Location = new System.Drawing.Point(199, 19);
+            this.btnHelp.Location = new System.Drawing.Point(193, 7);
             this.btnHelp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(43, 49);
+            this.btnHelp.Size = new System.Drawing.Size(48, 48);
             this.btnHelp.TabIndex = 15;
-            this.btnHelp.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.btnHelp, "Help");
+            this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.BtnHelp_Click);
             // 
             // txtMsgs
@@ -114,11 +126,11 @@
             this.txtMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.txtMsgs.BackColor = System.Drawing.SystemColors.Control;
-            this.txtMsgs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtMsgs.Location = new System.Drawing.Point(17, 495);
+            this.txtMsgs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtMsgs.Location = new System.Drawing.Point(17, 444);
             this.txtMsgs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMsgs.Name = "txtMsgs";
-            this.txtMsgs.Size = new System.Drawing.Size(223, 232);
+            this.txtMsgs.Size = new System.Drawing.Size(224, 282);
             this.txtMsgs.TabIndex = 13;
             this.txtMsgs.Text = "";
             this.txtMsgs.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Msgs_MouseDoubleClick);
@@ -128,7 +140,7 @@
             this.potCh2Position.DecPlaces = 2;
             this.potCh2Position.DrawColor = System.Drawing.Color.Black;
             this.potCh2Position.Label = "Pos";
-            this.potCh2Position.Location = new System.Drawing.Point(155, 389);
+            this.potCh2Position.Location = new System.Drawing.Point(155, 338);
             this.potCh2Position.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.potCh2Position.Maximum = 1D;
             this.potCh2Position.Minimum = -1D;
@@ -145,7 +157,7 @@
             this.potCh1Position.DecPlaces = 2;
             this.potCh1Position.DrawColor = System.Drawing.Color.Black;
             this.potCh1Position.Label = "Pos";
-            this.potCh1Position.Location = new System.Drawing.Point(155, 260);
+            this.potCh1Position.Location = new System.Drawing.Point(155, 209);
             this.potCh1Position.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.potCh1Position.Maximum = 1D;
             this.potCh1Position.Minimum = -1D;
@@ -162,7 +174,7 @@
             this.potXPosition.DecPlaces = 2;
             this.potXPosition.DrawColor = System.Drawing.Color.Black;
             this.potXPosition.Label = "Pos";
-            this.potXPosition.Location = new System.Drawing.Point(155, 131);
+            this.potXPosition.Location = new System.Drawing.Point(155, 80);
             this.potXPosition.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.potXPosition.Maximum = 1D;
             this.potXPosition.Minimum = -1D;
@@ -178,7 +190,7 @@
             // 
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.selTimebase);
-            this.groupBox1.Location = new System.Drawing.Point(16, 112);
+            this.groupBox1.Location = new System.Drawing.Point(16, 61);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -211,7 +223,7 @@
             // 
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.selCh1VoltsPerDiv);
-            this.groupBox3.Location = new System.Drawing.Point(16, 239);
+            this.groupBox3.Location = new System.Drawing.Point(16, 188);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -244,7 +256,7 @@
             // 
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.selCh2VoltsPerDiv);
-            this.groupBox2.Location = new System.Drawing.Point(16, 368);
+            this.groupBox2.Location = new System.Drawing.Point(16, 317);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -273,17 +285,18 @@
             this.selCh2VoltsPerDiv.TabIndex = 15;
             this.selCh2VoltsPerDiv.SelectedValueChanged += new System.EventHandler(this.Sel_SelectedValueChanged);
             // 
-            // timerHousekeeping
-            // 
-            this.timerHousekeeping.Tick += new System.EventHandler(this.TimerHousekeeping_Tick);
-            // 
             // display
             // 
+            this.display.BackColor = System.Drawing.Color.Black;
             this.display.Dock = System.Windows.Forms.DockStyle.Fill;
             this.display.Location = new System.Drawing.Point(0, 0);
             this.display.Name = "display";
             this.display.Size = new System.Drawing.Size(847, 742);
             this.display.TabIndex = 0;
+            // 
+            // timerHousekeeping
+            // 
+            this.timerHousekeeping.Tick += new System.EventHandler(this.TimerHousekeeping_Tick);
             // 
             // ScopeForm
             // 
@@ -298,7 +311,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScopeForm_FormClosing);
             this.Load += new System.EventHandler(this.ScopeForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -332,6 +344,7 @@
         private System.Windows.Forms.CheckBox chkCapture;
         private System.Windows.Forms.Button btnSettings;
         private Display display;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

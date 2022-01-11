@@ -22,9 +22,6 @@ namespace NebScope
     public partial class ScopeForm : Form
     {
         #region Fields
-        ///// <summary>Current user settings.</summary>
-        //UserSettings Common.Settings = null;
-
         /// <summary>Input device.</summary>
         UdpClient? _udp = null;
 
@@ -59,35 +56,51 @@ namespace NebScope
                 di.Create();
                 Common.Settings = UserSettings.Load(appDir);
 
-                potXPosition.Value = Common.Settings.XPosition;
-                potCh1Position.Value = Common.Settings.Channel1.Position;
-                potCh2Position.Value = Common.Settings.Channel2.Position;
-
                 ///// Init the form /////
                 Location = new Point(Common.Settings.FormX, Common.Settings.FormY);
                 Size = new Size(Common.Settings.FormWidth, Common.Settings.FormHeight);
                 WindowState = FormWindowState.Normal;
                 BackColor = Common.Settings.BackColor;
 
-                ///// Control visuals /////
+                ///// X pos pot /////
+                potXPosition.Value = Common.Settings.XPosition;
                 potXPosition.DrawColor = Common.Settings.ControlColor;
                 potXPosition.BackColor = Common.Settings.BackColor;
+
+                ///// Ch 1 pot /////
+                potCh1Position.Value = Common.Settings.Channel1.Position;
                 potCh1Position.DrawColor = Common.Settings.ControlColor;
                 potCh1Position.BackColor = Common.Settings.BackColor;
+
+                ///// Ch 2 pot /////
+                potCh2Position.Value = Common.Settings.Channel2.Position;
                 potCh2Position.DrawColor = Common.Settings.ControlColor;
                 potCh2Position.BackColor = Common.Settings.BackColor;
-                selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
-                selCh2VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
-                selTimebase.ForeColor = Common.Settings.ControlColor;
-                chkCapture.Checked = true;
 
-                ///// Selectors /////
+                ///// Ch 1 volts /////
+                selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
                 selCh1VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
-                selCh2VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
-                selTimebase.Items.AddRange(Common.TimeOptions.Keys.ToArray());
                 selCh1VoltsPerDiv.SelectedItem = Common.Settings.Channel1.VoltsPerDivision;
+
+                ///// Ch 2 volts /////
+                selCh2VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
+                selCh2VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
                 selCh2VoltsPerDiv.SelectedItem = Common.Settings.Channel2.VoltsPerDivision;
+
+                ///// Timebase /////
+                selTimebase.ForeColor = Common.Settings.ControlColor;
+                selTimebase.Items.AddRange(Common.TimeOptions.Keys.ToArray());
                 selTimebase.SelectedItem = Common.Settings.TimePerDivision;
+
+                ///// Buttons /////
+                btnHelp.BackColor = Common.Settings.BackColor;
+                btnSettings.BackColor = Common.Settings.BackColor;
+
+                ///// Checkboxes /////
+                chkCapture.Checked = true;
+                chkCapture.BackColor = Common.Settings.BackColor;
+                //chkCapture.ForeColor = Common.Settings.ControlColor;
+                chkCapture.FlatAppearance.CheckedBackColor = Common.Settings.ControlColor;
 
                 ///// Start UDP server /////
                 _udp = new UdpClient(Common.Settings.Port);
@@ -99,7 +112,7 @@ namespace NebScope
             }
             catch (Exception ex)
             {
-                AddText(ex.Message);
+                AddText($"ERROR {ex.Message}");
             }
         }
 
@@ -129,7 +142,7 @@ namespace NebScope
                 components.Dispose();
             }
 
-            //_udp?.Close();
+            _udp?.Close();
             _udp?.Dispose();
             _udp = null;
 
@@ -137,14 +150,14 @@ namespace NebScope
         }
         #endregion
 
-        #region Public functions
+        #region Functions
         /// <summary>
         /// Directly update the data for the channel.
         /// </summary>
         /// <param name="channel">Chan 1 or 2 (0 or 1)</param>
         /// <param name="cmd">0 = append, 1 = overwrite.</param>
         /// <param name="data">The data to display.</param>
-        public void UpdateData(int channel, int cmd, double[]? data)
+        void UpdateData(int channel, int cmd, double[]? data)
         {
             // Check validity and size of data.
             if(channel < 0 || channel > 1 || cmd < 0 || cmd > 1 || data is null)
@@ -155,9 +168,6 @@ namespace NebScope
             {
                 Channel ch = channel == 0 ? Common.Settings.Channel1 : Common.Settings.Channel2;
                 ch.UpdateData(cmd, data);
-
-                // Ask for a redraw.
-                Invalidate();
             }
         }
 
@@ -166,7 +176,7 @@ namespace NebScope
         /// </summary>
         /// <param name="channelNum"></param>
         /// <returns></returns>
-        public Channel GetChannel(int channelNum)
+        Channel GetChannel(int channelNum)
         {
             return channelNum == 0 ? Common.Settings.Channel1 : Common.Settings.Channel2;
         }
@@ -203,7 +213,7 @@ namespace NebScope
             if (redraw)
             {
                 // Ask for a redraw.
-//                skControl.Invalidate();
+                display.UpdateData();
             }
         }
 
@@ -237,7 +247,7 @@ namespace NebScope
             if (redraw)
             {
                 // Ask for a redraw.
-                Invalidate();
+                display.UpdateData();
             }
         }
 
@@ -264,7 +274,6 @@ namespace NebScope
             if(!chkCapture.Checked)
             {
                 _captureIndDelay = 0;
-                chkCapture.BackColor = SystemColors.Control;
             }
         }
 
@@ -280,7 +289,6 @@ namespace NebScope
                 _captureIndDelay--;
                 if (_captureIndDelay <= 0)
                 {
-                    chkCapture.BackColor = SystemColors.Control;
                     _captureIndDelay = 0;
                 }
             }
@@ -345,6 +353,9 @@ namespace NebScope
                     var (channel, cmd, data) = UnpackMsg(bytes);
 
                     UpdateData(channel, cmd, data);
+
+                    // Ask for a redraw.
+                    display.UpdateData();
 
                     // Lights.
                     _captureIndDelay = 5;
@@ -435,6 +446,9 @@ namespace NebScope
 
             UpdateData(0, 1, ch1);
             UpdateData(1, 1, ch2);
+
+            // Ask for a redraw.
+            display.UpdateData();
         }
         #endregion
     }

@@ -8,21 +8,24 @@ using System.Threading.Tasks;
 
 namespace NebScope
 {
-    #region Enums
+    #region Types
     /// <summary></summary>
     public enum TriggerMode
     {
-        Auto,     //> Automatic trigger can be implemented to finish acquisition at the mode when no valid trigger exists.
-        Normal,   //> Only valid triggered waveform is checked at the mode. The waveform is acquired only when satisfying the trigger condition.
-        Single    //> Acquire a waveform when detecting a single trigger, and then stop.
+        /// <summary>Automatic trigger can be implemented to finish acquisition at the mode when no valid trigger exists.</summary>
+        Auto,
+        /// <summary>Only valid triggered waveform is checked at the mode. The waveform is acquired only when satisfying the trigger condition.</summary>
+        Normal,
+        /// <summary>Acquire a waveform when detecting a single trigger, and then stop.</summary>
+        Single
     };
 
     /// <summary></summary>
     public enum TriggerSlope
     {
-        Rising,   //>
-        Falling,  //>
-        Both      //>
+        Rising,
+        Falling,
+        Both
     }
     #endregion
     

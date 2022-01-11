@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SkiaSharp;
-//using SkiaSharp.Views.Desktop;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using NBagOfTricks;
 
 
 namespace NebScope
@@ -19,16 +19,25 @@ namespace NebScope
     [Serializable]
     public class Channel
     {
-        [DisplayName("Name"), Description("The name for this channel."), Browsable(true)]
+        [DisplayName("Name")]
+        [Description("The name for this channel.")]
+        [Browsable(true)]
         public string Name { get; set; } = "????";
 
-        [DisplayName("Color"), Description("The color to display this channel."), Browsable(true)]
+        [DisplayName("Color")]
+        [Description("The color to display this channel.")]
+        [Browsable(true)]
+        [JsonConverter(typeof(JsonColorConverter))]
         public Color Color { get; set; } = Color.White;
 
-        [DisplayName("Position"), Description("Shift along Y axis aka DC offset."), Browsable(true)]
+        [DisplayName("Position")]
+        [Description("Shift along Y axis aka DC offset.")]
+        [Browsable(true)]
         public double Position { get; set; } = 0.0;
 
-        [DisplayName("Volts Per Div"), Description("Extent of y axis. Volts is a nod to tradition."), Browsable(true)]
+        [DisplayName("Volts Per Div")]
+        [Description("Extent of y axis. Volts is a nod to tradition.")]
+        [Browsable(true)]
         public string VoltsPerDivision { get; set; } = "0.5";
 
         ///<summary>Data points y values in "units" "volts".</summary>

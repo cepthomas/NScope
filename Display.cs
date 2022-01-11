@@ -25,7 +25,6 @@ namespace NebScope
         const int Y_AXIS_SPACE = 80;
         #endregion
 
-
         #region Fields
         /// <summary>Current pen to draw with.</summary>
         readonly SKPaint _pen = new()
@@ -39,7 +38,7 @@ namespace NebScope
         };
 
         /// <summary>Current font to draw with.</summary>
-        readonly SKPaint _text = new()
+        readonly SKPaint _font = new()
         {
             TextSize = 14,
             Color = SKColors.White,
@@ -51,7 +50,7 @@ namespace NebScope
         /// <summary>Rendered bitmap for display when painting.</summary>
         Bitmap? _bitmap = null;
 
-        /// <summary>Just the data.</summary>
+        /// <summary>Just the data area.</summary>
         RectangleF _dataRegion = new();
         #endregion
 
@@ -82,10 +81,7 @@ namespace NebScope
         /// <param name="e"></param>
         protected override void OnResize(EventArgs e)
         {
-            UpdateDisplayBitmap();
-
-            // Show the new bitmap.
-            Invalidate();
+            UpdateData();
 
             base.OnResize(e);
         }
@@ -105,30 +101,26 @@ namespace NebScope
 
         #region Render functions
         /// <summary>
-        /// Redraw if it's time and enabled.
+        /// Generate the bitmap if it's time and enabled.
         /// </summary>
-        public void UpdateDisplayBitmap()
+        public void UpdateData()
         {
             // Check for resize or init.
             if (_bitmap is null || _bitmap.Width != Width || _bitmap.Height != Height)
             {
-                if (_bitmap is not null)
-                {
-                    _bitmap.Dispose();
-                }
-
+                _bitmap?.Dispose();
                 _bitmap = new(Width, Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            }
+            else
+            {
+                Graphics.FromImage(_bitmap).Clear(Color.Black);
             }
 
             // Render the new bitmap.
             var data = _bitmap.LockBits(new Rectangle(0, 0, Width, Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, _bitmap.PixelFormat);
 
-            using (SKSurface skSurface = SKSurface.Create(new SKImageInfo(Width, Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul), data.Scan0, Width * 4))
+            using (SKSurface surface = SKSurface.Create(new SKImageInfo(Width, Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul), data.Scan0, Width * 4))
             {
-                // Hand over to the script for drawing on.
-                var canvas = skSurface.Canvas;
-
-                //CalcDataRegion();
                 // Calc the drawing region.
                 _dataRegion = new Rectangle(
                     Left + BORDER_PAD + Y_AXIS_SPACE,
@@ -137,17 +129,20 @@ namespace NebScope
                     Height - BORDER_PAD - BORDER_PAD - X_AXIS_SPACE);
 
                 // Draw axes first before clipping.
-                DrawAxes(canvas);
-                DrawLabels(canvas);
+                DrawAxes(surface.Canvas);
+                DrawLabels(surface.Canvas);
 
                 // Now clip to drawing region.
-                canvas.ClipRect(ToSKRect(_dataRegion));
+                surface.Canvas.ClipRect(ToSKRect(_dataRegion));
 
-                DrawData(canvas, Common.Settings.Channel1);
-                DrawData(canvas, Common.Settings.Channel2);
+                DrawData(surface.Canvas, Common.Settings.Channel1);
+                DrawData(surface.Canvas, Common.Settings.Channel2);
             }
 
             _bitmap.UnlockBits(data);
+
+            // Show the new bitmap.
+            Invalidate();
         }
 
         /// <summary>
@@ -159,8 +154,8 @@ namespace NebScope
         {
             if (ch.DataPoints is not null && ch.DataPoints.Count >= 2)
             {
-                //_pen.Color = ch.Color.ToSKColor();
-                //_pen.StrokeWidth = (float)Common.Settings.StrokeSize;
+                _pen.Color = ToSKColor(ch.Color);
+                _pen.StrokeWidth = (float)Common.Settings.StrokeSize;
 
                 SKPath path = new();
                 SKPoint[] points = new SKPoint[ch.DataPoints.Count];
@@ -195,8 +190,8 @@ namespace NebScope
             double xMin = 0 + xOffset;
             double xMax = xTotal + xOffset;
 
-            canvas.DrawText($"{xMin:0.00}", _dataRegion.Left - 10, bottom, _text);
-            canvas.DrawText($"{xMax:0.00}", _dataRegion.Right - 10, bottom, _text);
+            canvas.DrawText($"{xMin:0.00}", _dataRegion.Left - 10, bottom, _font);
+            canvas.DrawText($"{xMax:0.00}", _dataRegion.Right - 10, bottom, _font);
 
             ///// Y axis ch1 /////
             double y1Total = Common.VoltOptions[Common.Settings.Channel1.VoltsPerDivision] * Common.NUM_Y_DIVISIONS;
@@ -205,10 +200,10 @@ namespace NebScope
             double y1Max = y1Total / 2 + y1Offset;
             double y1Mid = y1Max - y1Total / 2;
 
-            _text.Color = ToSKColor(Common.Settings.Channel1.Color);
-            canvas.DrawText($"{y1Min:0.00}", left1, _dataRegion.Bottom - _text.FontMetrics.XHeight / 2, _text);
-            canvas.DrawText($"{y1Max:0.00}", left1, _dataRegion.Top + _text.FontMetrics.XHeight / 2, _text);
-            canvas.DrawText($"{y1Mid:0.00}", left1, _dataRegion.Top + _dataRegion.Height / 2, _text);
+            _font.Color = ToSKColor(Common.Settings.Channel1.Color);
+            canvas.DrawText($"{y1Min:0.00}", left1, _dataRegion.Bottom - _font.FontMetrics.XHeight / 2, _font);
+            canvas.DrawText($"{y1Max:0.00}", left1, _dataRegion.Top + _font.FontMetrics.XHeight / 2, _font);
+            canvas.DrawText($"{y1Mid:0.00}", left1, _dataRegion.Top + _dataRegion.Height / 2, _font);
 
             ///// Y axis ch2 /////
             double y2Total = Common.VoltOptions[Common.Settings.Channel2.VoltsPerDivision] * Common.NUM_Y_DIVISIONS;
@@ -217,10 +212,10 @@ namespace NebScope
             double y2Max = y2Total / 2 + y2Offset;
             double y2Mid = y2Max - y2Total / 2;
 
-            _text.Color = ToSKColor(Common.Settings.Channel2.Color);
-            canvas.DrawText($"{y2Min:0.00}", left2, _dataRegion.Bottom - _text.FontMetrics.XHeight / 2, _text);
-            canvas.DrawText($"{y2Max:0.00}", left2, _dataRegion.Top + _text.FontMetrics.XHeight / 2, _text);
-            canvas.DrawText($"{y2Mid:0.00}", left2, _dataRegion.Top + _dataRegion.Height / 2, _text);
+            _font.Color = ToSKColor(Common.Settings.Channel2.Color);
+            canvas.DrawText($"{y2Min:0.00}", left2, _dataRegion.Bottom - _font.FontMetrics.XHeight / 2, _font);
+            canvas.DrawText($"{y2Max:0.00}", left2, _dataRegion.Top + _font.FontMetrics.XHeight / 2, _font);
+            canvas.DrawText($"{y2Mid:0.00}", left2, _dataRegion.Top + _dataRegion.Height / 2, _font);
         }
 
         /// <summary>
@@ -234,14 +229,14 @@ namespace NebScope
             float xinc = _dataRegion.Width / Common.NUM_X_DIVISIONS;
             float yinc = _dataRegion.Height / Common.NUM_Y_DIVISIONS;
 
-            /////
+            // X
             for (int i = 0; i <= Common.NUM_X_DIVISIONS; i++)
             {
                 _pen.StrokeWidth = i == 0 ? 2.0f : 0.6f;
                 canvas.DrawLine(_dataRegion.Left + i * xinc, _dataRegion.Top, _dataRegion.Left + i * xinc, _dataRegion.Bottom, _pen);
             }
 
-            /////
+            // Y
             for (int i = 0; i <= Common.NUM_Y_DIVISIONS; i++)
             {
                 _pen.StrokeWidth = i == Common.NUM_Y_DIVISIONS / 2 ? 2.0f : 0.6f;
