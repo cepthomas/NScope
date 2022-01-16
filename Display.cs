@@ -26,7 +26,7 @@ namespace NebScope
         #endregion
 
         #region Fields
-        /// <summary>Current pen to draw with.</summary>
+        /// <summary>Current pen to draw with. Specific user can adjust to taste.</summary>
         readonly SKPaint _pen = new()
         {
             Color = SKColors.Black,
@@ -40,11 +40,11 @@ namespace NebScope
         /// <summary>Current font to draw with.</summary>
         readonly SKPaint _font = new()
         {
-            TextSize = 14,
+            TextSize = 18,
             Color = SKColors.White,
             Typeface = SKTypeface.FromFamilyName("Arial"),
             TextAlign = SKTextAlign.Left,
-            IsAntialias = true
+            IsAntialias = true,
         };
 
         /// <summary>Rendered bitmap for display when painting.</summary>
@@ -61,6 +61,9 @@ namespace NebScope
         public Display()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
+            UpdateStyles();
+            DoubleBuffered = true;
         }
 
         /// <summary>
@@ -74,7 +77,7 @@ namespace NebScope
         }
         #endregion
 
-        #region Window handlers
+        #region Event handlers
         /// <summary>
         /// 
         /// </summary>
@@ -82,7 +85,6 @@ namespace NebScope
         protected override void OnResize(EventArgs e)
         {
             UpdateData();
-
             base.OnResize(e);
         }
 
@@ -123,8 +125,8 @@ namespace NebScope
             {
                 // Calc the drawing region.
                 _dataRegion = new Rectangle(
-                    Left + BORDER_PAD + Y_AXIS_SPACE,
-                    Top + BORDER_PAD,
+                    BORDER_PAD + Y_AXIS_SPACE,
+                    BORDER_PAD,
                     Width - BORDER_PAD - BORDER_PAD - Y_AXIS_SPACE,
                     Height - BORDER_PAD - BORDER_PAD - X_AXIS_SPACE);
 
@@ -195,7 +197,7 @@ namespace NebScope
 
             ///// Y axis ch1 /////
             double y1Total = Common.VoltOptions[Common.Settings.Channel1.VoltsPerDivision] * Common.NUM_Y_DIVISIONS;
-            double y1Offset = Common.Settings.Channel2.Position * y1Total;
+            double y1Offset = Common.Settings.Channel1.Position * y1Total;
             double y1Min = -y1Total / 2 + y1Offset;
             double y1Max = y1Total / 2 + y1Offset;
             double y1Mid = y1Max - y1Total / 2;

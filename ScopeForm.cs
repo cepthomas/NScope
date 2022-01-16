@@ -69,26 +69,26 @@ namespace NebScope
 
                 ///// Ch 1 pot /////
                 potCh1Position.Value = Common.Settings.Channel1.Position;
-                potCh1Position.DrawColor = Common.Settings.ControlColor;
+                potCh1Position.DrawColor = Common.Settings.Channel1.Color;
                 potCh1Position.BackColor = Common.Settings.BackColor;
 
                 ///// Ch 2 pot /////
                 potCh2Position.Value = Common.Settings.Channel2.Position;
-                potCh2Position.DrawColor = Common.Settings.ControlColor;
+                potCh2Position.DrawColor = Common.Settings.Channel2.Color;
                 potCh2Position.BackColor = Common.Settings.BackColor;
 
                 ///// Ch 1 volts /////
-                selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
+                //selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
                 selCh1VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
                 selCh1VoltsPerDiv.SelectedItem = Common.Settings.Channel1.VoltsPerDivision;
 
                 ///// Ch 2 volts /////
-                selCh2VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
+                //selCh2VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
                 selCh2VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
                 selCh2VoltsPerDiv.SelectedItem = Common.Settings.Channel2.VoltsPerDivision;
 
                 ///// Timebase /////
-                selTimebase.ForeColor = Common.Settings.ControlColor;
+                //selTimebase.ForeColor = Common.Settings.ControlColor;
                 selTimebase.Items.AddRange(Common.TimeOptions.Keys.ToArray());
                 selTimebase.SelectedItem = Common.Settings.TimePerDivision;
 
@@ -169,16 +169,6 @@ namespace NebScope
                 Channel ch = channel == 0 ? Common.Settings.Channel1 : Common.Settings.Channel2;
                 ch.UpdateData(cmd, data);
             }
-        }
-
-        /// <summary>
-        /// Helper.
-        /// </summary>
-        /// <param name="channelNum"></param>
-        /// <returns></returns>
-        Channel GetChannel(int channelNum)
-        {
-            return channelNum == 0 ? Common.Settings.Channel1 : Common.Settings.Channel2;
         }
         #endregion
 
