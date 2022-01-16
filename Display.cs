@@ -94,7 +94,7 @@ namespace NebScope
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_bitmap is not null)
+            if (_bitmap is not null && _bitmap.Tag is not null)
             {
                 e.Graphics.DrawImage(_bitmap, new Point(0, 0));
             }
@@ -119,6 +119,7 @@ namespace NebScope
             }
 
             // Render the new bitmap.
+            _bitmap.Tag = null;
             var data = _bitmap.LockBits(new Rectangle(0, 0, Width, Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, _bitmap.PixelFormat);
 
             using (SKSurface surface = SKSurface.Create(new SKImageInfo(Width, Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul), data.Scan0, Width * 4))
@@ -142,6 +143,7 @@ namespace NebScope
             }
 
             _bitmap.UnlockBits(data);
+            _bitmap.Tag = false;
 
             // Show the new bitmap.
             Invalidate();

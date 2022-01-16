@@ -27,6 +27,9 @@ namespace NebScope
 
         /// <summary>Activity indicator.</summary>
         int _captureIndDelay = 0;
+
+        /// <summary>For testing.</summary>
+        readonly TestClient _client = new();
         #endregion
 
         #region Lifecycle
@@ -39,6 +42,7 @@ namespace NebScope
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
             UpdateStyles();
             DoubleBuffered = true;
+            _client.Hide();
         }
 
         /// <summary>
@@ -129,6 +133,8 @@ namespace NebScope
             Common.Settings.FormHeight = Size.Height;
 
             Common.Settings.Save();
+
+            _client.Close();
         }
 
         /// <summary>
@@ -185,17 +191,17 @@ namespace NebScope
             switch (sender)
             {
                 case ComboBox cb when cb == selCh1VoltsPerDiv:
-                    Common.Settings.Channel1.VoltsPerDivision = cb.SelectedItem.ToString();
+                    Common.Settings.Channel1.VoltsPerDivision = cb.SelectedItem.ToString()!;
                     redraw = true;
                     break;
 
                 case ComboBox cb when cb == selCh2VoltsPerDiv:
-                    Common.Settings.Channel2.VoltsPerDivision = cb.SelectedItem.ToString();
+                    Common.Settings.Channel2.VoltsPerDivision = cb.SelectedItem.ToString()!;
                     redraw = true;
                     break;
 
                 case ComboBox cb when cb == selTimebase:
-                    Common.Settings.TimePerDivision = cb.SelectedItem.ToString();
+                    Common.Settings.TimePerDivision = cb.SelectedItem.ToString()!;
                     redraw = true;
                     break;
             }
@@ -338,7 +344,7 @@ namespace NebScope
                 if(_udp is not null)
                 {
                     IPEndPoint? senderIp = new(0, 0);
-                    byte[] bytes = _udp!.EndReceive(ares, ref senderIp);
+                    byte[] bytes = _udp.EndReceive(ares, ref senderIp);
 
                     var (channel, cmd, data) = UnpackMsg(bytes);
 
@@ -422,6 +428,14 @@ namespace NebScope
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void Msgs_MouseDoubleClick(object? sender, MouseEventArgs e)
+        {
+            _client.Show();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void DummyData()
         {
             // Make some data.
             int buffSize = 9000;

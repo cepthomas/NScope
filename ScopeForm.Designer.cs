@@ -49,7 +49,7 @@
             this.display.BackColor = System.Drawing.Color.Black;
             this.display.Location = new System.Drawing.Point(239, 12);
             this.display.Name = "display";
-            this.display.Size = new System.Drawing.Size(858, 718);
+            this.display.Size = new System.Drawing.Size(877, 656);
             this.display.TabIndex = 0;
             // 
             // timerHousekeeping
@@ -106,12 +106,12 @@
             // 
             this.txtMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtMsgs.BackColor = System.Drawing.SystemColors.Control;
+            this.txtMsgs.BackColor = System.Drawing.Color.Lavender;
             this.txtMsgs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMsgs.Location = new System.Drawing.Point(8, 441);
             this.txtMsgs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMsgs.Name = "txtMsgs";
-            this.txtMsgs.Size = new System.Drawing.Size(224, 289);
+            this.txtMsgs.Size = new System.Drawing.Size(224, 227);
             this.txtMsgs.TabIndex = 25;
             this.txtMsgs.Text = "";
             this.txtMsgs.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Msgs_MouseDoubleClick);
@@ -270,7 +270,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1109, 742);
+            this.ClientSize = new System.Drawing.Size(1128, 680);
             this.Controls.Add(this.display);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.chkCapture);

@@ -87,7 +87,7 @@ namespace NebScope
             double xOffset = xPosition * drawRegion.Width;
             double yOffset = Position * drawRegion.Height;
 
-            SKMatrix matrix = SKMatrix.MakeIdentity(); // TODO CreateIdentity()
+            SKMatrix matrix = SKMatrix.CreateIdentity();
             matrix.ScaleX = (float)xScale;
             matrix.ScaleY = -(float)yScale;
             matrix.TransX = drawRegion.Left + (float)xOffset;
