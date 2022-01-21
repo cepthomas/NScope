@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -84,7 +85,7 @@ namespace NebScope
         /// <param name="e"></param>
         protected override void OnResize(EventArgs e)
         {
-            UpdateData();
+            UpdateBitmap();
             base.OnResize(e);
         }
 
@@ -94,8 +95,11 @@ namespace NebScope
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_bitmap is not null && _bitmap.Tag is not null)
+            Debug.WriteLine("OnPaint");
+
+            if (_bitmap is not null)
             {
+                Debug.WriteLine("DrawImage");
                 e.Graphics.DrawImage(_bitmap, new Point(0, 0));
             }
         }
@@ -105,7 +109,7 @@ namespace NebScope
         /// <summary>
         /// Generate the bitmap if it's time and enabled.
         /// </summary>
-        public void UpdateData()
+        public void UpdateBitmap()
         {
             // Check for resize or init.
             if (_bitmap is null || _bitmap.Width != Width || _bitmap.Height != Height)
@@ -119,7 +123,6 @@ namespace NebScope
             }
 
             // Render the new bitmap.
-            _bitmap.Tag = null;
             var data = _bitmap.LockBits(new Rectangle(0, 0, Width, Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, _bitmap.PixelFormat);
 
             using (SKSurface surface = SKSurface.Create(new SKImageInfo(Width, Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul), data.Scan0, Width * 4))
@@ -143,10 +146,6 @@ namespace NebScope
             }
 
             _bitmap.UnlockBits(data);
-            _bitmap.Tag = false;
-
-            // Show the new bitmap.
-            Invalidate();
         }
 
         /// <summary>

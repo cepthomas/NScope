@@ -114,7 +114,6 @@
             this.txtMsgs.Size = new System.Drawing.Size(224, 227);
             this.txtMsgs.TabIndex = 25;
             this.txtMsgs.Text = "";
-            this.txtMsgs.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Msgs_MouseDoubleClick);
             // 
             // potCh2Position
             // 

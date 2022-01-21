@@ -61,8 +61,8 @@ namespace NebScope
                 Common.Settings = UserSettings.Load(appDir);
 
                 ///// Init the form /////
-                Location = new Point(Common.Settings.FormX, Common.Settings.FormY);
-                Size = new Size(Common.Settings.FormWidth, Common.Settings.FormHeight);
+                Location = new Point(Common.Settings.FormGeometry.X, Common.Settings.FormGeometry.Y);
+                Size = new Size(Common.Settings.FormGeometry.Width, Common.Settings.FormGeometry.Height);
                 WindowState = FormWindowState.Normal;
                 BackColor = Common.Settings.BackColor;
 
@@ -110,6 +110,12 @@ namespace NebScope
                 _udp = new UdpClient(Common.Settings.Port);
                 _udp.BeginReceive(new AsyncCallback(UdpReceive), this);
 
+                if(Common.Settings.ShowClient)
+                {
+                    _client.Show();
+                    _client.Location = new(Right, Top);
+                }
+
                 timerHousekeeping.Start();
 
                 AddText("NebScope started");
@@ -127,14 +133,8 @@ namespace NebScope
         /// <param name="e"></param>
         void ScopeForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Common.Settings.FormX = Location.X;
-            Common.Settings.FormY = Location.Y;
-            Common.Settings.FormWidth = Size.Width;
-            Common.Settings.FormHeight = Size.Height;
-
+            Common.Settings.FormGeometry = new Rectangle(Location.X, Location.Y, Size.Width, Size.Height);
             Common.Settings.Save();
-
-            _client.Close();
         }
 
         /// <summary>
@@ -147,6 +147,8 @@ namespace NebScope
             {
                 components.Dispose();
             }
+
+            _client?.Close();
 
             _udp?.Close();
             _udp?.Dispose();
@@ -208,8 +210,8 @@ namespace NebScope
 
             if (redraw)
             {
-                // Ask for a redraw.
-                display.UpdateData();
+                display.UpdateBitmap();
+                display.Invalidate();
             }
         }
 
@@ -242,8 +244,8 @@ namespace NebScope
 
             if (redraw)
             {
-                // Ask for a redraw.
-                display.UpdateData();
+                display.UpdateBitmap();
+                display.Invalidate();
             }
         }
 
@@ -308,7 +310,7 @@ namespace NebScope
         {
             using Form f = new()
             {
-                Text = "User Settings",
+                Text = "Settings - changes require restart!",
                 Size = new Size(350, 400),
                 StartPosition = FormStartPosition.Manual,
                 Location = new Point(200, 200),
@@ -350,12 +352,16 @@ namespace NebScope
 
                     UpdateData(channel, cmd, data);
 
-                    // Ask for a redraw.
-                    display.UpdateData();
+                    // Kick over to main UI thread.
+                    BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        display.UpdateBitmap();
+                        display.Invalidate();
 
-                    // Lights.
-                    _captureIndDelay = 5;
-                    chkCapture.BackColor = Common.Settings.ControlColor;
+                        // Lights.
+                        _captureIndDelay = 5;
+                        chkCapture.BackColor = Common.Settings.ControlColor;
+                    });
                 }
             }
 
@@ -420,39 +426,6 @@ namespace NebScope
                     txtMsgs.ScrollToCaret();
                 }
             });
-        }
-
-        /// <summary>
-        /// Test code.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void Msgs_MouseDoubleClick(object? sender, MouseEventArgs e)
-        {
-            _client.Show();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void DummyData()
-        {
-            // Make some data.
-            int buffSize = 9000;
-            double[] ch1 = new double[buffSize];
-            double[] ch2 = new double[buffSize];
-
-            for (int i = 0; i < buffSize; i++)
-            {
-                ch1[i] = (float)Math.Sin(i / 500.0);
-                ch2[i] = i / 1500.0f % 1.0f;
-            }
-
-            UpdateData(0, 1, ch1);
-            UpdateData(1, 1, ch2);
-
-            // Ask for a redraw.
-            display.UpdateData();
         }
         #endregion
     }

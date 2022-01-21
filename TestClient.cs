@@ -15,7 +15,8 @@ namespace NebScope
 {
     public partial class TestClient : Form
     {
-        static readonly UdpClient _udp = new(0);
+        /// <summary>Native client.</summary>
+        readonly UdpClient _udp = new(0);
 
         /// <summary>
         /// 
@@ -33,7 +34,7 @@ namespace NebScope
         void TestClient_Load(object sender, EventArgs e)
         {
             // Set up UDP sender.
-            _udp.Connect("127.0.0.1", 9888);
+            _udp.Connect("127.0.0.1", Common.Settings.Port);
         }
 
         /// <summary>
@@ -64,14 +65,20 @@ namespace NebScope
         void Send1()
         {
             // Make some data. Max of 65k bytes. 5000 floats == 20000 bytes.
-            int buffSize = 9000;
+            int buffSize = 12000;
             float[] ch1 = new float[buffSize];
             float[] ch2 = new float[buffSize];
 
+            var r = new Random();
+            double r1 = r!.NextDouble() + 0.5;
+            double r2 = r!.NextDouble() + 0.5;
+            double r3 = r!.NextDouble() * 10.0 - 5;
+            double r4 = r!.NextDouble() * 10.0 - 5;
+
             for (int i = 0; i < buffSize; i++)
             {
-                ch1[i] = (float)Math.Sin(i / 500.0);
-                ch2[i] = i / 1500.0f % 1.0f;
+                ch1[i] = (float)(Math.Sin(i * r1 / 500.0 * r2) * r3);
+                ch2[i] = (float)((i * r1) / (500.0 * r2) % 1.0 * r4);
             }
 
             int num = SendMsg(0, 1, ch1);

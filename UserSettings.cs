@@ -52,6 +52,11 @@ namespace NebScope
         [Description("Port to listen on.")]
         [Browsable(true)]
         public int Port { get; set; } = 9888;
+
+        [DisplayName("Show Client")]
+        [Description("Show the test cllient.")]
+        [Browsable(true)]
+        public bool ShowClient { get; set; } = false;
         #endregion
 
         #region Persisted non-editable properties
@@ -76,16 +81,8 @@ namespace NebScope
         public double SampleRate { get; set; } = 48000;
 
         [Browsable(false)]
-        public int FormX { get; set; } = 50;
-
-        [Browsable(false)]
-        public int FormY { get; set; } = 50;
-
-        [Browsable(false)]
-        public int FormWidth { get; set; } = 1000;
-
-        [Browsable(false)]
-        public int FormHeight { get; set; } = 700;
+        [JsonConverter(typeof(JsonRectangleConverter))]
+        public Rectangle FormGeometry { get; set; } = new Rectangle(50, 50, 600, 400);
         #endregion
 
         #region Fields
