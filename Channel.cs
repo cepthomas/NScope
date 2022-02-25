@@ -50,11 +50,11 @@ namespace NebScope
         /// </summary>
         /// <param name="cmd">0 = append, 1 = overwrite.</param>
         /// <param name="data">The data to display.</param>
-        public void UpdateData(int cmd, double[] data) // TODO expensive copies and conversions.
+        public void UpdateData(int cmd, double[] data)
         {
             if (cmd == 1) // reset
             {
-                DataPoints = data.ToList();
+                DataPoints = data.ToList(); // TODO needs opimization.
             }
             else // append
             {

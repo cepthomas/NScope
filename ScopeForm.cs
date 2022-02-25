@@ -143,7 +143,7 @@ namespace NebScope
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (components is not null))
             {
                 components.Dispose();
             }
@@ -319,7 +319,7 @@ namespace NebScope
                 ShowInTaskbar = false
             };
 
-            PropertyGrid pg = new()
+            PropertyGridEx pg = new()
             {
                 Dock = DockStyle.Fill,
                 PropertySort = PropertySort.NoSort,
@@ -382,7 +382,7 @@ namespace NebScope
             int dataSize = 4; // each element is this
 
             // Check validity and size of data. First two values are required params.
-            if (bytes != null && bytes.Length >= 8 && bytes.Length % dataSize == 0)
+            if (bytes is not null && bytes.Length >= 8 && bytes.Length % dataSize == 0)
             {
                 // Unpack data.
 
@@ -414,7 +414,7 @@ namespace NebScope
         {
             BeginInvoke((MethodInvoker)delegate ()
             {
-                if (txtMsgs != null && !txtMsgs.IsDisposed)
+                if (txtMsgs is not null && !txtMsgs.IsDisposed)
                 {
                     if (txtMsgs.TextLength > 1000)
                     {
