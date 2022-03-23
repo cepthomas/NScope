@@ -16,7 +16,7 @@ using NBagOfUis;
 namespace NebScope
 {
     [Serializable]
-    public class UserSettings
+    public class UserSettings : Settings
     {
         #region Persisted editable properties
         [DisplayName("Control Color")]
@@ -35,13 +35,13 @@ namespace NebScope
         [Description("The channel settings.")]
         [Browsable(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public Channel Channel1 { get; set; } = new Channel();
+        public Channel Channel1 { get; set; } = new Channel() { Name = "Channel 1", Color = Color.Red };
 
         [DisplayName("Channel 2")]
         [Description("The channel settings.")]
         [Browsable(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public Channel Channel2 { get; set; } = new Channel();
+        public Channel Channel2 { get; set; } = new Channel() { Name = "Channel 2", Color = Color.Green };
 
         [DisplayName("Stroke Size")]
         [Description("Trace thickness.")]
@@ -79,68 +79,6 @@ namespace NebScope
         /// A 1000 Hz waveform == 1000 usec/cycle == 44.1 samples.
         [Browsable(false)]
         public double SampleRate { get; set; } = 48000;
-
-        [Browsable(false)]
-        [JsonConverter(typeof(JsonRectangleConverter))]
-        public Rectangle FormGeometry { get; set; } = new Rectangle(50, 50, 600, 400);
-        #endregion
-
-        #region Fields
-        /// <summary>The file name.</summary>
-        string _fn = "";
-        #endregion
-
-        #region Persistence
-        /// <summary>Save object to file.</summary>
-        public void Save()
-        {
-            if(_fn != "")
-            {
-                JsonSerializerOptions opts = new() { WriteIndented = true };
-                string json = JsonSerializer.Serialize(this, opts);
-                File.WriteAllText(_fn, json);
-            }
-        }
-
-        /// <summary>Create object from file.</summary>
-        public static UserSettings Load(string appDir)
-        {
-            string fn = Path.Combine(appDir, "settings.json");
-            UserSettings? settings = null;
-
-            if (File.Exists(fn))
-            {
-                string json = File.ReadAllText(fn);
-                settings = JsonSerializer.Deserialize<UserSettings>(json);
-            }
-
-            if (settings is null)
-            {
-                // Doesn't exist, create a new one.
-                settings = new();
-
-                // Setup some default channels.
-                settings.Channel1 = new()
-                {
-                    Name = $"Channel 1",
-                    Color = GraphicsUtils.GetSequenceColor(0),
-                    VoltsPerDivision = "0.5",
-                    Position = 0
-                };
-
-                settings.Channel2 = new()
-                {
-                    Name = $"Channel 2",
-                    Color = GraphicsUtils.GetSequenceColor(1),
-                    VoltsPerDivision = "0.5",
-                    Position = 0
-                };
-            }
-
-            settings._fn = fn;
-
-            return settings;
-        }
         #endregion
     }
 }

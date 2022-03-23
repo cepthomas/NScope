@@ -56,9 +56,7 @@ namespace NebScope
             {
                 ///// Settings /////
                 string appDir = MiscUtils.GetAppDataDir("NebScope", "Ephemera");
-                DirectoryInfo di = new(appDir);
-                di.Create();
-                Common.Settings = UserSettings.Load(appDir);
+                Common.Settings = (UserSettings)Settings.Load(appDir, typeof(UserSettings));
 
                 ///// Init the form /////
                 Location = new Point(Common.Settings.FormGeometry.X, Common.Settings.FormGeometry.Y);
