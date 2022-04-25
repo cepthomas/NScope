@@ -117,7 +117,7 @@
             // 
             // potCh2Position
             // 
-            this.potCh2Position.DecPlaces = 2;
+            this.potCh2Position.Resolution = 0.01D;
             this.potCh2Position.DrawColor = System.Drawing.Color.Black;
             this.potCh2Position.Label = "Pos";
             this.potCh2Position.Location = new System.Drawing.Point(146, 335);
@@ -134,7 +134,7 @@
             // 
             // potCh1Position
             // 
-            this.potCh1Position.DecPlaces = 2;
+            this.potCh1Position.Resolution = 0.01D;
             this.potCh1Position.DrawColor = System.Drawing.Color.Black;
             this.potCh1Position.Label = "Pos";
             this.potCh1Position.Location = new System.Drawing.Point(146, 206);
@@ -151,7 +151,7 @@
             // 
             // potXPosition
             // 
-            this.potXPosition.DecPlaces = 2;
+            this.potXPosition.Resolution = 0.01D;
             this.potXPosition.DrawColor = System.Drawing.Color.Black;
             this.potXPosition.Label = "Pos";
             this.potXPosition.Location = new System.Drawing.Point(146, 77);
