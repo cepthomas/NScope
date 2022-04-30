@@ -120,7 +120,7 @@ namespace NebScope
             }
             catch (Exception ex)
             {
-                AddText($"ERROR {ex.Message}");
+                AddText($"EXC {ex.Message}");
             }
         }
 
