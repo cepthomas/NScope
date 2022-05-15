@@ -297,8 +297,7 @@ namespace NebScope
         /// <param name="e"></param>
         void BtnHelp_Click(object sender, EventArgs e)
         {
-            // Make some markdown.
-            Tools.MarkdownToHtml(File.ReadAllLines(@".\README.md").ToList(), Common.Settings.BackColor.Name, "helvetica", true);
+            MiscUtils.ShowReadme("NebScope");
         }
 
         /// <summary>
