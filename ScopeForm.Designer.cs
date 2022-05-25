@@ -286,7 +286,6 @@
             this.Name = "ScopeForm";
             this.Text = "NebScope";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScopeForm_FormClosing);
-            this.Load += new System.EventHandler(this.ScopeForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);

@@ -65,15 +65,6 @@ namespace NebScope
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
             UpdateStyles();
             DoubleBuffered = true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Display_Load(object sender, EventArgs e)
-        {
             BackColor = Color.Black;
         }
         #endregion

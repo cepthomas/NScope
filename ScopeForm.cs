@@ -43,15 +43,7 @@ namespace NebScope
             UpdateStyles();
             DoubleBuffered = true;
             _client.Hide();
-        }
 
-        /// <summary>
-        /// Initialize UI.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void ScopeForm_Load(object sender, EventArgs e)
-        {
             try
             {
                 ///// Settings /////

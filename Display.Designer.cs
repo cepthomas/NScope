@@ -37,7 +37,6 @@ namespace NebScope
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "Display";
             this.Size = new System.Drawing.Size(400, 298);
-            this.Load += new System.EventHandler(this.Display_Load);
             this.ResumeLayout(false);
 
         }

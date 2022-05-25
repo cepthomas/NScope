@@ -24,15 +24,6 @@ namespace NebScope
         public TestClient()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void TestClient_Load(object sender, EventArgs e)
-        {
             // Set up UDP sender.
             _udp.Connect("127.0.0.1", Common.Settings.Port);
         }

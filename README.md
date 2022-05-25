@@ -6,4 +6,10 @@
 - The app is all WinForms using [SkiaSharp](https://github.com/mono/SkiaSharp) which is a major improvement over GDI.
   Note that if you create an app with SkiaSharp, be sure to uncheck the Build config box "Prefer 32 bit".
   Also [read this](https://github.com/mono/SkiaSharp/issues/190).
-- Requires VS2019 and .NET5.
+
+Requires VS2019 and .NET5.
+
+Uses:
+- [NBagOfTricks](https://github.com/cepthomas/NBagOfTricks/blob/main/README.md)
+- [NBagOfUis](https://github.com/cepthomas/NBagOfUis/blob/main/README.md)
+
