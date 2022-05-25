@@ -39,6 +39,7 @@ namespace NebScope
         public ScopeForm()
         {
             InitializeComponent();
+
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
             UpdateStyles();
             DoubleBuffered = true;
@@ -107,21 +108,18 @@ namespace NebScope
                 }
 
                 timerHousekeeping.Start();
-
-                AddText("NebScope started");
             }
             catch (Exception ex)
             {
-                AddText($"EXC {ex.Message}");
+                MessageBox.Show(ex.Message.ToString());
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ScopeForm_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             Common.Settings.FormGeometry = new Rectangle(Location.X, Location.Y, Size.Width, Size.Height);
             Common.Settings.Save();
@@ -216,17 +214,17 @@ namespace NebScope
 
             switch (sender)
             {
-                case Pot pot when pot == potXPosition:
+                case Slider pot when pot == potXPosition:
                     Common.Settings.XPosition = pot.Value;
                     redraw = true;
                     break;
 
-                case Pot pot when pot == potCh1Position:
+                case Slider pot when pot == potCh1Position:
                     Common.Settings.Channel1.Position = -pot.Value;
                     redraw = true;
                     break;
 
-                case Pot pot when pot == potCh2Position:
+                case Slider pot when pot == potCh2Position:
                     Common.Settings.Channel2.Position = -pot.Value;
                     redraw = true;
                     break;
@@ -246,7 +244,7 @@ namespace NebScope
         /// <param name="e"></param>
         void Pot_DoubleClick(object? sender, EventArgs e)
         {
-            if(sender is Pot pot)
+            if(sender is Slider pot)
             {
                 pot.Value = 0;
             }

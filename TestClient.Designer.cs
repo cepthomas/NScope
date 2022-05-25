@@ -63,7 +63,6 @@ namespace NebScope
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.btnSend);
             this.Name = "TestClient";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TestClient_FormClosing);
             this.ResumeLayout(false);
 
         }

@@ -31,9 +31,8 @@ namespace NebScope
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
-        void TestClient_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             // Shut down.
             _udp.Close();
