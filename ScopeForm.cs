@@ -58,19 +58,19 @@ namespace NebScope
                 BackColor = Common.Settings.BackColor;
 
                 ///// X pos pot /////
-                potXPosition.Value = Common.Settings.XPosition;
-                potXPosition.DrawColor = Common.Settings.ControlColor;
-                potXPosition.BackColor = Common.Settings.BackColor;
+                sldXPosition.Value = Common.Settings.XPosition;
+                sldXPosition.DrawColor = Common.Settings.ControlColor;
+                sldXPosition.BackColor = Common.Settings.BackColor;
 
                 ///// Ch 1 pot /////
-                potCh1Position.Value = Common.Settings.Channel1.Position;
-                potCh1Position.DrawColor = Common.Settings.Channel1.Color;
-                potCh1Position.BackColor = Common.Settings.BackColor;
+                sldCh1Position.Value = Common.Settings.Channel1.Position;
+                sldCh1Position.DrawColor = Common.Settings.Channel1.Color;
+                sldCh1Position.BackColor = Common.Settings.BackColor;
 
                 ///// Ch 2 pot /////
-                potCh2Position.Value = Common.Settings.Channel2.Position;
-                potCh2Position.DrawColor = Common.Settings.Channel2.Color;
-                potCh2Position.BackColor = Common.Settings.BackColor;
+                sldCh2Position.Value = Common.Settings.Channel2.Position;
+                sldCh2Position.DrawColor = Common.Settings.Channel2.Color;
+                sldCh2Position.BackColor = Common.Settings.BackColor;
 
                 ///// Ch 1 volts /////
                 //selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
@@ -214,18 +214,18 @@ namespace NebScope
 
             switch (sender)
             {
-                case Slider pot when pot == potXPosition:
-                    Common.Settings.XPosition = pot.Value;
+                case Slider sld when sld == sldXPosition:
+                    Common.Settings.XPosition = sld.Value;
                     redraw = true;
                     break;
 
-                case Slider pot when pot == potCh1Position:
-                    Common.Settings.Channel1.Position = -pot.Value;
+                case Slider sld when sld == sldCh1Position:
+                    Common.Settings.Channel1.Position = -sld.Value;
                     redraw = true;
                     break;
 
-                case Slider pot when pot == potCh2Position:
-                    Common.Settings.Channel2.Position = -pot.Value;
+                case Slider sld when sld == sldCh2Position:
+                    Common.Settings.Channel2.Position = -sld.Value;
                     redraw = true;
                     break;
             }

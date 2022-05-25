@@ -24,9 +24,9 @@
             this.chkCapture = new System.Windows.Forms.CheckBox();
             this.btnHelp = new System.Windows.Forms.Button();
             this.txtMsgs = new System.Windows.Forms.RichTextBox();
-            this.potCh2Position = new NBagOfUis.Slider();
-            this.potCh1Position = new NBagOfUis.Slider();
-            this.potXPosition = new NBagOfUis.Slider();
+            this.sldCh2Position = new NBagOfUis.Slider();
+            this.sldCh1Position = new NBagOfUis.Slider();
+            this.sldXPosition = new NBagOfUis.Slider();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.selTimebase = new System.Windows.Forms.ComboBox();
@@ -115,56 +115,56 @@
             this.txtMsgs.TabIndex = 25;
             this.txtMsgs.Text = "";
             // 
-            // potCh2Position
+            // sldCh2Position
             // 
-            this.potCh2Position.DrawColor = System.Drawing.Color.Black;
-            this.potCh2Position.Label = "Pos";
-            this.potCh2Position.Location = new System.Drawing.Point(146, 335);
-            this.potCh2Position.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.potCh2Position.Maximum = 1D;
-            this.potCh2Position.Minimum = -1D;
-            this.potCh2Position.Name = "potCh2Position";
-            this.potCh2Position.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.potCh2Position.Resolution = 0.01D;
-            this.potCh2Position.Size = new System.Drawing.Size(67, 78);
-            this.potCh2Position.TabIndex = 21;
-            this.potCh2Position.Value = 0D;
-            this.potCh2Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
-            this.potCh2Position.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
+            this.sldCh2Position.DrawColor = System.Drawing.Color.Black;
+            this.sldCh2Position.Label = "Pos";
+            this.sldCh2Position.Location = new System.Drawing.Point(146, 335);
+            this.sldCh2Position.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.sldCh2Position.Maximum = 1D;
+            this.sldCh2Position.Minimum = -1D;
+            this.sldCh2Position.Name = "sldCh2Position";
+            this.sldCh2Position.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.sldCh2Position.Resolution = 0.01D;
+            this.sldCh2Position.Size = new System.Drawing.Size(67, 78);
+            this.sldCh2Position.TabIndex = 21;
+            this.sldCh2Position.Value = 0D;
+            this.sldCh2Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
+            this.sldCh2Position.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
             // 
-            // potCh1Position
+            // sldCh1Position
             // 
-            this.potCh1Position.DrawColor = System.Drawing.Color.Black;
-            this.potCh1Position.Label = "Pos";
-            this.potCh1Position.Location = new System.Drawing.Point(146, 206);
-            this.potCh1Position.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.potCh1Position.Maximum = 1D;
-            this.potCh1Position.Minimum = -1D;
-            this.potCh1Position.Name = "potCh1Position";
-            this.potCh1Position.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.potCh1Position.Resolution = 0.01D;
-            this.potCh1Position.Size = new System.Drawing.Size(67, 78);
-            this.potCh1Position.TabIndex = 20;
-            this.potCh1Position.Value = 0D;
-            this.potCh1Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
-            this.potCh1Position.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
+            this.sldCh1Position.DrawColor = System.Drawing.Color.Black;
+            this.sldCh1Position.Label = "Pos";
+            this.sldCh1Position.Location = new System.Drawing.Point(146, 206);
+            this.sldCh1Position.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.sldCh1Position.Maximum = 1D;
+            this.sldCh1Position.Minimum = -1D;
+            this.sldCh1Position.Name = "sldCh1Position";
+            this.sldCh1Position.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.sldCh1Position.Resolution = 0.01D;
+            this.sldCh1Position.Size = new System.Drawing.Size(67, 78);
+            this.sldCh1Position.TabIndex = 20;
+            this.sldCh1Position.Value = 0D;
+            this.sldCh1Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
+            this.sldCh1Position.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
             // 
-            // potXPosition
+            // sldXPosition
             // 
-            this.potXPosition.DrawColor = System.Drawing.Color.Black;
-            this.potXPosition.Label = "Pos";
-            this.potXPosition.Location = new System.Drawing.Point(146, 77);
-            this.potXPosition.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.potXPosition.Maximum = 1D;
-            this.potXPosition.Minimum = -1D;
-            this.potXPosition.Name = "potXPosition";
-            this.potXPosition.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.potXPosition.Resolution = 0.01D;
-            this.potXPosition.Size = new System.Drawing.Size(67, 78);
-            this.potXPosition.TabIndex = 19;
-            this.potXPosition.Value = 0D;
-            this.potXPosition.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
-            this.potXPosition.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
+            this.sldXPosition.DrawColor = System.Drawing.Color.Black;
+            this.sldXPosition.Label = "Pos";
+            this.sldXPosition.Location = new System.Drawing.Point(146, 77);
+            this.sldXPosition.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.sldXPosition.Maximum = 1D;
+            this.sldXPosition.Minimum = -1D;
+            this.sldXPosition.Name = "sldXPosition";
+            this.sldXPosition.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.sldXPosition.Resolution = 0.01D;
+            this.sldXPosition.Size = new System.Drawing.Size(67, 78);
+            this.sldXPosition.TabIndex = 19;
+            this.sldXPosition.Value = 0D;
+            this.sldXPosition.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
+            this.sldXPosition.DoubleClick += new System.EventHandler(this.Pot_DoubleClick);
             // 
             // groupBox1
             // 
@@ -275,9 +275,9 @@
             this.Controls.Add(this.chkCapture);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.txtMsgs);
-            this.Controls.Add(this.potCh2Position);
-            this.Controls.Add(this.potCh1Position);
-            this.Controls.Add(this.potXPosition);
+            this.Controls.Add(this.sldCh2Position);
+            this.Controls.Add(this.sldCh1Position);
+            this.Controls.Add(this.sldXPosition);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -303,9 +303,9 @@
         private System.Windows.Forms.CheckBox chkCapture;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.RichTextBox txtMsgs;
-        private NBagOfUis.Slider potCh2Position;
-        private NBagOfUis.Slider potCh1Position;
-        private NBagOfUis.Slider potXPosition;
+        private NBagOfUis.Slider sldCh2Position;
+        private NBagOfUis.Slider sldCh1Position;
+        private NBagOfUis.Slider sldXPosition;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox selTimebase;
