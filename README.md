@@ -9,7 +9,11 @@
 
 Requires VS2019 and .NET5.
 
-Uses:
+
+# Third Party
+
+This application uses these FOSS components:
+- Main icon: [Charlotte Schmidt](http://pattedemouche.free.fr/) (Copyright © 2009 of Charlotte Schmidt).
+- Button icons: [Glyphicons Free](http://glyphicons.com/) (CC BY 3.0).
 - [NBagOfTricks](https://github.com/cepthomas/NBagOfTricks/blob/main/README.md)
 - [NBagOfUis](https://github.com/cepthomas/NBagOfUis/blob/main/README.md)
-
