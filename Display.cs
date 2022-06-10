@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using SkiaSharp;
 
 
-namespace NebScope
+namespace NScope
 {
     public partial class Display : UserControl
     {

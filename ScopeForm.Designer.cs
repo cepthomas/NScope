@@ -1,4 +1,4 @@
-﻿namespace NebScope
+﻿namespace NScope
 {
     partial class ScopeForm
     {
@@ -17,7 +17,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScopeForm));
-            this.display = new NebScope.Display();
+            this.display = new NScope.Display();
             this.timerHousekeeping = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnSettings = new System.Windows.Forms.Button();
@@ -61,7 +61,7 @@
             this.btnSettings.BackColor = System.Drawing.SystemColors.Control;
             this.btnSettings.FlatAppearance.BorderSize = 0;
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSettings.Image = global::NebScope.Properties.Resources.glyphicons_137_cogwheel;
+            this.btnSettings.Image = global::NScope.Properties.Resources.glyphicons_137_cogwheel;
             this.btnSettings.Location = new System.Drawing.Point(128, 4);
             this.btnSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSettings.Name = "btnSettings";
@@ -77,7 +77,7 @@
             this.chkCapture.BackColor = System.Drawing.SystemColors.Control;
             this.chkCapture.FlatAppearance.BorderSize = 0;
             this.chkCapture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkCapture.Image = global::NebScope.Properties.Resources.glyphicons_366_restart;
+            this.chkCapture.Image = global::NScope.Properties.Resources.glyphicons_366_restart;
             this.chkCapture.Location = new System.Drawing.Point(8, 4);
             this.chkCapture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkCapture.Name = "chkCapture";
@@ -92,7 +92,7 @@
             this.btnHelp.BackColor = System.Drawing.SystemColors.Control;
             this.btnHelp.FlatAppearance.BorderSize = 0;
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHelp.Image = global::NebScope.Properties.Resources.glyphicons_195_question_sign;
+            this.btnHelp.Image = global::NScope.Properties.Resources.glyphicons_195_question_sign;
             this.btnHelp.Location = new System.Drawing.Point(184, 4);
             this.btnHelp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnHelp.Name = "btnHelp";
@@ -287,7 +287,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ScopeForm";
-            this.Text = "NebScope";
+            this.Text = "NScope";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);

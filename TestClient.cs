@@ -11,7 +11,7 @@ using System.Net.Sockets;
 using NBagOfTricks;
 
 
-namespace NebScope
+namespace NScope
 {
     public partial class TestClient : Form
     {

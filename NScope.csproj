@@ -5,10 +5,10 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
-        <AssemblyName>NebScope</AssemblyName>
+        <AssemblyName>NScope</AssemblyName>
         <Deterministic>False</Deterministic>
         <Version>$([System.DateTime]::UtcNow.ToString(yy.MM.dd))</Version>
-        <Description>NebScope test application</Description>
+        <Description>NScope test application</Description>
         <Copyright>MIT License</Copyright>
         <OutputPath>bin\</OutputPath>
         <!-- <DefineConstants>DEBUG;TRACE</DefineConstants> -->

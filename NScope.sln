@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NebScope", "NebScope.csproj", "{A20B8C4C-7E57-43A4-86C9-19B5E4614F4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NScope", "NScope.csproj", "{A20B8C4C-7E57-43A4-86C9-19B5E4614F4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

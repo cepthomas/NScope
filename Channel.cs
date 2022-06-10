@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using NBagOfTricks;
 
 
-namespace NebScope
+namespace NScope
 {
     ///<summary></summary>
     [Serializable]

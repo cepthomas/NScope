@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NebScope
+namespace NScope
 {
     #region Types
     /// <summary></summary>

@@ -13,7 +13,7 @@ using NBagOfTricks;
 using NBagOfUis;
 
 
-namespace NebScope
+namespace NScope
 {
     [Serializable]
     public class UserSettings : Settings

@@ -17,7 +17,7 @@ using NBagOfTricks;
 using NBagOfUis;
 
 
-namespace NebScope
+namespace NScope
 {
     public partial class ScopeForm : Form
     {
@@ -48,7 +48,7 @@ namespace NebScope
             try
             {
                 ///// Settings /////
-                string appDir = MiscUtils.GetAppDataDir("NebScope", "Ephemera");
+                string appDir = MiscUtils.GetAppDataDir("NScope", "Ephemera");
                 Common.Settings = (UserSettings)Settings.Load(appDir, typeof(UserSettings));
 
                 ///// Init the form /////
@@ -288,7 +288,7 @@ namespace NebScope
         /// <param name="e"></param>
         void BtnHelp_Click(object sender, EventArgs e)
         {
-            MiscUtils.ShowReadme("NebScope");
+            MiscUtils.ShowReadme("NScope");
         }
 
         /// <summary>

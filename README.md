@@ -1,4 +1,4 @@
-# NebScope
+# NScope
 - This is sparse doc, more later. You'll have to read the code.
 - Displays the data you feed it, similar to an oscilloscope. Two channels.
 - Use the form directly in your project and call UpdateData(int channel, int cmd, double[] data).

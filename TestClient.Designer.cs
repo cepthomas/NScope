@@ -1,5 +1,5 @@
 ﻿
-namespace NebScope
+namespace NScope
 {
     partial class TestClient
     {

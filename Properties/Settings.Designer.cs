@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NebScope.Properties {
+namespace NScope.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
