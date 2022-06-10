@@ -19,7 +19,7 @@ namespace NebScope
         readonly UdpClient _udp = new(0);
 
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         public TestClient()
         {
@@ -37,6 +37,7 @@ namespace NebScope
             // Shut down.
             _udp.Close();
             _udp.Dispose();
+            base.OnFormClosing(e);
         }
 
         /// <summary>
@@ -72,17 +73,17 @@ namespace NebScope
             }
 
             int num = SendMsg(0, 1, ch1);
-            Log($"ch1 buff:{ch1.Length} sent:{num}");
+            Tell($"ch1 buff:{ch1.Length} sent:{num}");
 
             num = SendMsg(1, 1, ch2);
-            Log($"ch2 buff:{ch2.Length} sent:{num}");
+            Tell($"ch2 buff:{ch2.Length} sent:{num}");
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="msg"></param>
-        void Log(string msg)
+        void Tell(string msg)
         {
             rtbLog.AppendText(msg + Environment.NewLine);
         }

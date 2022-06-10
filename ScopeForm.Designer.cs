@@ -117,6 +117,7 @@
             // 
             // sldCh2Position
             // 
+            this.sldCh2Position.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sldCh2Position.DrawColor = System.Drawing.Color.Black;
             this.sldCh2Position.Label = "Pos";
             this.sldCh2Position.Location = new System.Drawing.Point(146, 335);
@@ -126,7 +127,7 @@
             this.sldCh2Position.Name = "sldCh2Position";
             this.sldCh2Position.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.sldCh2Position.Resolution = 0.01D;
-            this.sldCh2Position.Size = new System.Drawing.Size(67, 78);
+            this.sldCh2Position.Size = new System.Drawing.Size(50, 78);
             this.sldCh2Position.TabIndex = 21;
             this.sldCh2Position.Value = 0D;
             this.sldCh2Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
@@ -134,6 +135,7 @@
             // 
             // sldCh1Position
             // 
+            this.sldCh1Position.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sldCh1Position.DrawColor = System.Drawing.Color.Black;
             this.sldCh1Position.Label = "Pos";
             this.sldCh1Position.Location = new System.Drawing.Point(146, 206);
@@ -143,7 +145,7 @@
             this.sldCh1Position.Name = "sldCh1Position";
             this.sldCh1Position.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.sldCh1Position.Resolution = 0.01D;
-            this.sldCh1Position.Size = new System.Drawing.Size(67, 78);
+            this.sldCh1Position.Size = new System.Drawing.Size(50, 78);
             this.sldCh1Position.TabIndex = 20;
             this.sldCh1Position.Value = 0D;
             this.sldCh1Position.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);
@@ -151,16 +153,17 @@
             // 
             // sldXPosition
             // 
+            this.sldXPosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sldXPosition.DrawColor = System.Drawing.Color.Black;
             this.sldXPosition.Label = "Pos";
-            this.sldXPosition.Location = new System.Drawing.Point(146, 77);
+            this.sldXPosition.Location = new System.Drawing.Point(146, 93);
             this.sldXPosition.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.sldXPosition.Maximum = 1D;
             this.sldXPosition.Minimum = -1D;
             this.sldXPosition.Name = "sldXPosition";
-            this.sldXPosition.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.sldXPosition.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.sldXPosition.Resolution = 0.01D;
-            this.sldXPosition.Size = new System.Drawing.Size(67, 78);
+            this.sldXPosition.Size = new System.Drawing.Size(67, 45);
             this.sldXPosition.TabIndex = 19;
             this.sldXPosition.Value = 0D;
             this.sldXPosition.ValueChanged += new System.EventHandler(this.Pot_ValueChanged);

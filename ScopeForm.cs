@@ -57,17 +57,17 @@ namespace NebScope
                 WindowState = FormWindowState.Normal;
                 BackColor = Common.Settings.BackColor;
 
-                ///// X pos pot /////
+                ///// X pos /////
                 sldXPosition.Value = Common.Settings.XPosition;
                 sldXPosition.DrawColor = Common.Settings.ControlColor;
                 sldXPosition.BackColor = Common.Settings.BackColor;
 
-                ///// Ch 1 pot /////
+                ///// Ch 1 /////
                 sldCh1Position.Value = Common.Settings.Channel1.Position;
                 sldCh1Position.DrawColor = Common.Settings.Channel1.Color;
                 sldCh1Position.BackColor = Common.Settings.BackColor;
 
-                ///// Ch 2 pot /////
+                ///// Ch 2 /////
                 sldCh2Position.Value = Common.Settings.Channel2.Position;
                 sldCh2Position.DrawColor = Common.Settings.Channel2.Color;
                 sldCh2Position.BackColor = Common.Settings.BackColor;
@@ -94,7 +94,6 @@ namespace NebScope
                 ///// Checkboxes /////
                 chkCapture.Checked = true;
                 chkCapture.BackColor = Common.Settings.BackColor;
-                //chkCapture.ForeColor = Common.Settings.ControlColor;
                 chkCapture.FlatAppearance.CheckedBackColor = Common.Settings.ControlColor;
 
                 ///// Start UDP server /////
@@ -123,6 +122,8 @@ namespace NebScope
         {
             Common.Settings.FormGeometry = new Rectangle(Location.X, Location.Y, Size.Width, Size.Height);
             Common.Settings.Save();
+
+            base.OnFormClosing(e);
         }
 
         /// <summary>
@@ -387,7 +388,7 @@ namespace NebScope
             }
             else
             {
-                AddText("Bad message rcvd.");
+                Tell("Bad message rcvd.");
             }
 
             return (channel, cmd, data);
@@ -397,7 +398,7 @@ namespace NebScope
         /// A message to display to the user.
         /// </summary>
         /// <param name="text">The message.</param>
-        void AddText(string text)
+        void Tell(string text)
         {
             BeginInvoke((MethodInvoker)delegate ()
             {
