@@ -341,7 +341,7 @@ namespace NScope
                     UpdateData(channel, cmd, data);
 
                     // Kick over to main UI thread.
-                    BeginInvoke((MethodInvoker)delegate ()
+                    this.InvokeIfRequired(_ => 
                     {
                         display.UpdateBitmap();
                         display.Invalidate();
@@ -400,7 +400,7 @@ namespace NScope
         /// <param name="text">The message.</param>
         void Tell(string text)
         {
-            BeginInvoke((MethodInvoker)delegate ()
+            this.InvokeIfRequired(_ =>
             {
                 if (txtMsgs is not null && !txtMsgs.IsDisposed)
                 {
