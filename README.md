@@ -7,7 +7,7 @@
   Note that if you create an app with SkiaSharp, be sure to uncheck the Build config box "Prefer 32 bit".
   Also [read this](https://github.com/mono/SkiaSharp/issues/190).
 
-Requires VS2019 and .NET5.
+Requires VS2019 and .NET6.
 
 
 # Third Party
