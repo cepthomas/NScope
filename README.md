@@ -12,11 +12,8 @@ Requires VS2022 and .NET6.
   Also [read this](https://github.com/mono/SkiaSharp/issues/190).
 
 
-# Third Party
+# External Components
 
-This application uses these FOSS components:
-- Main icon: [Charlotte Schmidt](http://pattedemouche.free.fr/) (Copyright © 2009 of Charlotte Schmidt).
+- Application icon: [Charlotte Schmidt](http://pattedemouche.free.fr/) (Copyright © 2009 of Charlotte Schmidt).
 - Button icons: [Glyphicons Free](http://glyphicons.com/) (CC BY 3.0).
 - [SkiaSharp](https://github.com/mono/SkiaSharp) (MIT)
-- [NBagOfTricks](https://github.com/cepthomas/NBagOfTricks/blob/main/README.md)
-- [NBagOfUis](https://github.com/cepthomas/NBagOfUis/blob/main/README.md)

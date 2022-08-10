@@ -294,7 +294,7 @@ namespace NScope
         /// <summary>
         /// Edit the common options in a property grid.
         /// </summary>
-        void UserSettings_Click(object? sender, EventArgs e)
+        void UserSettings_Click(object? sender, EventArgs e) use Settings class!!
         {
             using Form f = new()
             {
