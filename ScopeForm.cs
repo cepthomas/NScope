@@ -294,30 +294,11 @@ namespace NScope
         /// <summary>
         /// Edit the common options in a property grid.
         /// </summary>
-        void UserSettings_Click(object? sender, EventArgs e) use Settings class!!
+        void UserSettings_Click(object? sender, EventArgs e)
         {
-            using Form f = new()
-            {
-                Text = "Settings - changes require restart!",
-                Size = new Size(350, 400),
-                StartPosition = FormStartPosition.Manual,
-                Location = new Point(200, 200),
-                FormBorderStyle = FormBorderStyle.FixedToolWindow,
-                ShowIcon = false,
-                ShowInTaskbar = false
-            };
-
-            PropertyGridEx pg = new()
-            {
-                Dock = DockStyle.Fill,
-                PropertySort = PropertySort.NoSort,
-                SelectedObject = Common.Settings
-            };
-
-            f.Controls.Add(pg);
-            f.ShowDialog();
-
+            var changes = Common.Settings.Edit("Edit settings", 500);
             Common.Settings.Save();
+            MessageBox.Show("You better restart!");
         }
         #endregion
 
