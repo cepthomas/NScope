@@ -16,7 +16,7 @@ using NBagOfUis;
 namespace NScope
 {
     [Serializable]
-    public class UserSettings : Settings
+    public sealed class UserSettings : Settings
     {
         #region Persisted editable properties
         [DisplayName("Control Color")]
