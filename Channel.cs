@@ -54,7 +54,7 @@ namespace NScope
         {
             if (cmd == 1) // reset
             {
-                DataPoints = data.ToList(); // TODO needs opimization.
+                DataPoints = data.ToList(); // probably needs opimization?
             }
             else // append
             {
