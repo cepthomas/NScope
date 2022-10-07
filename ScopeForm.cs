@@ -49,7 +49,7 @@ namespace NScope
             {
                 ///// Settings /////
                 string appDir = MiscUtils.GetAppDataDir("NScope", "Ephemera");
-                Common.Settings = (UserSettings)Settings.Load(appDir, typeof(UserSettings));
+                Common.Settings = (UserSettings)SettingsCore.Load(appDir, typeof(UserSettings));
 
                 ///// Init the form /////
                 Location = new Point(Common.Settings.FormGeometry.X, Common.Settings.FormGeometry.Y);
@@ -296,7 +296,7 @@ namespace NScope
         /// </summary>
         void UserSettings_Click(object? sender, EventArgs e)
         {
-            var changes = Common.Settings.Edit("Edit settings", 500);
+            var changes = SettingsEditor.Edit(Common.Settings, "User Settings", 500);
             Common.Settings.Save();
             MessageBox.Show("You better restart!");
         }
