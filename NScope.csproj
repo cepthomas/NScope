@@ -1,11 +1,12 @@
-﻿<?xml version="1.0" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
-        <AssemblyName>NScope</AssemblyName>
+        <AssemblyName>Ephemera.NScope</AssemblyName>
+        <RootNamespace>Ephemera.NScope</RootNamespace>
         <Deterministic>False</Deterministic>
         <Version>$([System.DateTime]::UtcNow.ToString(yy.MM.dd))</Version>
         <Description>NScope test application</Description>
@@ -21,12 +22,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Test\**"/>
-        <EmbeddedResource Remove="Test\**"/>
-        <None Remove="Test\**"/>
+        <Compile Remove="Test\**" />
+        <EmbeddedResource Remove="Test\**" />
+        <None Remove="Test\**" />
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Update="Properties\Settings.Designer.cs">
+          <DesignTimeSharedInput>True</DesignTimeSharedInput>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
         <Compile Update="ScopeForm.cs">
             <SubType>Form</SubType>
         </Compile>
@@ -44,17 +50,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="SkiaSharp" Version="2.80.3"/>
-        <PackageReference Include="System.Drawing.Common" Version="6.0.0"/>
+        <PackageReference Include="SkiaSharp" Version="2.80.3" />
+        <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
         <!-- <PackageReference Include="SkiaSharp.Views" Version="2.80.3" /> -->
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="NBagOfTricks">
-            <HintPath>lib\NBagOfTricks.dll</HintPath>
+        <Reference Include="Ephemera.NBagOfTricks">
+            <HintPath>lib\Ephemera.NBagOfTricks.dll</HintPath>
         </Reference>
-        <Reference Include="NBagOfUis">
-            <HintPath>lib\NBagOfUis.dll</HintPath>
+        <Reference Include="Ephemera.NBagOfUis">
+            <HintPath>lib\Ephemera.NBagOfUis.dll</HintPath>
         </Reference>
     </ItemGroup>
 
@@ -66,7 +72,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Resources\"/>
+        <Folder Include="Resources\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Properties\Settings.settings">
+        <Generator>SettingsSingleFileGenerator</Generator>
+        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      </None>
     </ItemGroup>
     
 </Project>

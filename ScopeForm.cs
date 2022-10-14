@@ -13,11 +13,11 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using SkiaSharp;
-using NBagOfTricks;
-using NBagOfUis;
+using Ephemera.NBagOfTricks;
+using Ephemera.NBagOfUis;
 
 
-namespace NScope
+namespace Ephemera.NScope
 {
     public partial class ScopeForm : Form
     {

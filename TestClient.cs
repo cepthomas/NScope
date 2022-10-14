@@ -8,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
-using NBagOfTricks;
+using Ephemera.NBagOfTricks;
 
 
-namespace NScope
+namespace Ephemera.NScope
 {
     public partial class TestClient : Form
     {

@@ -10,10 +10,10 @@ using System.Windows.Forms;
 using SkiaSharp;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using NBagOfTricks;
+using Ephemera.NBagOfTricks;
 
 
-namespace NScope
+namespace Ephemera.NScope
 {
     ///<summary></summary>
     [Serializable]

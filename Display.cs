@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using SkiaSharp;
 
 
-namespace NScope
+namespace Ephemera.NScope
 {
     public partial class Display : UserControl
     {

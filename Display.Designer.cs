@@ -1,5 +1,5 @@
 ﻿
-namespace NScope
+namespace Ephemera.NScope
 {
     partial class Display
     {
