@@ -24,9 +24,9 @@
             this.chkCapture = new System.Windows.Forms.CheckBox();
             this.btnHelp = new System.Windows.Forms.Button();
             this.txtMsgs = new System.Windows.Forms.RichTextBox();
-            this.sldCh2Position = new NBagOfUis.Slider();
-            this.sldCh1Position = new NBagOfUis.Slider();
-            this.sldXPosition = new NBagOfUis.Slider();
+            this.sldCh2Position = new Ephemera.NBagOfUis.Slider();
+            this.sldCh1Position = new Ephemera.NBagOfUis.Slider();
+            this.sldXPosition = new Ephemera.NBagOfUis.Slider();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.selTimebase = new System.Windows.Forms.ComboBox();
@@ -306,9 +306,9 @@
         private System.Windows.Forms.CheckBox chkCapture;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.RichTextBox txtMsgs;
-        private NBagOfUis.Slider sldCh2Position;
-        private NBagOfUis.Slider sldCh1Position;
-        private NBagOfUis.Slider sldXPosition;
+        private Ephemera.NBagOfUis.Slider sldCh2Position;
+        private Ephemera.NBagOfUis.Slider sldCh1Position;
+        private Ephemera.NBagOfUis.Slider sldXPosition;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox selTimebase;
