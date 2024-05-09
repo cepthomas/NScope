@@ -1,5 +1,5 @@
 ﻿
-namespace Ephemera.NScope
+namespace NScope
 {
     partial class TestClient
     {

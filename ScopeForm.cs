@@ -17,7 +17,7 @@ using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfUis;
 
 
-namespace Ephemera.NScope
+namespace NScope
 {
     public partial class ScopeForm : Form
     {

@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using Ephemera.NBagOfTricks;
 
 
-namespace Ephemera.NScope
+namespace NScope
 {
     ///<summary></summary>
     [Serializable]

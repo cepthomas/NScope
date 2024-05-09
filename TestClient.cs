@@ -11,7 +11,7 @@ using System.Net.Sockets;
 using Ephemera.NBagOfTricks;
 
 
-namespace Ephemera.NScope
+namespace NScope
 {
     public partial class TestClient : Form
     {

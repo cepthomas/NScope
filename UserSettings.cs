@@ -13,7 +13,7 @@ using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfUis;
 
 
-namespace Ephemera.NScope
+namespace NScope
 {
     [Serializable]
     public sealed class UserSettings : SettingsCore

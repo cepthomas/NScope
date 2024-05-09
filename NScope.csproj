@@ -5,8 +5,8 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
-        <AssemblyName>Ephemera.NScope</AssemblyName>
-        <RootNamespace>Ephemera.NScope</RootNamespace>
+        <AssemblyName>NScope</AssemblyName>
+        <RootNamespace>NScope</RootNamespace>
         <Deterministic>False</Deterministic>
         <Version>$([System.DateTime]::UtcNow.ToString(yy.MM.dd))</Version>
         <Description>NScope test application</Description>
