@@ -8,7 +8,7 @@
         <AssemblyName>NScope</AssemblyName>
         <RootNamespace>NScope</RootNamespace>
         <Deterministic>False</Deterministic>
-        <Version>$([System.DateTime]::UtcNow.ToString(yy.MM.dd))</Version>
+        <Version>1.1.0</Version>
         <Description>NScope test application</Description>
         <Copyright>MIT License</Copyright>
         <OutputPath>bin\</OutputPath>
