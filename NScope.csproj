@@ -3,12 +3,12 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
         <AssemblyName>NScope</AssemblyName>
         <RootNamespace>NScope</RootNamespace>
         <Deterministic>False</Deterministic>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <Description>NScope test application</Description>
         <Copyright>MIT License</Copyright>
         <OutputPath>bin\</OutputPath>
