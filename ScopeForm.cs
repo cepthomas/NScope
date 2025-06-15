@@ -74,17 +74,17 @@ namespace NScope
 
                 ///// Ch 1 volts /////
                 //selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
-                selCh1VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
+                selCh1VoltsPerDiv.Items.AddRange([.. Common.VoltOptions.Keys]);
                 selCh1VoltsPerDiv.SelectedItem = Common.Settings.Channel1.VoltsPerDivision;
 
                 ///// Ch 2 volts /////
                 //selCh2VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
-                selCh2VoltsPerDiv.Items.AddRange(Common.VoltOptions.Keys.ToArray());
+                selCh2VoltsPerDiv.Items.AddRange([.. Common.VoltOptions.Keys]);
                 selCh2VoltsPerDiv.SelectedItem = Common.Settings.Channel2.VoltsPerDivision;
 
                 ///// Timebase /////
                 //selTimebase.ForeColor = Common.Settings.ControlColor;
-                selTimebase.Items.AddRange(Common.TimeOptions.Keys.ToArray());
+                selTimebase.Items.AddRange([.. Common.TimeOptions.Keys]);
                 selTimebase.SelectedItem = Common.Settings.TimePerDivision;
 
                 ///// Buttons /////
@@ -288,7 +288,7 @@ namespace NScope
         /// <param name="e"></param>
         void BtnHelp_Click(object sender, EventArgs e)
         {
-            MiscUtils.ShowReadme("NScope");
+            Tools.ShowReadme("NScope");
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace NScope
         /// </summary>
         void UserSettings_Click(object? sender, EventArgs e)
         {
-            var changes = SettingsEditor.Edit(Common.Settings, "User Settings", 500);
+            SettingsEditor.Edit(Common.Settings, "User Settings", 500);
             Common.Settings.Save();
             MessageBox.Show("You better restart!");
         }
