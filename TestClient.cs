@@ -13,7 +13,7 @@ using Ephemera.NBagOfTricks;
 
 namespace NScope
 {
-    public partial class TestClient : Form
+    public partial class TestClient : Form //TODO1 clean this up
     {
         /// <summary>Native client.</summary>
         readonly UdpClient _udp = new(0);
