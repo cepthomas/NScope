@@ -55,22 +55,22 @@ namespace NScope
                 Location = new Point(Common.Settings.FormGeometry.X, Common.Settings.FormGeometry.Y);
                 Size = new Size(Common.Settings.FormGeometry.Width, Common.Settings.FormGeometry.Height);
                 WindowState = FormWindowState.Normal;
-                BackColor = Common.Settings.BackColor;
+                BackColor = BackColor;
 
                 ///// X pos /////
                 sldXPosition.Value = Common.Settings.XPosition;
                 sldXPosition.DrawColor = Common.Settings.ControlColor;
-                sldXPosition.BackColor = Common.Settings.BackColor;
+                sldXPosition.BackColor = BackColor;
 
                 ///// Ch 1 /////
                 sldCh1Position.Value = Common.Settings.Channel1.Position;
                 sldCh1Position.DrawColor = Common.Settings.Channel1.Color;
-                sldCh1Position.BackColor = Common.Settings.BackColor;
+                sldCh1Position.BackColor = BackColor;
 
                 ///// Ch 2 /////
                 sldCh2Position.Value = Common.Settings.Channel2.Position;
                 sldCh2Position.DrawColor = Common.Settings.Channel2.Color;
-                sldCh2Position.BackColor = Common.Settings.BackColor;
+                sldCh2Position.BackColor = BackColor;
 
                 ///// Ch 1 volts /////
                 //selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
@@ -88,12 +88,12 @@ namespace NScope
                 selTimebase.SelectedItem = Common.Settings.TimePerDivision;
 
                 ///// Buttons /////
-                btnHelp.BackColor = Common.Settings.BackColor;
-                btnSettings.BackColor = Common.Settings.BackColor;
+                btnHelp.BackColor = BackColor;
+                btnSettings.BackColor = BackColor;
 
                 ///// Checkboxes /////
                 chkCapture.Checked = true;
-                chkCapture.BackColor = Common.Settings.BackColor;
+                chkCapture.BackColor = BackColor;
                 chkCapture.FlatAppearance.CheckedBackColor = Common.Settings.ControlColor;
 
                 ///// Start UDP server /////

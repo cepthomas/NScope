@@ -25,12 +25,6 @@ namespace NScope
         [JsonConverter(typeof(JsonColorConverter))]
         public Color ControlColor { get; set; } = Color.Blue;
 
-        [DisplayName("Background Color")]
-        [Description("The color used for overall background.")]
-        [Browsable(true)]
-        [JsonConverter(typeof(JsonColorConverter))]
-        public Color BackColor { get; set; } = Color.AliceBlue;
-
         [DisplayName("Channel 1")]
         [Description("The channel settings.")]
         [Browsable(true)]
