@@ -12,6 +12,7 @@ using System.Net;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
+using System.Reflection;
 using SkiaSharp;
 using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfUis;
@@ -39,6 +40,7 @@ namespace NScope
         public ScopeForm()
         {
             InitializeComponent();
+            Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
             UpdateStyles();

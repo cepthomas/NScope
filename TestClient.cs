@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 using System.Net.Sockets;
 using Ephemera.NBagOfTricks;
 
@@ -24,6 +25,8 @@ namespace NScope
         public TestClient()
         {
             InitializeComponent();
+            Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+
             // Set up UDP sender.
             _udp.Connect("127.0.0.1", Common.Settings.Port);
         }
