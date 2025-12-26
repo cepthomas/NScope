@@ -23,7 +23,7 @@ namespace NScope
         [Description("The color used for active control surfaces.")]
         [Browsable(true)]
         [JsonConverter(typeof(JsonColorConverter))]
-        public Color ControlColor { get; set; } = Color.Blue;
+        public Color DrawColor { get; set; } = Color.Blue;
 
         [DisplayName("Channel 1")]
         [Description("The channel settings.")]

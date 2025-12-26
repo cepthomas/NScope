@@ -61,7 +61,7 @@ namespace NScope
 
                 ///// X pos /////
                 sldXPosition.Value = Common.Settings.XPosition;
-                sldXPosition.DrawColor = Common.Settings.ControlColor;
+                sldXPosition.DrawColor = Common.Settings.DrawColor;
                 sldXPosition.BackColor = BackColor;
 
                 ///// Ch 1 /////
@@ -75,17 +75,17 @@ namespace NScope
                 sldCh2Position.BackColor = BackColor;
 
                 ///// Ch 1 volts /////
-                //selCh1VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
+                //selCh1VoltsPerDiv.ForeColor = Common.Settings.DrawColor;
                 selCh1VoltsPerDiv.Items.AddRange([.. Common.VoltOptions.Keys]);
                 selCh1VoltsPerDiv.SelectedItem = Common.Settings.Channel1.VoltsPerDivision;
 
                 ///// Ch 2 volts /////
-                //selCh2VoltsPerDiv.ForeColor = Common.Settings.ControlColor;
+                //selCh2VoltsPerDiv.ForeColor = Common.Settings.DrawColor;
                 selCh2VoltsPerDiv.Items.AddRange([.. Common.VoltOptions.Keys]);
                 selCh2VoltsPerDiv.SelectedItem = Common.Settings.Channel2.VoltsPerDivision;
 
                 ///// Timebase /////
-                //selTimebase.ForeColor = Common.Settings.ControlColor;
+                //selTimebase.ForeColor = Common.Settings.DrawColor;
                 selTimebase.Items.AddRange([.. Common.TimeOptions.Keys]);
                 selTimebase.SelectedItem = Common.Settings.TimePerDivision;
 
@@ -96,7 +96,7 @@ namespace NScope
                 ///// Checkboxes /////
                 chkCapture.Checked = true;
                 chkCapture.BackColor = BackColor;
-                chkCapture.FlatAppearance.CheckedBackColor = Common.Settings.ControlColor;
+                chkCapture.FlatAppearance.CheckedBackColor = Common.Settings.DrawColor;
 
                 ///// Start UDP server /////
                 _udp = new UdpClient(Common.Settings.Port);
@@ -331,7 +331,7 @@ namespace NScope
 
                         // Lights.
                         _captureIndDelay = 5;
-                        chkCapture.BackColor = Common.Settings.ControlColor;
+                        chkCapture.BackColor = Common.Settings.DrawColor;
                     });
                 }
             }
