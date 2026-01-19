@@ -8,7 +8,7 @@ A toy oscilloscope for experimenting with the Skia graphics lib. The doc is spar
 - The app is all WinForms using [SkiaSharp](https://github.com/mono/SkiaSharp) which is a major improvement over GDI.
   Note that if you create an app with SkiaSharp, be sure to uncheck the Build config box "Prefer 32 bit".
   Also [read this](https://github.com/mono/SkiaSharp/issues/190).
-- Requires VS2022 and .NET6.
+- Requires VS2022 and .NET8.
 
 
 # External Components
