@@ -184,17 +184,17 @@ namespace NScope
             switch (sender)
             {
                 case ComboBox cb when cb == selCh1VoltsPerDiv:
-                    Common.Settings.Channel1.VoltsPerDivision = cb.SelectedItem.ToString()!;
+                    Common.Settings.Channel1.VoltsPerDivision = cb.SelectedItem!.ToString()!;
                     redraw = true;
                     break;
 
                 case ComboBox cb when cb == selCh2VoltsPerDiv:
-                    Common.Settings.Channel2.VoltsPerDivision = cb.SelectedItem.ToString()!;
+                    Common.Settings.Channel2.VoltsPerDivision = cb.SelectedItem!.ToString()!;
                     redraw = true;
                     break;
 
                 case ComboBox cb when cb == selTimebase:
-                    Common.Settings.TimePerDivision = cb.SelectedItem.ToString()!;
+                    Common.Settings.TimePerDivision = cb.SelectedItem!.ToString()!;
                     redraw = true;
                     break;
             }
