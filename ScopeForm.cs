@@ -371,7 +371,7 @@ namespace NScope
             }
             else
             {
-                Tell("Bad message rcvd.");
+                Tell("Bad message received.");
             }
 
             return (channel, cmd, data);
